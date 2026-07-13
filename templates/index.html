@@ -14,608 +14,376 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-overlay" aria-hidden="true"></div>
+<script>
+  /* progressive enhancement flag: animations only run when JS is live
+     and the user hasn't asked for reduced motion. Without this class
+     every section renders fully visible (SEO / no-JS / LCP safe). */
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("jsx");
+  }
+</script>
 
-  <div class="container hero-inner">
-    <div>
-      <!-- one-by-one reveal (delay via --d) -->
-      <div class="hero-kicker hero-reveal" style="--d: 120ms;">Adorn by SOC</div>
-      <h1 class="hero-title hero-reveal" style="--d: 340ms;">Gold-Plated Jewellery That Doesn't Fade. Ever-Wear, Every Day.</h1>
-      <p class="hero-sub hero-reveal" style="--d: 480ms;">18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
+<!-- ============================================================
+     1. SCROLL-STORY — "The Anatomy of Forever"
+     ============================================================ -->
+<section class="story" id="anatomy" aria-label="The Anatomy of Forever">
+  <div class="story-stage">
 
-      <div class="hero-actions hero-reveal" style="--d: 620ms;">
-        <a class="btn btn-hero btn-hero-light" href="{% url 'catalog:collection_list' %}">
-          Shop Bestsellers
-        </a>
-
-        <a class="btn btn-hero btn-hero-outline" href="#why-no-tarnish">
-          Why We Don't Tarnish →
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MOVING ICON + TEXT STRIP (hover stop, no links) -->
-<section class="mini-marquee">
-  <div class="container-fluid px-0">
-    <div class="marquee-track" id="miniMarqueeTrack">
-      <div class="marquee-item"><span class="mi-ico">💧</span>Waterproof &amp; Sweat-Proof — shower, gym, swim</div>
-      <div class="marquee-item"><span class="mi-ico">🛡️</span>6-Month Anti-Tarnish Warranty — fades? We replace it free</div>
-      <div class="marquee-item"><span class="mi-ico">🧪</span>Lab-Tested, Nickel-Free — hypoallergenic &amp; skin-safe</div>
-      <div class="marquee-item"><span class="mi-ico">🚚</span>Free Shipping + COD — across India</div>
-      <div class="marquee-item"><span class="mi-ico">↩️</span>7-Day Easy Returns — no questions asked</div>
-
-      <div class="marquee-item"><span class="mi-ico">💧</span>Waterproof &amp; Sweat-Proof — shower, gym, swim</div>
-      <div class="marquee-item"><span class="mi-ico">🛡️</span>6-Month Anti-Tarnish Warranty — fades? We replace it free</div>
-      <div class="marquee-item"><span class="mi-ico">🧪</span>Lab-Tested, Nickel-Free — hypoallergenic &amp; skin-safe</div>
-      <div class="marquee-item"><span class="mi-ico">🚚</span>Free Shipping + COD — across India</div>
-      <div class="marquee-item"><span class="mi-ico">↩️</span>7-Day Easy Returns — no questions asked</div>
-    </div>
-  </div>
-</section>
-
-<!-- SHOP COLLECTIONS -->
-<section class="shop-collections">
-  <div class="container">
-    <div class="shop-head">
-      <h2 class="shop-title">Shop by Category</h2>
-
-      <div class="arrivals-arrows">
-        <button class="arrivals-btn" type="button" id="colPrev" aria-label="Previous">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <button class="arrivals-btn" type="button" id="colNext" aria-label="Next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
+    <!-- Scene 1 — The Core -->
+    <div class="scene" data-scene="0">
+      <div class="scene-media"><img src="{% static 'img/silver.jpg' %}" alt="Rings on a hand against the sky — the steel core"></div>
+      <div class="scene-shade"></div>
+      <div class="scene-copy">
+        <div>
+          <div class="scene-step">The Anatomy of Forever — 01 · The Core</div>
+          <div class="scene-line">It starts with <em>316L surgical steel.</em></div>
+        </div>
       </div>
     </div>
 
-    <div class="collections-row" id="collectionsRow">
-      {% if home_collections %}
-      {% for c in home_collections %}
-      <!-- Card goes to /catalog/collections/<slug>/ -->
-      <a class="collection-card" href="{% url 'catalog:collection_products' slug=c.slug %}">
-        <img class="collection-img"
-          src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}"
-          alt="{{ c.name }}">
+    <!-- Scene 2 — The Plating -->
+    <div class="scene" data-scene="1">
+      <div class="scene-media"><img src="{% static 'img/PHOTO-2025-11-06-10-59-15.png' %}" alt="18K gold plated bracelet on a wrist"></div>
+      <div class="scene-shade"></div>
+      <div class="scene-copy">
+        <div>
+          <div class="scene-step">02 · The Plating</div>
+          <div class="scene-line">Sealed in <em>18K gold.</em></div>
+        </div>
+      </div>
+    </div>
 
-        <div class="card-bottom">
-          <div class="card-label">{{ c.name }}</div>
-          <div class="card-mini-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 6l6 6-6 6" />
-            </svg>
+    <!-- Scene 3 — The Test → The Reveal -->
+    <div class="scene scene-final" data-scene="2">
+      <div class="scene-media"><img src="{% static 'img/hero.jpg' %}" alt="Gold earring worn by a model in low light"></div>
+      <div class="scene-shade"></div>
+      <div class="scene-copy">
+        <div class="reveal-ui">
+          <div class="jbx-kicker">Shower · Gym · Monsoon</div>
+          <h1>Gold-Plated Jewellery That <em>Doesn't Fade.</em> Ever-Wear, Every Day.</h1>
+          <p>18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
+          <div class="cta-row">
+            <a class="btn-metal" href="{% url 'catalog:collection_list' %}">Shop Bestsellers</a>
+            <a class="btn-ghost" href="#why-no-tarnish">Why We Don't Tarnish →</a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="story-progress" aria-hidden="true"><i></i></div>
+    <div class="story-cue" aria-hidden="true">Scroll</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     2. TRUST STRIP
+     ============================================================ -->
+<section class="trust-strip" aria-label="Why shop with us">
+  <div class="trust-track">
+    <div class="trust-item"><b>Waterproof &amp; Sweat-Proof</b> — shower, gym, swim</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>6-Month Anti-Tarnish Warranty</b> — fades? We replace it free</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Lab-Tested, Nickel-Free</b> — hypoallergenic &amp; skin-safe</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Free Shipping + COD</b> — across India</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>7-Day Easy Returns</b> — no questions asked</div><span class="trust-dot">◆</span>
+
+    <div class="trust-item"><b>Waterproof &amp; Sweat-Proof</b> — shower, gym, swim</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>6-Month Anti-Tarnish Warranty</b> — fades? We replace it free</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Lab-Tested, Nickel-Free</b> — hypoallergenic &amp; skin-safe</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Free Shipping + COD</b> — across India</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>7-Day Easy Returns</b> — no questions asked</div><span class="trust-dot">◆</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. SHOP BY CATEGORY — editorial grid
+     ============================================================ -->
+<section class="jbx-section" id="categories">
+  <div class="container">
+    <div class="cats-head">
+      <div class="rv">
+        <div class="jbx-kicker">The Collection</div>
+        <h2 class="jbx-h2">Shop by <em>Category</em></h2>
+      </div>
+      <a class="btn-ghost rv" style="--rd:120ms" href="{% url 'catalog:collection_list' %}">View All</a>
+    </div>
+
+    <div class="cats-grid">
+      {% if home_collections %}
+      {% for c in home_collections %}
+      <a class="cat-tile jb rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:collection_products' slug=c.slug %}">
+        <img src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}" alt="{{ c.name }} — anti-tarnish gold plated jewellery">
+        <i class="sweep"></i>
+        <span class="cat-label">{{ c.name }}</span>
+        <span class="cat-count">Explore →</span>
       </a>
       {% endfor %}
       {% else %}
-      <a class="collection-card" href="{% url 'catalog:collection_list' %}">
-        <img class="collection-img" src="{% static 'img/ring-transparent-2.webp' %}" alt="Collections">
-        <div class="card-bottom">
-          <div class="card-label">View Collections</div>
-          <div class="card-mini-arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-          </div>
-        </div>
+      <a class="cat-tile jb rv" href="{% url 'catalog:collection_list' %}">
+        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adorn by SOC collections">
+        <i class="sweep"></i>
+        <span class="cat-label">View Collections</span>
+        <span class="cat-count">Explore →</span>
       </a>
       {% endif %}
     </div>
   </div>
 </section>
 
-<!-- BRAND POSITIONING (answer-first, AEO) -->
-<section class="honest">
+<!-- ============================================================
+     4. NEW ARRIVALS — carousel
+     ============================================================ -->
+<section class="jbx-section" id="bestsellers" style="padding-top:40px">
   <div class="container">
-    <h2 class="honest-title">Real Gold Is a Locker Purchase. Imitation Fades in Weeks. We're the First Option.</h2>
-
-    <p class="honest-lead">
-      <strong>Adorn by SOC is an Indian anti-tarnish jewellery brand that makes waterproof, 18K gold-plated
-      jewellery on 316L surgical-grade stainless steel.</strong> Unlike brass-based imitation jewellery that
-      tarnishes, blackens, or turns skin green within weeks, our pieces are built on a steel base that doesn't
-      corrode — so the shine lasts for years of daily wear, at prices between ₹499 and ₹5,499.
-    </p>
-
-    <div class="honest-table-wrap">
-      <table class="honest-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Real Gold</th>
-            <th>Imitation Jewellery</th>
-            <th class="ht-us">Adorn by SOC</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Price</td><td>₹50,000+</td><td>₹100–500</td><td class="ht-us"><strong>₹499–5,499</strong></td></tr>
-          <tr><td>Tarnishes?</td><td>Never</td><td>In weeks</td><td class="ht-us"><strong>No — anti-tarnish steel base</strong></td></tr>
-          <tr><td>Waterproof?</td><td>Yes</td><td>No</td><td class="ht-us"><strong>Yes — shower &amp; gym safe</strong></td></tr>
-          <tr><td>Daily wear?</td><td>Too risky to wear out</td><td>Fades fast</td><td class="ht-us"><strong>Made for it</strong></td></tr>
-          <tr><td>Skin-safe?</td><td>Yes</td><td>Often nickel-heavy</td><td class="ht-us"><strong>Lab-tested nickel-free</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- SPEC TRANSPARENCY -->
-<section class="specs" id="why-no-tarnish">
-  <div class="container">
-    <h2 class="honest-title">We Publish Our Specs. Ask Any Other Brand to Do the Same.</h2>
-    <ul class="specs-list">
-      <li><strong>Base metal:</strong> 316L surgical-grade stainless steel (the same grade used in medical implants and luxury watches)</li>
-      <li><strong>Plating:</strong> 18K gold, thick plating</li>
-      <li><strong>Stones:</strong> Finished with finely set sparkling stones for a refined and luxurious look</li>
-      <li><strong>Quality:</strong> Skin-friendly jewellery</li>
-      <li><strong>Why it doesn't tarnish:</strong> Tarnish happens when base metals like brass or copper oxidise. Stainless steel doesn't oxidise in normal wear — so there's nothing underneath to turn black.</li>
-    </ul>
-  </div>
-</section>
-
-<!-- 6-MONTH WARRANTY -->
-<section class="warranty">
-  <div class="container">
-    <h2 class="honest-title">The 6-Month Anti-Tarnish Warranty</h2>
-    <p class="honest-lead">
-      If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
-      it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
-      within 48 hours.
-    </p>
-    <a class="warranty-btn" href="{% url 'page' 'returns' %}">Read Warranty Terms</a>
-  </div>
-</section>
-
-<!-- SPLIT COLLECTIONS (ADAPT / POISE) -->
-<section class="split-collections">
-  <div class="split-grid">
-    <div class="split-card">
-      <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adapt Collection">
-      <div class="split-content">
-        <h2 class="split-title">Adapt Collection</h2>
-        <p class="split-sub">Fluid silhouettes and adjustable fits.</p>
-
-        <!-- collection/adapt/ -->
-        <a class="split-btn" href="{% url 'catalog:collection_products' slug='adapt' %}">Shop Now</a>
+    <div class="cats-head">
+      <div class="rv">
+        <div class="jbx-kicker">Fresh from the Jewel Box</div>
+        <h2 class="jbx-h2">New <em>Arrivals</em></h2>
       </div>
-    </div>
-
-    <div class="split-card">
-      <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Poise Collection">
-      <div class="split-content">
-        <h2 class="split-title">Poise Collection</h2>
-        <p class="split-sub">Minimal lines, bold intent. Made for self-expression.</p>
-
-        <!-- collection/poise/ -->
-        <a class="split-btn" href="{% url 'catalog:collection_products' slug='poise' %}">Shop Now</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VIDEO BACKGROUND SECTION (COASTAL EDIT) -->
-<section class="video-hero">
-  <video autoplay muted loop playsinline preload="metadata">
-    <source src="{% static 'img/videos/vdo.mp4' %}" type="video/mp4">
-  </video>
-  <div class="video-overlay" aria-hidden="true"></div>
-
-  <div class="video-center container">
-    <div>
-      <div class="v-kicker">New Collection</div>
-      <h2 class="v-title">Coastal Edit</h2>
-
-      <img class="v-ring" src="{% static 'img/nwc.png' %}" alt="Ring">
-      <div class="v-sub">Effortless Style for Life by the Coast</div>
-
-      <!-- collection/coastal/ -->
-      <a class="v-link" href="{% url 'catalog:collection_products' slug='bangles' %}">Shop the Edit</a>
-    </div>
-  </div>
-</section>
-
-<!-- SEASONAL MARKDOWNS -->
-<section class="seasonal">
-  <img class="seasonal-bg" src="{% static 'img/3.png' %}" alt="Seasonal background">
-
-  <div class="container seasonal-inner">
-    <div class="seasonal-grid">
-      <div class="seasonal-left">
-        <h2>Seasonal<br>Markdowns -</h2>
-      </div>
-
-      <div class="seasonal-right">
-        <h3>Up to 30% off select<br>earrings, rings, and<br>bangles</h3>
-        <p>
-          This week only. Receive a free polishing cloth<br>
-          with orders over $200.
-        </p>
-        <a class="seasonal-btn" href="{% url 'catalog:sale_page' %}">Shop the Sale</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NEW ARRIVALS -->
-<section class="arrivals">
-  <div class="container">
-    <div class="arrivals-head">
-      <div>
-        <h2 class="arrivals-title">New Arrivals</h2>
-        <a class="shopall-link" href="{% url 'catalog:product_list' %}?tag=new">Shop all</a>
-      </div>
-
-      <div class="arrivals-arrows">
-        <button class="arrivals-btn" type="button" id="arrPrev" aria-label="Previous">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
+      <div class="car-arrows rv" style="--rd:120ms">
+        <button class="car-btn" type="button" id="bsPrev" aria-label="Previous products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <button class="arrivals-btn" type="button" id="arrNext" aria-label="Next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
+        <button class="car-btn" type="button" id="bsNext" aria-label="Next products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg>
         </button>
       </div>
     </div>
 
-    <div class="arrivals-row" id="arrivalsRow">
+    <div class="bs-row" id="bsRow">
       {% for p in new_arrivals %}
-      <a class="product-card" href="{% url 'catalog:product_detail' slug=p.slug %}">
-        <span class="badge-new">New</span>
-
-        <div class="product-media">
+      <a class="bs-card jb rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:product_detail' slug=p.slug %}">
+        <div class="bs-media">
+          <span class="bs-tag">New</span>
           {% with img=p.primary_image_obj %}
-          <img class="product-img primary"
-            src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/4.jpg' %}{% endif %}" alt="{{ p.title }}">
+          <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ p.title }}">
           {% endwith %}
-
           {% with h=p.hover_image_obj %}
-          <img class="product-img alt" src="{% if h %}{{ h.image.url }}{% else %}{% static 'img/5.jpg' %}{% endif %}"
-            alt="{{ p.title }} hover">
+          {% if h %}<img class="alt" src="{{ h.image.url }}" alt="{{ p.title }} — alternate view">{% endif %}
           {% endwith %}
-
-          <div class="quick-view">Quick View</div>
+          <i class="sweep"></i>
         </div>
-
-        <div class="product-meta">
-          <div class="product-name">{{ p.title }}</div>
-          <div class="product-price">Rs.{{ p.price_inr }}</div>
+        <div class="bs-meta">
+          <span class="bs-name">{{ p.title }}</span>
+          <span class="bs-price">₹{{ p.price_inr }}</span>
         </div>
       </a>
       {% empty %}
-      <div style="padding:18px; color:rgba(255,255,255,.75)">No new arrivals yet.</div>
+      <div class="bs-empty">New pieces are being added — explore the <a href="{% url 'catalog:collection_list' %}" style="color:var(--jb-gold)">full collection</a>.</div>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- EDITORIAL 2-IMAGE SECTION -->
-<section class="editorial-2">
+<!-- ============================================================
+     5. HONEST MIDDLE — positioning + comparison
+     ============================================================ -->
+<section class="jbx-section honest-dark">
   <div class="container">
-    <div class="editorial-grid">
-      <div class="editorial-card">
-        <img class="editorial-img-one" src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Editorial left">
-        <h3 class="editorial-title">Sculpted by Nature, Made to Adorn.</h3>
-      </div>
-
-      <div class="editorial-card">
-        <img class="editorial-img" src="{% static 'img/3.png' %}" alt="Editorial right">
-        <h3 class="editorial-title">From Dawn to Dusk, Elegance in Motion.</h3>
-
-        <!-- collections/bracelets/ -->
-        <a class="editorial-btn" href="{% url 'catalog:collection_products' slug='bangles' %}">Explore Bangles</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BAZAAR STRIP -->
-<section class="bazaar-strip">
-  <div class="container-fluid px-0">
-    <div class="bazaar-track">
-      <div class="bazaar-item">Waterproof. Sweat-proof. Anti-tarnish.</div>
-      <div class="bazaar-logo">ADORN</div>
-      <div class="bazaar-item">18K gold plating on 316L surgical steel</div>
-      <div class="bazaar-item">Made for everyday Indian life</div>
-
-      <div class="bazaar-item">Waterproof. Sweat-proof. Anti-tarnish.</div>
-      <div class="bazaar-logo">ADORN</div>
-      <div class="bazaar-item">18K gold plating on 316L surgical steel</div>
-      <div class="bazaar-item">Made for everyday Indian life</div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURE TILES -->
-<section class="feature-tiles">
-  <div class="container">
-    <div class="tiles-grid">
-      <div class="tile">
-        <img src="{% static 'img/3.png' %}" alt="Flora">
-        <div class="tile-content">
-          <div class="tile-kicker">Earrings</div>
-          <div class="tile-title">Flora</div>
-          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='earrings' %}">Shop Now</a>
-        </div>
-      </div>
-
-      <div class="tile">
-        <img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="Einai">
-        <div class="tile-content">
-          <div class="tile-kicker">Pendant</div>
-          <div class="tile-title">Einai</div>
-          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='pendant' %}">Shop Now</a>
-        </div>
-      </div>
-
-      <div class="tile">
-        <img src="{% static 'img/PHOTO-2025-11-06-10-59-07.png' %}" alt="Entelechy">
-        <div class="tile-content">
-          <div class="tile-kicker">Bracelets</div>
-          <div class="tile-title">Entelechy</div>
-          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='bracelets' %}">Shop Now</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-  </div>
-</section>
-
-<section class="compare-section mb-5">
-  <div class="container">
-    <div class="compare-wrap">
-      <div class="compare-box" id="finishCompare">
-        <img class="compare-img base" src="{% static 'img/PHOTO-2025-11-06-10-59-15.png' %}" alt="Gold finish">
-
-        <div class="compare-overlay" id="compareOverlay">
-          <img class="compare-img top" src="{% static 'img/PHOTO-2025-11-06-10-59-14 - Copy.png' %}"
-            alt="Silver finish">
-        </div>
-
-        <div class="compare-divider" id="compareDivider"></div>
-
-        <button class="compare-handle" id="compareHandle" aria-label="Drag to compare" type="button">
-          <span class="chev">&lt;</span><span class="chev">&gt;</span>
-        </button>
-      </div>
-
-      <div class="compare-copy">
-        <h2>TWO FINISHES. ONE<br> SIGNATURE DESIGN.</h2>
-        <p>
-          Each piece is available in both luminous gold and
-          understated silver, hand-finished for all-day wear.
+    <div class="honest-grid">
+      <div class="rv">
+        <div class="jbx-kicker">The Honest Middle</div>
+        <h2 class="jbx-h2">Real Gold Is a Locker Purchase. Imitation Fades in Weeks. <em>We're the First Option.</em></h2>
+        <p class="jbx-lead">
+          <strong>Adorn by SOC is an Indian anti-tarnish jewellery brand that makes waterproof, 18K gold-plated
+          jewellery on 316L surgical-grade stainless steel.</strong> Unlike brass-based imitation jewellery that
+          tarnishes, blackens, or turns skin green within weeks, our pieces are built on a steel base that doesn't
+          corrode — so the shine lasts for years of daily wear, at prices between ₹499 and ₹5,499.
         </p>
-        <a class="compare-btn" href="{% url 'catalog:collection_list' %}">EXPLORE THE COLLECTION</a>
+      </div>
+
+      <div class="cmp-wrap jb rv" style="--rd:150ms">
+        <table class="cmp-table">
+          <thead>
+            <tr><th></th><th>Real Gold</th><th>Imitation</th><th class="us">Adorn by SOC</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Price</td><td>₹50,000+</td><td>₹100–500</td><td class="us"><strong>₹499–5,499</strong></td></tr>
+            <tr><td>Tarnishes?</td><td>Never</td><td>In weeks</td><td class="us"><strong>No — steel base</strong></td></tr>
+            <tr><td>Waterproof?</td><td>Yes</td><td>No</td><td class="us"><strong>Shower &amp; gym safe</strong></td></tr>
+            <tr><td>Daily wear?</td><td>Too risky</td><td>Fades fast</td><td class="us"><strong>Made for it</strong></td></tr>
+            <tr><td>Skin-safe?</td><td>Yes</td><td>Often nickel-heavy</td><td class="us"><strong>Lab-tested nickel-free</strong></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </section>
 
-<!-- =======================
-   SECTION: Exclusive Capsule
-   (Best seller section REMOVED as requested)
-======================= -->
-<section class="capsule">
-  <div class="capsule-grid">
-    <div class="capsule-media">
-      <img src="{% static 'img/4.png' %}" alt="Exclusive Capsule">
+<!-- ============================================================
+     6. SPEC TRANSPARENCY — oversized numerals
+     ============================================================ -->
+<section class="jbx-section specs-dark" id="why-no-tarnish">
+  <div class="container">
+    <div class="rv">
+      <div class="jbx-kicker">Published Specs</div>
+      <h2 class="jbx-h2">We Publish Our Specs. <em>Ask Any Other Brand to Do the Same.</em></h2>
     </div>
 
-    <div class="capsule-panel">
-      <div class="capsule-inner">
-        <div class="capsule-kicker">LIMITED EDITION</div>
-        <h2 class="capsule-title">EXCLUSIVE CAPSULE</h2>
-        <p class="capsule-sub">Inspired by a muse of timeless grace.</p>
+    <div class="spec-numerals">
+      <div class="spec-num rv"><b>316L</b><span>Surgical-Grade Steel</span></div>
+      <div class="spec-num rv" style="--rd:120ms"><b>18K</b><span>Gold Plating</span></div>
+      <div class="spec-num rv" style="--rd:240ms"><b>6 MO</b><span>Anti-Tarnish Warranty</span></div>
+    </div>
 
-        <!-- collections/exclusive/ -->
-        <a class="capsule-btn" href="{% url 'catalog:collection_list' %}">SHOP EXCLUSIVE</a>
+    <dl class="spec-rows rv">
+      <div class="spec-row">
+        <dt>Base Metal</dt>
+        <dd><strong>316L surgical-grade stainless steel</strong> — the same grade used in medical implants and luxury watches.</dd>
       </div>
-    </div>
+      <div class="spec-row">
+        <dt>Plating</dt>
+        <dd><strong>18K gold, thick plating</strong> over the steel core.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Stones</dt>
+        <dd>Finished with finely set sparkling stones for a refined and luxurious look.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Quality</dt>
+        <dd>Skin-friendly jewellery.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Why It Doesn't Tarnish</dt>
+        <dd>Tarnish happens when base metals like brass or copper oxidise. <strong>Stainless steel doesn't oxidise in
+        normal wear — so there's nothing underneath to turn black.</strong></dd>
+      </div>
+    </dl>
   </div>
 </section>
 
-<!-- =======================
-   SECTION: Gold Marquee + London Split
-======================= -->
-<section class="gold-strip">
-  <div class="gold-track">
-    <span class="gold-item">ANTI-TARNISH JEWELLERY</span><span class="gold-dot">|</span>
-    <span class="gold-item">PUNE, IN</span><span class="gold-dot">|</span>
-    <span class="gold-item">ADORN BY SOC</span><span class="gold-dot">|</span>
-
-    <span class="gold-item">ANTI-TARNISH JEWELLERY</span><span class="gold-dot">|</span>
-    <span class="gold-item">PUNE, IN</span><span class="gold-dot">|</span>
-    <span class="gold-item">ADORN BY SOC</span><span class="gold-dot"></span>
-  </div>
-</section>
-
-<section class="london-split">
-  <div class="london-grid">
-    <div class="london-left">
-      <div class="london-inner">
-        <div class="london-kicker">NOW One</div>
-        <h2 class="london-title">EXCLUSIVE</h2>
-        <p class="london-text">
-          Discover our full collection, explore new arrivals, and experience exclusive in-store
-          moments - from curated capsule collections to private styling.
-        </p>
-
-        <div class="london-actions">
-          <a class="london-btn primary" href="{% url 'catalog:contact' %}">VISIT US</a>
-          <a class="london-btn outline" href="{% url 'catalog:contact' %}">BOOK AN APPOINTMENT</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="london-right">
-      <img src="{% static 'img/5.png' %}" alt="London Store">
-    </div>
-  </div>
-</section>
-
-<!-- Shop the Look Section -->
-<section class="shop-look">
-  <div class="shop-look-wrap">
-
-    <div class="look-media" id="lookMedia">
-      <img
-        src="{% if shop_look and shop_look.image %}{{ shop_look.image.url }}{% else %}{% static 'img/look/model.jpg' %}{% endif %}"
-        alt="Shop the look">
-
-      {% if shop_look %}
-      {% for it in shop_look.items.all %}
-      <button class="hotspot" style="left:{{ it.x }}%; top:{{ it.y }}%;" data-index="{{ forloop.counter0 }}"
-        aria-label="Show product {{ forloop.counter }}"></button>
-      {% endfor %}
-      {% else %}
-      <!-- fallback -->
-      <button class="hotspot" style="left:30%; top:28%;" data-index="0" aria-label="Show product 1"></button>
-      {% endif %}
-    </div>
-
-    <div class="look-side">
-      <div class="look-head">
-        <h3>{% if shop_look %}{{ shop_look.title }}{% else %}SHOP THE LOOK{% endif %}</h3>
-        <a href="{% if shop_look and shop_look.more_url %}{{ shop_look.more_url }}{% else %}#{% endif %}"
-          class="look-more">
-          {% if shop_look %}{{ shop_look.more_text }}{% else %}More looks{% endif %}
-        </a>
-      </div>
-
-      <div class="look-card-wrap">
-        <button class="arrivals-btn" type="button" id="lookPrev" aria-label="Previous">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <div class="look-card" id="lookCard">
-          <div class="look-card-frame">
-            <img id="lookProdImg" src="{% static 'img/look/p1.jpg' %}" alt="Product">
-          </div>
-
-          <div class="look-prod-meta">
-            <div class="look-prod-name" id="lookProdName">LAMARK EARRINGS</div>
-            <div class="look-prod-price" id="lookProdPrice">Rs.737.00</div>
-            <a class="look-quick" id="lookProdLink" href="#">QUICK VIEW</a>
-          </div>
-        </div>
-
-        <button class="arrivals-btn" type="button" id="lookNext" aria-label="Next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="look-count" id="lookCount">1 / {% if shop_look %}{{ shop_look.items.all|length }}{% else %}3{% endif %}</div>
-    </div>
-
-  </div>
-
-  <div class="shop-look-rule"></div>
-</section>
-
-<section class="journal">
-  <div class="journal-wrap">
-    <div class="journal-top">
-      <div>
-        <h2 class="journal-title">THE JOURNAL</h2>
-      </div>
-    </div>
-
-    <div class="journal-grid">
-      <article class="journal-card">
-        <div class="journal-img">
-          <img src="{% static 'img/PHOTO-2025-11-06-10-59-06.png' %}" alt="Journal 1">
-        </div>
-
-        <div class="journal-float">
-          <h3>THE BEST JEWELLERY BRANDS</h3>
-          <div class="journal-date">Nov 15, 2025</div>
-          <p>
-            Stalo, an archaeologist who worked on excavations across Greece in the 1980s,
-            has always been fascinated by the emotive power of jewellery as a vehicle for women
-            to express themselves
-          </p>
-        </div>
-      </article>
-
-      <article class="journal-card">
-        <div class="journal-img">
-          <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Journal 2">
-        </div>
-
-        <div class="journal-float">
-          <h3>WHAT TO WEAR TO GREECE</h3>
-          <div class="journal-date">Nov 8, 2025</div>
-          <p>
-            Combining their unique experiences, the two creatives tap into their Greek heritage
-            to design organic and sculptural pieces, each handcrafted and completely unique.
-            Mother-daughter duo, Alexia and Stalo Karides
-          </p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="our-story">
-  <div class="story-hero" style="background-image:url('{% static 'img/hero_about.jpg' %}')">
-    <div class="story-overlay"></div>
-
-    <div class="story-content">
-      <h2>WHY WE STARTED ADORN BY SOC</h2>
-      <p>
-        Hi, I'm Shivani, a fashion designer and personal stylist from Pune. After styling hundreds of people
-        through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is still
-        difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
-        outfits, real occasions, and everyday life. For me, Adorn is a heartfelt effort to make luxury feel
-        more personal, wearable, and accessible to everyone.
+<!-- ============================================================
+     7. WARRANTY
+     ============================================================ -->
+<section class="jbx-section" style="padding-top:30px">
+  <div class="container">
+    <div class="warranty-card jb rv">
+      <div class="jbx-kicker">Our Promise</div>
+      <h2 class="jbx-h2">The 6-Month <em>Anti-Tarnish Warranty</em></h2>
+      <p class="jbx-lead">
+        If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
+        it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
+        within 48 hours.
       </p>
-      <a href="{% url 'catalog:about_page' %}" class="story-btn">DISCOVER OUR STORY</a>
-    </div>
-  </div>
-
-  <div class="story-features">
-    <div class="story-feat">
-      <h4>316L STEEL BASE</h4>
-      <p>Surgical-grade stainless steel that doesn't oxidise — nothing underneath to turn black.</p>
-    </div>
-
-    <div class="story-feat">
-      <h4>18K GOLD PLATING</h4>
-      <p>Thick 18K gold plating, built for the shower, the gym, and the monsoon.</p>
-    </div>
-
-    <div class="story-feat">
-      <h4>6-MONTH WARRANTY</h4>
-      <p>If it fades or tarnishes within 6 months of normal wear, we replace it free.</p>
+      <a class="btn-metal" href="{% url 'page' 'returns' %}">Read Warranty Terms</a>
     </div>
   </div>
 </section>
 
-<!-- FAQ (AEO core) -->
-<section class="faq-home">
+<!-- ============================================================
+     8. EDITORIAL SPLIT — Adapt / Poise
+     ============================================================ -->
+<section class="jbx-section" style="padding-top:30px">
   <div class="container">
-    <h2 class="honest-title">Frequently Asked Questions</h2>
+    <div class="ed-split">
+      <a class="ed-panel jb rv" href="{% url 'catalog:collection_products' slug='adapt' %}">
+        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adapt collection — anti-tarnish jewellery">
+        <div class="ed-copy">
+          <h3>Adapt</h3>
+          <span>Fluid silhouettes, adjustable fits →</span>
+        </div>
+      </a>
+      <a class="ed-panel jb rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='poise' %}">
+        <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Poise collection — minimal anti-tarnish jewellery">
+        <div class="ed-copy">
+          <h3>Poise</h3>
+          <span>Minimal lines, bold intent →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <div class="accordion accordion-flush faq-acc" id="homeFaq">
+<!-- ============================================================
+     9. SHOP THE LOOK
+     ============================================================ -->
+<section class="jbx-section look-dark" id="shop-look">
+  <div class="container">
+    <div class="rv" style="margin-bottom:36px">
+      <div class="jbx-kicker">Styled by SOC</div>
+      <h2 class="jbx-h2">{% if shop_look %}{{ shop_look.title }}{% else %}Shop the <em>Look</em>{% endif %}</h2>
+    </div>
+
+    <div class="look-grid">
+      <div class="look-stage jb rv" id="lookMedia">
+        <img src="{% if shop_look and shop_look.image %}{{ shop_look.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="Shop the look">
+        {% if shop_look %}
+        {% for it in shop_look.items.all %}
+        <button class="hotspot" style="left:{{ it.x }}%; top:{{ it.y }}%;" data-index="{{ forloop.counter0 }}" aria-label="Show product {{ forloop.counter }}"></button>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="look-panel rv" style="--rd:150ms">
+        <div class="look-card-box jb">
+          <div class="look-frame">
+            <img id="lookProdImg" src="{% static 'img/hero.jpg' %}" alt="Product">
+          </div>
+          <div class="look-meta">
+            <span class="look-name" id="lookProdName">{% if shop_look %}Select a piece{% else %}Adorn by SOC{% endif %}</span>
+            <span class="look-price" id="lookProdPrice"></span>
+          </div>
+          <a class="look-quick" id="lookProdLink" href="{% url 'catalog:collection_list' %}">Quick View</a>
+        </div>
+
+        <div class="look-nav">
+          <div class="car-arrows">
+            <button class="car-btn" type="button" id="lookPrev" aria-label="Previous look item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="car-btn" type="button" id="lookNext" aria-label="Next look item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div class="look-count" id="lookCount"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     10. FOUNDER STORY — editorial offset
+     ============================================================ -->
+<section class="jbx-section honest-dark" id="founder">
+  <div class="container">
+    <div class="founder-grid">
+      <div class="rv">
+        <div class="jbx-kicker">Why We Started</div>
+        <div class="founder-pull">"Luxury should feel personal, wearable, and accessible to everyone."</div>
+      </div>
+      <div class="founder-body rv" style="--rd:150ms">
+        <h2 class="jbx-h2" style="font-size:clamp(24px,2.6vw,34px)">Why We Started <em>Adorn by SOC</em></h2>
+        <p>
+          Hi, I'm <strong>Shivani</strong>, a fashion designer and personal stylist from Pune. After styling hundreds
+          of people through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is
+          still difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
+          outfits, real occasions, and everyday life.
+        </p>
+        <p>For me, Adorn is a heartfelt effort to make luxury feel more personal, wearable, and accessible to everyone.</p>
+        <div class="founder-sign">— Shivani</div>
+        <a class="btn-ghost" style="margin-top:26px" href="{% url 'catalog:about_page' %}">Discover Our Story</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     11. FAQ
+     ============================================================ -->
+<section class="jbx-section faq-dark" id="faq">
+  <div class="container">
+    <div class="rv" style="margin-bottom:30px">
+      <div class="jbx-kicker">Answers, Upfront</div>
+      <h2 class="jbx-h2">Frequently Asked <em>Questions</em></h2>
+    </div>
+
+    <div class="accordion accordion-flush rv" id="homeFaq" style="max-width:880px">
 
       <div class="accordion-item">
         <h3 class="accordion-header">
@@ -696,10 +464,12 @@
   </div>
 </section>
 
-<!-- SEO CONTENT BLOCK (collapsible) -->
-<section class="seo-block">
+<!-- ============================================================
+     12. SEO CONTENT BLOCK
+     ============================================================ -->
+<section class="seo-dark" style="padding:52px 0">
   <div class="container">
-    <details class="seo-details">
+    <details>
       <summary>
         <h2>Buy Anti-Tarnish Gold Plated Jewellery Online in India</h2>
         <span class="seo-more">Read more</span>
@@ -721,7 +491,7 @@
         shipping, COD, and a 6-month anti-tarnish warranty.
       </p>
 
-      <p class="seo-popular">
+      <p style="font-size:12.5px">
         <strong>Popular searches:</strong> anti tarnish jewellery · waterproof gold plated necklace · stainless
         steel jewellery for women · anti tarnish earrings under 999 · gold plated chain for men · demi-fine
         jewellery India · office wear jewellery
@@ -773,112 +543,73 @@
 
 {% block extra_js %}
 
-<!-- Products JSON (from backend; links use real Django urls) -->
+<!-- Shop-the-look products (real Django data) -->
 <script>
   window.SHOP_LOOK_PRODUCTS = [
     {% if shop_look %}
-  {% for it in shop_look.items.all %}
-  {
-    name: "{{ it.product.title|escapejs }}",
-      price: "Rs.{{ it.product.price_inr }}",
-        img: "{% if it.product.primary_image_obj and it.product.primary_image_obj.image %}{{ it.product.primary_image_obj.image.url }}{% else %}{% static 'img/look/p1.jpg' %}{% endif %}",
-          link: "{% url 'catalog:product_detail' slug=it.product.slug %}"
-  } {% if not forloop.last %}, {% endif %}
-  {% endfor %}
-  {% endif %}
+    {% for it in shop_look.items.all %}
+    {
+      name: "{{ it.product.title|escapejs }}",
+      price: "₹{{ it.product.price_inr }}",
+      img: "{% if it.product.primary_image_obj and it.product.primary_image_obj.image %}{{ it.product.primary_image_obj.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}",
+      link: "{% url 'catalog:product_detail' slug=it.product.slug %}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    {% endif %}
   ];
 </script>
 
 <script>
-  /* HERO: start animation on load */
+  /* ============ Scroll-story scrub (vanilla, no deps) ============ */
   (function () {
-    var hero = document.querySelector(".hero");
-    if (!hero) return;
-    requestAnimationFrame(function () {
-      hero.classList.add("hero-loaded");
-    });
+    var story = document.getElementById("anatomy");
+    if (!story) return;
+    /* static layout (no .jsx): reduced motion or JS-off — nothing to scrub */
+    if (!document.documentElement.classList.contains("jsx")) return;
+    var scenes = Array.prototype.slice.call(story.querySelectorAll(".scene"));
+
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = story.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      if (total <= 0) return;
+      var p = Math.min(1, Math.max(0, -r.top / total));
+      story.style.setProperty("--p", p);
+
+      var n = scenes.length;
+      for (var i = 0; i < n; i++) {
+        var start = i / n, end = (i + 1) / n;
+        var active = (p >= start && p < end) || (i === n - 1 && p >= 1);
+        scenes[i].classList.toggle("on", active);
+        var lp = Math.min(1, Math.max(0, (p - start) / (end - start)));
+        scenes[i].style.setProperty("--lp", lp);
+      }
+      story.classList.toggle("reveal", p > 0.72);
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
   })();
 
+  /* ============ Carousel arrows ============ */
   (function () {
-    var row = document.getElementById("collectionsRow");
-    var prev = document.getElementById("colPrev");
-    var next = document.getElementById("colNext");
+    var row = document.getElementById("bsRow");
+    var prev = document.getElementById("bsPrev");
+    var next = document.getElementById("bsNext");
     if (!row || !prev || !next) return;
-
     function step() {
-      var firstCard = row.querySelector(".collection-card");
-      var w = firstCard ? firstCard.getBoundingClientRect().width : 320;
-      return Math.max(260, Math.floor(w + 22));
+      var card = row.querySelector(".bs-card");
+      return card ? Math.floor(card.getBoundingClientRect().width + 18) : 320;
     }
-    prev.addEventListener("click", function () {
-      row.scrollBy({ left: -step(), behavior: "smooth" });
-    });
-    next.addEventListener("click", function () {
-      row.scrollBy({ left: step(), behavior: "smooth" });
-    });
+    prev.addEventListener("click", function () { row.scrollBy({ left: -step(), behavior: "smooth" }); });
+    next.addEventListener("click", function () { row.scrollBy({ left: step(), behavior: "smooth" }); });
   })();
 
-  (function () {
-    var box = document.getElementById("finishCompare");
-    var overlay = document.getElementById("compareOverlay");
-    var divider = document.getElementById("compareDivider");
-    var handle = document.getElementById("compareHandle");
-    if (!box || !overlay || !divider || !handle) return;
-
-    var dragging = false;
-
-    function setPos(clientX) {
-      var r = box.getBoundingClientRect();
-      var x = clientX - r.left;
-      x = Math.max(0, Math.min(x, r.width));
-      var pct = (x / r.width) * 100;
-      overlay.style.width = pct + "%";
-      divider.style.left = pct + "%";
-      handle.style.left = pct + "%";
-    }
-    function startDrag(clientX) {
-      dragging = true;
-      setPos(clientX);
-      document.body.style.userSelect = "none";
-    }
-    function stopDrag() {
-      dragging = false;
-      document.body.style.userSelect = "";
-    }
-
-    box.addEventListener("dragstart", function (e) { e.preventDefault(); });
-    box.addEventListener("mousedown", function (e) { startDrag(e.clientX); });
-    window.addEventListener("mousemove", function (e) { if (dragging) setPos(e.clientX); });
-    window.addEventListener("mouseup", stopDrag);
-
-    box.addEventListener("touchstart", function (e) { startDrag(e.touches[0].clientX); }, { passive: true });
-    window.addEventListener("touchmove", function (e) { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
-    window.addEventListener("touchend", stopDrag);
-
-    overlay.style.width = "50%";
-    divider.style.left = "50%";
-    handle.style.left = "50%";
-  })();
-
-  (function () {
-    var row = document.getElementById("arrivalsRow");
-    var prev = document.getElementById("arrPrev");
-    var next = document.getElementById("arrNext");
-    if (!row || !prev || !next) return;
-
-    function step() {
-      var card = row.querySelector(".product-card");
-      var w = card ? card.getBoundingClientRect().width : 380;
-      return Math.max(260, Math.floor(w + 34));
-    }
-    prev.addEventListener("click", function () {
-      row.scrollBy({ left: -step(), behavior: "smooth" });
-    });
-    next.addEventListener("click", function () {
-      row.scrollBy({ left: step(), behavior: "smooth" });
-    });
-  })();
-
+  /* ============ Shop the Look ============ */
   (function () {
     var products = window.SHOP_LOOK_PRODUCTS || [];
     if (!products.length) return;
@@ -888,180 +619,60 @@
     var cardPrice = document.getElementById("lookProdPrice");
     var cardLink = document.getElementById("lookProdLink");
     var countEl = document.getElementById("lookCount");
-
     var dots = Array.prototype.slice.call(document.querySelectorAll(".hotspot"));
-    var btnPrev = document.getElementById("lookPrev");
-    var btnNext = document.getElementById("lookNext");
-
     var active = 0;
 
     function render(idx) {
       active = (idx + products.length) % products.length;
       var p = products[active];
-
-      if (cardImg) {
-        cardImg.src = p.img;
-        cardImg.alt = p.name;
-      }
+      if (cardImg) { cardImg.src = p.img; cardImg.alt = p.name; }
       if (cardName) cardName.textContent = p.name;
       if (cardPrice) cardPrice.textContent = p.price;
       if (cardLink) cardLink.href = p.link || "#";
-
       if (countEl) countEl.textContent = (active + 1) + " / " + products.length;
-
-      for (var i = 0; i < dots.length; i++) dots[i].classList.remove("is-active");
-      for (var j = 0; j < dots.length; j++) {
-        if (Number(dots[j].dataset.index) === active) {
-          dots[j].classList.add("is-active");
-          break;
-        }
-      }
+      dots.forEach(function (d) {
+        d.classList.toggle("is-active", Number(d.dataset.index) === active);
+      });
     }
 
-    for (var i = 0; i < dots.length; i++) {
-      (function (d) {
-        d.addEventListener("click", function () {
-          render(Number(d.dataset.index));
-        });
-      })(dots[i]);
-    }
-
-    if (btnPrev) btnPrev.addEventListener("click", function () { render(active - 1); });
-    if (btnNext) btnNext.addEventListener("click", function () { render(active + 1); });
-
+    dots.forEach(function (d) {
+      d.addEventListener("click", function () { render(Number(d.dataset.index)); });
+    });
+    var bp = document.getElementById("lookPrev");
+    var bn = document.getElementById("lookNext");
+    if (bp) bp.addEventListener("click", function () { render(active - 1); });
+    if (bn) bn.addEventListener("click", function () { render(active + 1); });
     render(0);
   })();
 
-  /* SMOOTH REVEAL ON SCROLL (updated, cool + smooth) */
+  /* ============ Reveal on scroll ============ */
   (function () {
-    function isExcluded(el) {
-      if (!el) return true;
-      return (
-        el.classList.contains("mini-marquee") ||
-        el.classList.contains("bazaar-strip") ||
-        el.classList.contains("gold-strip")
-      );
+    var items = document.querySelectorAll(".rv");
+    if (!("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("in"); });
+      return;
     }
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    items.forEach(function (el) { io.observe(el); });
+  })();
 
-    function isInsideMovingTrack(node) {
-      return !!(node.closest(".marquee-track") || node.closest(".bazaar-track") || node.closest(".gold-track"));
-    }
-
-    function addRevealItems(section) {
-      var textNodes = section.querySelectorAll(
-        "h1,h2,h3,h4,p,.hero-kicker,.hero-title,.hero-actions,.card-label,.tile-content,.product-meta,.compare-copy,.capsule-inner,.london-inner,.note-inner,.look-side,.journal-float,.story-content,.story-feat"
-      );
-
-      var cards = section.querySelectorAll(
-        ".collection-card,.product-card,.tile,.split-card,.editorial-card,.journal-card,.look-card,.capsule-media,.london-right,.compare-box,.look-media"
-      );
-
-      var t = 0;
-      for (var i = 0; i < textNodes.length; i++) {
-        var node = textNodes[i];
-        if (!node || isInsideMovingTrack(node)) continue;
-        node.classList.add("reveal-item");
-        node.style.setProperty("--d", String(Math.min(t * 60, 480)) + "ms");
-        t += 1;
-      }
-
-      var c = 0;
-      for (var j = 0; j < cards.length; j++) {
-        var card = cards[j];
-        if (!card || isInsideMovingTrack(card)) continue;
-
-        card.classList.add("reveal-card");
-        card.style.setProperty("--d", String(Math.min(c * 120, 900)) + "ms");
-        c += 1;
-
-        var mediaTargets = card.querySelectorAll("img,video,.product-media");
-        for (var k = 0; k < mediaTargets.length; k++) {
-          var m = mediaTargets[k];
-          if (!m || isInsideMovingTrack(m)) continue;
-
-          if (m.classList.contains("product-media")) {
-            m.classList.add("zoom-media");
-            continue;
-          }
-          if (m.tagName === "IMG" || m.tagName === "VIDEO") {
-            m.classList.add("zoom-media");
-          }
-        }
-      }
-
-      var imgs = section.querySelectorAll("img");
-      for (var z = 0; z < imgs.length; z++) {
-        var img = imgs[z];
-        if (!img || isInsideMovingTrack(img)) continue;
-        if (img.classList.contains("zoom-media")) continue;
-        img.classList.add("img-reveal");
-      }
-    }
-
-    function prepareSections() {
-      var sections = document.querySelectorAll("section");
-      for (var i = 0; i < sections.length; i++) {
-        var sec = sections[i];
-        if (isExcluded(sec)) continue;
-
-        if (sec.classList.contains("hero")) {
-          sec.classList.add("reveal", "is-visible");
-          addRevealItems(sec);
-
-          requestAnimationFrame(function () {
-            var heroK = sec.querySelector(".hero-kicker");
-            var heroT = sec.querySelector(".hero-title");
-            var heroA = sec.querySelector(".hero-actions");
-            if (heroK) heroK.style.setProperty("--d", "420ms");
-            if (heroT) heroT.style.setProperty("--d", "720ms");
-            if (heroA) heroA.style.setProperty("--d", "1020ms");
-          });
-
-          continue;
-        }
-
-        sec.classList.add("reveal");
-        addRevealItems(sec);
-      }
-      return sections;
-    }
-
-    function setupObserver() {
-      var sections = prepareSections();
-
-      if (!("IntersectionObserver" in window)) {
-        for (var i = 0; i < sections.length; i++) sections[i].classList.add("is-visible");
-        return;
-      }
-
-      var io = new IntersectionObserver(
-        function (entries, observer) {
-          for (var i = 0; i < entries.length; i++) {
-            var entry = entries[i];
-            if (!entry.isIntersecting) continue;
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        },
-        {
-          threshold: 0.14,
-          rootMargin: "0px 0px -10% 0px"
-        }
-      );
-
-      for (var j = 0; j < sections.length; j++) {
-        var sec = sections[j];
-        if (!sec.classList.contains("reveal")) continue;
-        if (sec.classList.contains("is-visible")) continue;
-        io.observe(sec);
-      }
-    }
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", setupObserver);
-    } else {
-      setupObserver();
-    }
+  /* ============ Magnetic metal buttons (desktop only, subtle) ============ */
+  (function () {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.querySelectorAll(".btn-metal").forEach(function (btn) {
+      btn.addEventListener("mousemove", function (e) {
+        var r = btn.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) / r.width;
+        var y = (e.clientY - r.top - r.height / 2) / r.height;
+        btn.style.transform = "translate(" + x * 6 + "px," + y * 4 + "px)";
+      });
+      btn.addEventListener("mouseleave", function () { btn.style.transform = ""; });
+    });
   })();
 </script>
 

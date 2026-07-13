@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pay Now | ADORN{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{ --cream:#f6f2ea; --ink:#0c0c0d; --gold:#b7862b; --line: rgba(0,0,0,.14); }
+  .pay-wrap{ background: var(--cream); padding: 28px 0 60px; }
+  .pay-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items:start; }
+  .cardx{ background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px; box-shadow: 0 10px 30px rgba(0,0,0,.06); overflow:hidden; }
+  .cardx .hd{ padding:18px 18px 12px; border-bottom:1px solid rgba(0,0,0,.08); display:flex; align-items:center; justify-content:space-between; }
+  .kicker{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:900; color: rgba(0,0,0,.70); }
+  .big{ padding:18px; }
+  .title{ font-size:38px; font-weight:900; letter-spacing:.02em; margin:0 0 6px; }
+  .sub{ color: rgba(0,0,0,.65); letter-spacing:.06em; font-size:13px; margin-bottom:14px; }
+  #card-element{
+    border:1px solid rgba(0,0,0,.18);
+    border-radius:12px;
+    padding:14px 14px;
+    background:#fff;
+  }
+  .btnpay{
+    width:100%;
+    margin-top:14px;
+    height:56px;
+    border-radius:12px;
+    border:1px solid rgba(183,134,43,.95);
+    background: var(--gold);
+    color:#fff;
+    font-size:12px;
+    letter-spacing:.18em;
+    font-weight:900;
+    text-transform:uppercase;
+  }
+  .btnpay:disabled{ opacity:.6; cursor:not-allowed; }
+  .note{ margin-top:12px; color: rgba(0,0,0,.60); font-size:12px; letter-spacing:.06em; }
+  .err{ margin-top:10px; color:#b00020; font-size:13px; }
+  .bill{ padding:18px; }
+  .bill-row{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid rgba(0,0,0,.08); }
+  .bill-row:last-child{ border-bottom:none; }
+  .lbl{ color: rgba(0,0,0,.70); font-weight:700; }
+  .val{ color: rgba(0,0,0,.85); }
+  .total{ font-size:22px; font-weight:900; }
+  @media(max-width: 992px){ .pay-grid{ grid-template-columns:1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pay-wrap">
+  <div class="container">
+    <div class="pay-grid">
+
+      <!-- LEFT: STRIPE -->
+      <div class="cardx">
+        <div class="hd">
+          <div class="kicker">SECURE PAYMENT</div>
+          <div class="kicker" style="opacity:.65;">STRIPE</div>
+        </div>
+
+        <div class="big">
+          <h1 class="title">PAY NOW</h1>
+          <div class="sub">Order #{{ order.id }} - Total payable: <b>Rs. {{ order.total_inr }}</b></div>
+
+          <form id="payment-form">
+            {% csrf_token %}
+
+            <!-- Stripe card mount -->
+            <div id="card-element"></div>
+
+            <button id="payBtn" class="btnpay" type="submit">
+              PAY Rs. {{ order.total_inr }}
+            </button>
+
+            <div class="note">By paying you agree to our terms. Card details are handled by Stripe.</div>
+            <div id="card-errors" class="err" role="alert"></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- RIGHT: BILLING SUMMARY -->
+      <div class="cardx">
+        <div class="hd">
+          <div class="kicker">BILLING</div>
+        </div>
+        <div class="bill">
+          <div class="bill-row"><div class="lbl">Name :</div><div class="val">{{ order.full_name }}</div></div>
+          <div class="bill-row"><div class="lbl">Email :</div><div class="val">{{ order.email }}</div></div>
+          <div class="bill-row"><div class="lbl">Phone :</div><div class="val">{{ order.phone }}</div></div>
+          <div class="bill-row">
+            <div class="lbl">Address :</div>
+            <div class="val">{{ order.address_line1 }}{% if order.address_line2 %}, {{ order.address_line2 }}{% endif %}, {{ order.city }}, {{ order.state }} - {{ order.pincode }}</div>
+          </div>
+          <div class="bill-row">
+            <div class="lbl total">Total -</div>
+            <div class="val total">Rs. {{ order.total_inr }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- MUST be loaded -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+(function () {
+  const stripePk = "{{ stripe_pk|default:'' }}".trim();
+  if (!stripePk) {
+    document.getElementById("card-errors").textContent = "Stripe publishable key missing.";
+    return;
+  }
+
+  // create stripe + elements
+  const stripe = Stripe(stripePk);
+  const elements = stripe.elements();
+
+  const card = elements.create("card", {
+    style: {
+      base: {
+        fontFamily: "Inter, system-ui, sans-serif",
+        fontSize: "14px",
+        color: "#0c0c0d",
+        "::placeholder": { color: "rgba(0,0,0,.45)" }
+      }
+    }
+  });
+
+  // mount properly
+  const mountEl = document.getElementById("card-element");
+  card.mount(mountEl);
+
+  const payBtn = document.getElementById("payBtn");
+  const form = document.getElementById("payment-form");
+  const errorEl = document.getElementById("card-errors");
+
+  // enable / show errors
+  card.on("change", function (event) {
+    errorEl.textContent = event.error ? event.error.message : "";
+  });
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    payBtn.disabled = true;
+    payBtn.textContent = "PROCESSING...";
+
+    try {
+      // call backend to create PaymentIntent + return client_secret
+      const res = await fetch("{% url 'orders:create_payment_intent' order.id %}", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Payment init failed.");
+
+      const result = await stripe.confirmCardPayment(data.client_secret, {
+        payment_method: { card: card }
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
+      // success redirect
+      window.location.href = data.success_url;
+
+    } catch (err) {
+      errorEl.textContent = err.message || "Payment failed.";
+      payBtn.disabled = false;
+      payBtn.textContent = "PAY Rs. {{ order.total_inr }}";
+    }
+  });
+})();
+</script>
+{% endblock %}

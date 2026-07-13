@@ -1,0 +1,82 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Tags{% endblock %}
+{% block page_title %}Product Tags{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="tbl-card">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr><th>Tag Name</th><th>Slug</th><th>Products</th><th style="width:100px;">Actions</th></tr>
+          </thead>
+          <tbody>
+            {% for tag in tags %}
+            <tr>
+              <td class="fw-semibold" style="font-size:.85rem;">{{ tag.name }}</td>
+              <td><code style="font-size:.78rem;color:#64748b;">{{ tag.slug }}</code></td>
+              <td><span class="badge" style="background:#eff6ff;color:#3b82f6;">{{ tag.product_count }}</span></td>
+              <td>
+                <div class="d-flex gap-1">
+                  <a href="{% url 'dashboard:tag_edit' tag.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                  <form method="post" action="{% url 'dashboard:tag_delete' tag.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete tag {{ tag.name }}?')">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center py-4 text-muted">No tags yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Tag Form -->
+  <div class="col-lg-4">
+    <div class="form-card">
+      <div class="form-section-title">{% if editing_tag %}Edit Tag{% else %}Add New Tag{% endif %}</div>
+      <form method="post" {% if editing_tag %}action="{% url 'dashboard:tag_edit' editing_tag.pk %}"{% endif %} novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Tag Name *</label>
+          {{ form.name }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Slug (auto-fill)</label>
+          {{ form.slug }}
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-accent btn-sm px-4">
+            <i class="bi bi-check-lg me-1"></i>{% if editing_tag %}Update{% else %}Add Tag{% endif %}
+          </button>
+          {% if editing_tag %}
+          <a href="{% url 'dashboard:tags_list' %}" class="btn btn-sm btn-outline-secondary">Cancel</a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const nameInput = document.querySelector('[name="name"]');
+const slugInput = document.querySelector('[name="slug"]');
+if(nameInput && slugInput){
+  nameInput.addEventListener('input', function(){
+    if(!slugInput.dataset.dirty){
+      slugInput.value = this.value.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
+    }
+  });
+  slugInput.addEventListener('input', function(){ this.dataset.dirty='1'; });
+}
+</script>
+{% endblock %}

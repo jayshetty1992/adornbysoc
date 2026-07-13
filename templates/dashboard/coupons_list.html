@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Coupons{% endblock %}
+{% block page_title %}Coupons & Discount Codes{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:coupon_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Coupon
+  </a>
+</div>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr><th>Code</th><th>Type</th><th>Discount</th><th>Min Order</th><th>Max Cap</th><th>Uses</th><th>Valid Until</th><th>Status</th><th style="width:130px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for coupon in coupons %}
+        <tr>
+          <td>
+            <code class="fw-bold" style="font-size:.85rem;background:#f1f5f9;padding:3px 8px;border-radius:5px;">{{ coupon.code }}</code>
+          </td>
+          <td>
+            <span class="badge {% if coupon.discount_type == 'percent' %}bg-info text-dark{% else %}bg-warning text-dark{% endif %}" style="font-size:.72rem;">
+              {{ coupon.get_discount_type_display }}
+            </span>
+          </td>
+          <td class="fw-semibold" style="font-size:.85rem;">
+            {% if coupon.discount_type == 'percent' %}{{ coupon.discount_value }}%{% else %}&#8377;{{ coupon.discount_value }}{% endif %}
+          </td>
+          <td style="font-size:.82rem;">
+            {% if coupon.min_order_amount %}&#8377;{{ coupon.min_order_amount }}{% else %}—{% endif %}
+          </td>
+          <td style="font-size:.82rem;">
+            {% if coupon.max_discount_amount %}&#8377;{{ coupon.max_discount_amount }}{% else %}—{% endif %}
+          </td>
+          <td style="font-size:.82rem;">
+            {{ coupon.used_count }}{% if coupon.max_uses %}/{{ coupon.max_uses }}{% else %}/&#8734;{% endif %}
+          </td>
+          <td style="font-size:.78rem;">
+            {% if coupon.valid_until %}
+              <span class="{% if coupon.valid_until|date:'Y-m-d' < today %}text-danger{% endif %}">{{ coupon.valid_until|date:"d M Y, H:i" }}</span>
+            {% else %}No Expiry{% endif %}
+          </td>
+          <td>
+            {% if coupon.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}
+          </td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:coupon_edit' coupon.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <form method="post" action="{% url 'dashboard:coupon_toggle' coupon.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon {% if coupon.is_active %}btn-warning{% else %}btn-success{% endif %}" title="Toggle Active">
+                  <i class="bi bi-{% if coupon.is_active %}pause-fill{% else %}play-fill{% endif %}"></i>
+                </button>
+              </form>
+              <form method="post" action="{% url 'dashboard:coupon_delete' coupon.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" title="Delete" onclick="return confirm('Delete coupon {{ coupon.code }}?')">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" class="text-center py-5 text-muted">
+            <i class="bi bi-ticket-perforated fs-2 d-block mb-2"></i>No coupons yet.<br>
+            <a href="{% url 'dashboard:coupon_add' %}" class="btn btn-accent btn-sm mt-3">Create First Coupon</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

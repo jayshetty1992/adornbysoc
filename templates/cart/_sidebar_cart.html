@@ -1,0 +1,68 @@
+{% load static %}
+
+<div class="cs-head">
+  <div class="cs-title">YOUR CART <span class="cs-mini">{{ count }}</span></div>
+  <button class="cs-close" type="button" data-cart-close aria-label="Close">×</button>
+</div>
+
+<div class="cs-free">
+  <span class="cs-free-ico"></span>
+  <span>Your order qualifies for free shipping!</span>
+</div>
+
+<div class="cs-body">
+  {% if items %}
+    {% for it in items %}
+      <div class="cs-item">
+        <div class="cs-thumb">
+          {% with img=it.product.images.first %}
+            {% if img and img.image.url %}
+              <img src="{{ img.image.url }}" alt="{{ it.product.title }}">
+            {% else %}
+              <div class="cs-thumb-ph"></div>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <div class="cs-mid">
+          <div class="cs-name">{{ it.product.title }}</div>
+          <div class="cs-price">Rs.{{ it.product.price_inr }}</div>
+
+          <div class="cs-qtyrow">
+            <div class="cs-qty">
+              <button class="cs-qbtn" data-qty="dec" data-item="{{ it.id }}" type="button">-</button>
+              <div class="cs-qnum">{{ it.qty }}</div>
+              <button class="cs-qbtn" data-qty="inc" data-item="{{ it.id }}" type="button">+</button>
+            </div>
+
+            <button class="cs-remove" data-remove="{{ it.id }}" type="button">Remove</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="cs-empty">Your cart is empty.</div>
+  {% endif %}
+
+  <div class="cs-divider"></div>
+
+  <button class="cs-note-toggle" type="button" data-note-toggle>
+    — Add order notes
+  </button>
+
+  <div class="cs-note" id="csNoteBox" style="display:none;">
+    <div class="cs-note-label">Order note</div>
+    <textarea class="cs-note-ta" id="csOrderNote" placeholder="Add special instructions for the seller...">{{ cart.order_note }}</textarea>
+    <button class="cs-note-save" type="button" data-note-save>Save note</button>
+  </div>
+
+</div>
+
+<div class="cs-footer">
+  <div class="cs-subrow">
+    <div class="cs-subttl">Subtotal</div>
+    <div class="cs-subamt">Rs.{{ subtotal }}</div>
+  </div>
+  <div class="cs-subhint">Taxes and shipping calculated at checkout</div>
+  <a class="cs-checkout" href="{% url 'orders:checkout_view' %}" role="button">CHECKOUT</a>
+</div>

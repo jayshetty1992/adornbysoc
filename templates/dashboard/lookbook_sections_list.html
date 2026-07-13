@@ -1,0 +1,40 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Lookbook Sections{% endblock %}
+{% block page_title %}Lookbook Grid Sections{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:lookbook_section_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Section
+  </a>
+</div>
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Title</th><th>Layout</th><th>Items</th><th>Order</th><th>Active</th><th style="width:100px;">Actions</th></tr></thead>
+      <tbody>
+        {% for sec in sections %}
+        <tr>
+          <td>
+            <div class="fw-semibold" style="font-size:.85rem;">{{ sec.title|default:"(no title)" }}</div>
+            {% if sec.subtitle %}<div class="text-muted" style="font-size:.72rem;">{{ sec.subtitle|truncatechars:50 }}</div>{% endif %}
+          </td>
+          <td><span class="badge" style="background:#f1f5f9;color:#334155;font-size:.72rem;">{{ sec.layout|default:"grid" }}</span></td>
+          <td><span class="badge" style="background:#eff6ff;color:#3b82f6;">{{ sec.items.count }}</span></td>
+          <td>{{ sec.sort_order }}</td>
+          <td>{% if sec.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:lookbook_section_edit' sec.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-pencil-fill"></i></a>
+              <form method="post" action="{% url 'dashboard:lookbook_section_delete' sec.pk %}">{% csrf_token %}<button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this section?')"><i class="bi bi-trash-fill"></i></button></form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center py-5 text-muted"><i class="bi bi-grid fs-2 d-block mb-2"></i>No sections yet.<br><a href="{% url 'dashboard:lookbook_section_add' %}" class="btn btn-accent btn-sm mt-3">Add First Section</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

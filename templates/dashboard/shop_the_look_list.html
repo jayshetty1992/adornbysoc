@@ -1,0 +1,43 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Shop The Look{% endblock %}
+{% block page_title %}Shop The Look{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:shop_the_look_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Look
+  </a>
+</div>
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Image</th><th>Title</th><th>Products</th><th>Order</th><th>Active</th><th style="width:100px;">Actions</th></tr></thead>
+      <tbody>
+        {% for look in looks %}
+        <tr>
+          <td>
+            {% if look.image %}<img src="{{ look.image.url }}" style="width:80px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;" alt="">
+            {% else %}<div class="prod-thumb-ph"><i class="bi bi-camera"></i></div>{% endif %}
+          </td>
+          <td>
+            <div class="fw-semibold" style="font-size:.85rem;">{{ look.title }}</div>
+            {% if look.description %}<div class="text-muted" style="font-size:.72rem;">{{ look.description|truncatechars:60 }}</div>{% endif %}
+          </td>
+          <td><span class="badge" style="background:#eff6ff;color:#3b82f6;">{{ look.items.count }} items</span></td>
+          <td>{{ look.sort_order }}</td>
+          <td>{% if look.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:shop_the_look_edit' look.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-pencil-fill"></i></a>
+              <form method="post" action="{% url 'dashboard:shop_the_look_delete' look.pk %}">{% csrf_token %}<button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this look?')"><i class="bi bi-trash-fill"></i></button></form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center py-5 text-muted"><i class="bi bi-bag-heart fs-2 d-block mb-2"></i>No looks yet.<br><a href="{% url 'dashboard:shop_the_look_add' %}" class="btn btn-accent btn-sm mt-3">Add First Look</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

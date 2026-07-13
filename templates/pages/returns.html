@@ -1,0 +1,715 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shipping and Returns | ADORN{% endblock %}
+
+{% block extra_css %}
+<style>
+:root{
+  --cream:#f6f2ea;
+  --ink:#0c0c0d;
+  --gold:#b7862b;
+  --muted:rgba(12,12,13,.68);
+  --line:rgba(0,0,0,.14);
+  --panel:#ffffff;
+  --shadow:0 18px 50px rgba(0,0,0,.10);
+}
+
+/* Scroll reveal */
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .75s ease, transform .75s ease;
+  will-change:opacity, transform;
+}
+.reveal.is-visible{ opacity:1; transform:translateY(0); }
+.reveal.delay-1{ transition-delay:.08s; }
+.reveal.delay-2{ transition-delay:.16s; }
+.reveal.delay-3{ transition-delay:.24s; }
+
+/* Hero */
+.returns-hero{
+  background:var(--cream);
+  padding:86px 0 64px;
+  border-bottom:1px solid var(--line);
+}
+.returns-hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:54px;
+  align-items:center;
+}
+.kicker{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(0,0,0,.55);
+}
+.title{
+  margin:12px 0 10px;
+  font-size:44px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.sub{
+  margin:0;
+  max-width:660px;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.95;
+  color:rgba(0,0,0,.74);
+}
+.meta{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.70);
+  border:1px solid rgba(0,0,0,.10);
+  font-size:12px;
+  letter-spacing:.08em;
+  color:rgba(0,0,0,.72);
+}
+.pill b{
+  font-weight:900;
+  letter-spacing:.12em;
+  color:rgba(0,0,0,.86);
+}
+
+.hero-card{
+  background:var(--panel);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+.hero-card h3{
+  margin:0 0 10px;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.hero-card ul{
+  margin:0;
+  padding-left:18px;
+  color:rgba(0,0,0,.76);
+  line-height:1.85;
+  letter-spacing:.05em;
+  font-size:13px;
+}
+.hero-card li{ margin:6px 0; }
+
+/* Layout */
+.returns-wrap{
+  max-width:1120px;
+  margin:60px auto 90px;
+  padding:0 16px;
+}
+.returns-grid{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:28px;
+  align-items:start;
+}
+
+/* TOC */
+.toc{
+  position:sticky;
+  top:18px;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+  padding:16px;
+}
+.toc-title{
+  margin:0 0 10px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(0,0,0,.65);
+}
+.toc a{
+  display:block;
+  padding:10px 10px;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.10em;
+  color:rgba(0,0,0,.70);
+  border:1px solid transparent;
+}
+.toc a:hover{
+  background:rgba(183,134,43,.10);
+  border-color:rgba(183,134,43,.22);
+  color:rgba(0,0,0,.85);
+}
+.toc a.active{
+  background:rgba(183,134,43,.14);
+  border-color:rgba(183,134,43,.28);
+  color:rgba(0,0,0,.92);
+}
+.toc-note{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(0,0,0,.10);
+  font-size:12px;
+  letter-spacing:.06em;
+  line-height:1.7;
+  color:rgba(0,0,0,.62);
+}
+.toc-note a{
+  display:inline;
+  padding:0;
+  border:none;
+  border-radius:0;
+  text-decoration:underline;
+  color:rgba(0,0,0,.75);
+}
+
+/* Content */
+.content{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+  box-shadow:0 12px 34px rgba(0,0,0,.06);
+  padding:26px;
+}
+.section{
+  padding:18px 0;
+  border-top:1px solid rgba(0,0,0,.08);
+  scroll-margin-top:90px;
+}
+.section:first-child{
+  border-top:none;
+  padding-top:0;
+}
+.h{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.p{
+  margin:10px 0;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.95;
+  color:rgba(0,0,0,.76);
+}
+.list{
+  margin:10px 0 0;
+  padding-left:18px;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.9;
+  color:rgba(0,0,0,.76);
+}
+.list li{ margin:7px 0; }
+
+.callout{
+  margin-top:12px;
+  border:1px solid rgba(183,134,43,.28);
+  background:rgba(183,134,43,.08);
+  border-radius:14px;
+  padding:14px 14px;
+}
+.callout b{
+  font-weight:900;
+  letter-spacing:.10em;
+}
+.small{
+  font-size:12px;
+  letter-spacing:.08em;
+  color:rgba(0,0,0,.62);
+  line-height:1.7;
+}
+
+.actions{
+  margin-top:18px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.btn-gold{
+  display:inline-block;
+  padding:12px 18px;
+  background:var(--gold);
+  color:#fff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  border-radius:12px;
+}
+.btn-ghost{
+  display:inline-block;
+  padding:12px 18px;
+  background:transparent;
+  color:rgba(0,0,0,.78);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.16);
+}
+.btn-ghost:hover{
+  border-color:rgba(183,134,43,.45);
+  background:rgba(183,134,43,.08);
+}
+
+/* FAQ blocks */
+.faq{
+  margin-top:12px;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:14px;
+  overflow:hidden;
+}
+.faq-item{
+  border-top:1px solid rgba(0,0,0,.10);
+}
+.faq-item:first-child{ border-top:none; }
+.faq-q{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 14px;
+  cursor:pointer;
+  background:rgba(246,242,234,.40);
+}
+.faq-q h4{
+  margin:0;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(0,0,0,.86);
+}
+.faq-icon{
+  width:24px;
+  text-align:right;
+  font-size:20px;
+  font-weight:300;
+  color:rgba(0,0,0,.72);
+}
+.faq-a{
+  display:none;
+  padding:14px 14px 18px;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.9;
+  color:rgba(0,0,0,.76);
+  background:#fff;
+}
+.faq-item.active .faq-a{ display:block; }
+
+/* Responsive */
+@media(max-width:991px){
+  .returns-hero-grid{ grid-template-columns:1fr; }
+  .title{ font-size:34px; }
+  .returns-grid{ grid-template-columns:1fr; }
+  .toc{ position:relative; top:auto; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="returns-hero">
+  <div class="container">
+    <div class="returns-hero-grid">
+      <div class="reveal">
+        <div class="kicker">Shopping support</div>
+        <h1 class="title">Shipping and Returns</h1>
+        <p class="sub">
+          Clear, simple guidance for delivery, tracking, exchanges, and returns.
+          If you need help, our team is here for you.
+        </p>
+
+        <div class="meta">
+          <span class="pill"><b>Support</b> Shop@adornbysoc.com</span>
+          <span class="pill"><b>Response</b> within 24 hours</span>
+          <span class="pill"><b>Updated</b> Jan 3, 2026</span>
+        </div>
+      </div>
+
+      <div class="hero-card reveal delay-1">
+        <h3>At a glance</h3>
+        <ul>
+          <li>Shipping options and rates are shown at checkout.</li>
+          <li>Tracking is shared by email once the order ships.</li>
+          <li>Return eligibility depends on condition and item type.</li>
+          <li>For fast help, email Shop@adornbysoc.com.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="returns-wrap">
+  <div class="returns-grid">
+
+    <aside class="toc reveal">
+      <div class="toc-title">On this page</div>
+      <a href="#shipping">Shipping</a>
+      <a href="#processing">Processing time</a>
+      <a href="#tracking">Tracking</a>
+      <a href="#address">Address changes</a>
+      <a href="#international">International orders</a>
+      <a href="#returns">Returns</a>
+      <a href="#exchanges">Exchanges</a>
+      <a href="#nonreturnable">Non returnable items</a>
+      <a href="#refunds">Refunds</a>
+      <a href="#damaged">Damaged or defective</a>
+      <a href="#cancellations">Cancellations</a>
+      <a href="#faq">Common questions</a>
+      <a href="#contact">Contact</a>
+
+      <div class="toc-note">
+        Need help with an order? Email
+        <a href="mailto:Shop@adornbysoc.com">Shop@adornbysoc.com</a>.
+      </div>
+    </aside>
+
+    <article class="content">
+
+      <section id="shipping" class="section reveal">
+        <h2 class="h">Shipping</h2>
+        <p class="p">
+          We offer standard and express shipping options depending on your location.
+          Available methods, estimated delivery times, and charges are shown at checkout.
+        </p>
+        <ul class="list">
+          <li>Shipping rates are calculated based on destination and order details.</li>
+          <li>Delivery estimates are shown at checkout and in shipment notifications.</li>
+          <li>Delivery timelines may vary due to courier delays, weather, or local restrictions.</li>
+        </ul>
+
+        <div class="callout">
+          <b>Tip</b>
+          <p class="p">
+            For a smooth delivery, double check your address, phone number, and email during checkout.
+          </p>
+        </div>
+      </section>
+
+      <section id="processing" class="section reveal">
+        <h2 class="h">Processing time</h2>
+        <p class="p">
+          Processing time is the time it takes to prepare your order before it ships. This may include
+          verification, packaging, and hand-finishing checks.
+        </p>
+        <ul class="list">
+          <li>Most orders are processed quickly, but processing can take longer during sales or peak seasons.</li>
+          <li>Once an order is handed to the courier, delivery timelines depend on the shipping method selected.</li>
+        </ul>
+        <p class="p small">
+          If you have a deadline (gift or travel), email us before placing the order and we will advise the best option.
+        </p>
+      </section>
+
+      <section id="tracking" class="section reveal">
+        <h2 class="h">Tracking</h2>
+        <p class="p">
+          Once your order ships, you will receive a confirmation email with a tracking link.
+          You can also check your order status through your account (if available).
+        </p>
+        <ul class="list">
+          <li>Tracking may take some time to update after dispatch.</li>
+          <li>If tracking is not updating for 48 hours, email us and we will help.</li>
+        </ul>
+      </section>
+
+      <section id="address" class="section reveal">
+        <h2 class="h">Address changes</h2>
+        <p class="p">
+          If you need to change your shipping address after placing an order, contact us as soon as possible.
+          If the order has not shipped, we can usually update the address.
+        </p>
+        <div class="callout">
+          <b>Important</b>
+          <p class="p">
+            Once a package is in transit, address changes may not be possible. In that case, the courier may attempt
+            delivery at the original address or hold the shipment for pickup.
+          </p>
+        </div>
+      </section>
+
+      <section id="international" class="section reveal">
+        <h2 class="h">International orders</h2>
+        <p class="p">
+          We ship internationally to selected countries. If you are unsure whether we ship to your location,
+          share your country and city with our support team and we will confirm availability.
+        </p>
+        <ul class="list">
+          <li>International orders may be subject to customs duties, taxes, or import fees set by your country.</li>
+          <li>Any duties or taxes are typically the responsibility of the customer.</li>
+          <li>International delivery times can vary due to customs processing.</li>
+        </ul>
+      </section>
+
+      <section id="returns" class="section reveal">
+        <h2 class="h">Returns</h2>
+        <p class="p">
+          Returns are accepted within a reasonable timeframe after delivery when items are unworn, unused,
+          and in original condition with packaging (where applicable).
+        </p>
+
+        <div class="callout">
+          <b>How to start a return</b>
+          <ul class="list">
+            <li>Email Shop@adornbysoc.com with your order number and the item(s) you want to return.</li>
+            <li>Tell us the reason for the return so we can support you better.</li>
+            <li>We will share the next steps and return instructions.</li>
+          </ul>
+        </div>
+
+        <p class="p small">
+          Return shipping charges, if any, may be the responsibility of the customer unless the item is defective
+          or the return is due to an error on our side.
+        </p>
+      </section>
+
+      <section id="exchanges" class="section reveal">
+        <h2 class="h">Exchanges</h2>
+        <p class="p">
+          If you prefer an exchange (size adjustment, alternative item, or finish), email us and we will try to help
+          based on product availability.
+        </p>
+        <ul class="list">
+          <li>Exchanges are subject to stock availability and eligibility checks.</li>
+          <li>We may recommend the fastest solution (exchange vs return and reorder).</li>
+        </ul>
+      </section>
+
+      <section id="nonreturnable" class="section reveal">
+        <h2 class="h">Non returnable items</h2>
+        <p class="p">
+          Some items may not be eligible for return or exchange due to hygiene, customization, or sale conditions.
+          Common examples include:
+        </p>
+        <ul class="list">
+          <li>Earrings and piercing jewelry (hygiene reasons) unless defective on arrival.</li>
+          <li>Customized or made to order items (including engraving).</li>
+          <li>Items marked final sale or clearance.</li>
+          <li>Items returned with signs of wear, damage, or missing original packaging.</li>
+        </ul>
+
+        <div class="callout">
+          <b>Not sure?</b>
+          <p class="p">
+            Email us before placing the order and we will guide you on fit, sizing, and eligibility.
+          </p>
+        </div>
+      </section>
+
+      <section id="refunds" class="section reveal">
+        <h2 class="h">Refunds</h2>
+        <p class="p">
+          If your return is approved, refunds are issued to the original payment method used at checkout.
+          Timing depends on the payment provider and your bank.
+        </p>
+        <ul class="list">
+          <li>Refunds are typically initiated after the returned item passes inspection.</li>
+          <li>Original shipping charges may not be refundable unless required by law or due to our error.</li>
+          <li>If your payment was cash on delivery, we will coordinate a suitable refund method.</li>
+        </ul>
+        <p class="p small">
+          If you do not see the refund after your bank processing window, email us and we will assist.
+        </p>
+      </section>
+
+      <section id="damaged" class="section reveal">
+        <h2 class="h">Damaged or defective items</h2>
+        <p class="p">
+          If your item arrives damaged or defective, contact us as soon as possible with clear photos and your order number.
+          We will evaluate and offer a suitable resolution.
+        </p>
+        <ul class="list">
+          <li>Include photos of the item, packaging, and any visible damage.</li>
+          <li>Do not discard packaging until the case is resolved.</li>
+          <li>We may offer repair, replacement, or refund depending on the situation.</li>
+        </ul>
+      </section>
+
+      <section id="cancellations" class="section reveal">
+        <h2 class="h">Cancellations</h2>
+        <p class="p">
+          If you need to cancel or update an order, contact us immediately. If the order has not been shipped,
+          we will do our best to accommodate the request.
+        </p>
+        <div class="callout">
+          <b>Note</b>
+          <p class="p">
+            Once an order is shipped, it cannot be canceled. In that case, you may request a return after delivery
+            if the item is eligible.
+          </p>
+        </div>
+      </section>
+
+      <section id="faq" class="section reveal">
+        <h2 class="h">Common questions</h2>
+
+        <div class="faq">
+          <div class="faq-item active">
+            <div class="faq-q">
+              <h4>How do I know my order is confirmed</h4>
+              <span class="faq-icon">-</span>
+            </div>
+            <div class="faq-a">
+              You will receive an order confirmation email after checkout. If you do not see it, check spam or promotions.
+              If it still does not appear, email Shop@adornbysoc.com with your name and approximate order time.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <h4>Do you ship internationally</h4>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">
+              We ship internationally to selected countries. Share your country and city and we will confirm availability
+              and the best shipping option.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <h4>How do I track my order</h4>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">
+              Once your order ships, you will receive a tracking link by email. If you need help, email Shop@adornbysoc.com
+              with your order number.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-q">
+              <h4>I need help with returns</h4>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-a">
+              Email Shop@adornbysoc.com with your order number, item name, and a short note about the issue. We will guide you
+              through next steps.
+            </div>
+          </div>
+        </div>
+
+        <p class="p small">
+          Our contact forms may be protected by reCAPTCHA to prevent spam and abuse.
+        </p>
+      </section>
+
+      <section id="contact" class="section reveal">
+        <h2 class="h">Contact</h2>
+        <p class="p">
+          For shipping, returns, or order support, contact:
+        </p>
+        <ul class="list">
+          <li>Email: <a href="mailto:Shop@adornbysoc.com">Shop@adornbysoc.com</a></li>
+          <li>Address: 605, Tower 11, Blueridge Hinjewadi phase 1, Pune (M.H.) 411057 India</li>
+        </ul>
+
+        <div class="actions">
+          <a class="btn-gold" href="{% url 'catalog:contact' %}">Contact form</a>
+          <a class="btn-ghost" href="#shipping">Back to top</a>
+        </div>
+
+        <p class="p small">
+          Include your order number and the email used at checkout for faster support.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  // Scroll reveal
+  var els = document.querySelectorAll(".reveal");
+  if(els && els.length){
+    if(!("IntersectionObserver" in window)){
+      els.forEach(function(el){ el.classList.add("is-visible"); });
+    }else{
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+
+      els.forEach(function(el){ io.observe(el); });
+    }
+  }
+
+  // TOC active highlight
+  var tocLinks = document.querySelectorAll(".toc a[href^='#']");
+  var sections = [];
+  tocLinks.forEach(function(a){
+    var id = a.getAttribute("href").slice(1);
+    var sec = document.getElementById(id);
+    if(sec) sections.push(sec);
+  });
+
+  function setActive(id){
+    tocLinks.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === ("#" + id));
+    });
+  }
+
+  if("IntersectionObserver" in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          setActive(entry.target.id);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "-15% 0px -70% 0px" });
+
+    sections.forEach(function(sec){ tocObserver.observe(sec); });
+  }
+
+  // Accordion
+  document.querySelectorAll(".faq-q").forEach(function(q){
+    q.addEventListener("click", function(){
+      var item = q.parentElement;
+      document.querySelectorAll(".faq-item").forEach(function(i){
+        if(i !== item){
+          i.classList.remove("active");
+          var ic = i.querySelector(".faq-icon");
+          if(ic) ic.innerText = "+";
+        }
+      });
+      item.classList.toggle("active");
+      var icon = q.querySelector(".faq-icon");
+      if(icon) icon.innerText = item.classList.contains("active") ? "-" : "+";
+    });
+  });
+})();
+</script>
+{% endblock %}

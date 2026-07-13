@@ -1,0 +1,1375 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{% if collection %}{{ collection.name }} | {% endif %}Shop | ADORN
+{% endblock %}
+
+{% block extra_css %}
+<style>
+
+  :root {
+    --cream: #f6f2ea;
+    --ink: #0c0c0d;
+    --gold: #b7862b;
+    --line: rgba(0, 0, 0, .12);
+    --muted: rgba(0, 0, 0, .58);
+  }
+
+  /* HERO */
+  .hero-wrap {
+    padding: 44px 0 26px;
+    background: #fff;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-weight: 900;
+    color: var(--ink);
+    font-size: clamp(30px, 3.3vw, 44px);
+    margin: 0 0 10px 0;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+  }
+
+  .hero-sub {
+    color: rgba(0, 0, 0, .70);
+    max-width: 520px;
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .hero-sub a {
+    color: rgba(0, 0, 0, .85);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hero-img {
+    width: 100%;
+    overflow: hidden;
+    background: #ddd;
+    border: 1px solid var(--line);
+  }
+
+  .hero-img img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 992px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-img img { height: 420px; }
+  }
+
+  @media (max-width: 520px) {
+    .hero-wrap { padding-top: 26px; }
+    .hero-img img { height: 320px; }
+  }
+
+  .pl-wrap { background: #fff; }
+
+  .pl-wrap .container {
+    padding-left: clamp(14px, 4vw, 28px);
+    padding-right: clamp(14px, 4vw, 28px);
+  }
+
+  @supports (padding: env(safe-area-inset-left)) {
+    .pl-wrap .container {
+      padding-left: calc(clamp(14px, 4vw, 28px) + env(safe-area-inset-left));
+      padding-right: calc(clamp(14px, 4vw, 28px) + env(safe-area-inset-right));
+    }
+  }
+
+  /* top rail */
+  .pl-top {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+  }
+
+  .pl-top-inner { padding: 18px 0 0; }
+
+  .filters-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .filters-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    color: var(--ink);
+    letter-spacing: .06em;
+    cursor: pointer;
+  }
+
+  .filters-toggle svg { width: 18px; height: 18px; opacity: .7; }
+
+  .filters-toggle .caret {
+    font-size: 13px;
+    opacity: .7;
+    transform: translateY(-1px);
+  }
+
+  .results-count {
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: .06em;
+  }
+
+  .sort-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .sort-box select {
+    border: none;
+    background: transparent;
+    padding: 6px 6px;
+    outline: none;
+    font-size: 14px;
+    letter-spacing: .06em;
+    color: var(--ink);
+  }
+
+  /* UI-only filters row */
+  .filters-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .filter-dd {
+    border: 1px solid rgba(0, 0, 0, .25);
+    background: transparent;
+    padding: 10px 16px;
+    font-size: 14px;
+    letter-spacing: .08em;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .filter-dd .v { opacity: .7; font-size: 12px; }
+
+  /* GRID */
+  .pl-grid {
+    padding: 26px 0 25px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 26px;
+  }
+
+  .p-card {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .p-badges {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .badge-mini {
+    border: 1px solid rgba(0, 0, 0, .55);
+    font-size: 10px;
+    letter-spacing: .12em;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    background: #fff;
+  }
+
+  .p-media {
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .p-media img {
+    max-height: 360px;
+    object-fit: cover;
+    display: block;
+    transition: transform .22s ease;
+  }
+
+  .quick-view {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    height: 44px;
+    background: rgba(255, 255, 255, .92);
+    border: 1px solid rgba(0, 0, 0, .22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 800;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: .2s ease;
+  }
+
+  .p-card:hover .quick-view { opacity: 1; transform: translateY(0); }
+  .p-card:hover .p-media img { transform: scale(1.02); }
+
+  .p-title {
+    margin: 14px 0 6px;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, .78);
+    text-align: center;
+  }
+
+  .p-price {
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: .06em;
+    color: rgba(0, 0, 0, .9);
+  }
+
+  /* Pagination */
+  .pager {
+    padding: 34px 0 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pager-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pg {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(0, 0, 0, .25);
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 14px;
+    background: #fff;
+  }
+
+  .pg.active { border-color: rgba(0, 0, 0, .8); font-weight: 800; }
+  .pg:hover { background: rgba(0, 0, 0, .03); }
+
+  .pager-note {
+    color: rgba(0, 0, 0, .65);
+    font-size: 13px;
+    letter-spacing: .06em;
+  }
+
+  /* Feature strip */
+  .feature-strip {
+    background: #efeeec;
+    padding: 46px 0;
+    border-top: 1px solid rgba(0, 0, 0, .08);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    text-align: center;
+  }
+
+  .feat-ico { width: 36px; height: 36px; margin: 0 auto 14px; opacity: .8; }
+
+  .feat-head {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: rgba(0, 0, 0, .78);
+  }
+
+  .feat-text {
+    max-width: 340px;
+    margin: 0 auto;
+    color: rgba(0, 0, 0, .65);
+    line-height: 1.8;
+    font-size: 13px;
+    letter-spacing: .06em;
+  }
+
+  /* Seasonal banner */
+  .seasonal {
+    background: linear-gradient(90deg, #3a0707 0%, #5b0c0c 40%, #3a0707 100%);
+    color: rgba(255, 255, 255, .92);
+    padding: 22px 0;
+  }
+
+  .seasonal-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .seasonal-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .seasonal-title {
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+
+  .seasonal-sep {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, .25);
+  }
+
+  .seasonal-msg {
+    letter-spacing: .08em;
+    font-size: 13px;
+    opacity: .92;
+  }
+
+  .seasonal a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .7);
+    padding-bottom: 2px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .pl-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .pl-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 26px 16px;
+      padding-bottom: 25px;
+    }
+    .p-media { min-height: 300px; }
+    .p-media img { max-height: 300px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .seasonal-inner { justify-content: center; text-align: center; }
+    .seasonal-left { justify-content: center; }
+    .seasonal-sep { display: none; }
+
+    /* MOBILE: filters row stack and never overflow */
+    .filters-row, #filtersForm {
+      width: 100%;
+    }
+    #filtersForm {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    .fw-dd { width: 100%; }
+    .filter-dd { width: 100%; justify-content: space-between; }
+  }
+
+  @media (max-width: 420px) {
+    .pl-grid { grid-template-columns: 1fr; }
+    #filtersForm { grid-template-columns: 1fr; }
+  }
+
+/* Make filter bar sit above product grid */
+.pl-top {
+  position: relative;
+  z-index: 50;
+}
+
+/* Keep filters row above everything in this section */
+#filtersRow {
+  position: relative;
+  z-index: 60;
+}
+
+/* Dropdown panel highest */
+.fw-panel {
+  z-index: 9999;
+}
+
+/* Product area lower so it never covers dropdown */
+.pl-grid,
+.p-card,
+.p-media {
+  position: relative;
+  z-index: 1;
+}
+
+/* MOBILE: filters 2-per-row + text left, count right */
+@media (max-width: 768px) {
+
+  /* force 2 in a row */
+  #filtersForm{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .fw-dd{ width: 100%; }
+
+  /* button content alignment */
+  .filter-dd{
+    width: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  /* remove that empty span which creates weird spacing */
+  .filter-dd .v{
+    display: none !important;
+  }
+
+  /* count badge always right side */
+  .filter-dd > span{
+    margin-left: auto;
+    flex: 0 0 auto;
+  }
+
+  /* badge look (no middle floating) */
+  .filter-dd > span[style*="border:1px solid"]{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 8px;
+    line-height: 22px;
+    border-radius: 999px;
+  }
+}
+
+/* EXTRA small: 1 per row */
+@media (max-width: 420px){
+  #filtersForm{
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+
+  /* =========================
+     FILTER DROPDOWN (RESPONSIVE + SMOOTH)
+  ========================= */
+  .fw-dd { position: relative; }
+
+  .fw-panel {
+    /* keep in DOM for animation */
+    display: block;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+
+    position: absolute;
+    top: 46px;
+    left: 0;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .25);
+    padding: 12px;
+    z-index: 50;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, .12);
+
+    border-radius: 0;
+    transition: opacity 220ms ease, transform 240ms ease;
+    transform-origin: top left;
+
+    /* clamp width so it never goes outside */
+    width: max-content;
+    max-width: min(92vw, 360px);
+  }
+
+  .fw-dd.open .fw-panel {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* On small screens: dropdown becomes a fixed "sheet" inside viewport */
+  @media (max-width: 768px) {
+    .fw-panel {
+      position: fixed;
+      left: 50% !important;
+      top: 120px;
+      transform: translate(-50%, 10px);
+      width: min(92vw, 420px);
+      max-width: 92vw;
+      max-height: 70vh;
+      overflow: auto;
+      z-index: 9999;
+    }
+    .fw-dd.open .fw-panel {
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .fw-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    color: rgba(0, 0, 0, .78);
+    border-top: 1px solid rgba(0, 0, 0, .07);
+  }
+
+  .fw-opt:first-of-type { border-top: none; }
+
+  .fw-opt input { width: 14px; height: 14px; }
+
+  .fw-apply {
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid rgba(0, 0, 0, .25);
+    background: #fff;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .fw-apply:hover { background: rgba(0, 0, 0, .03); }
+
+  /* Smooth hide/show filters row (instead of display none) */
+
+#filtersRow {
+  overflow: visible; /* important */
+  transition: max-height 260ms ease, opacity 220ms ease, transform 260ms ease;
+  transform-origin: top;
+}
+
+/* only hide overflow when collapsing */
+#filtersRow.is-collapsed {
+  overflow: hidden; /* important */
+  max-height: 0 !important;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+#filtersRow.is-expanded {
+  overflow: visible; /* important */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+  /* =========================
+     REVEAL ANIMATIONS (NO SPECIAL CHARS)
+  ========================= */
+
+  /* hero image zoom */
+  .hero-img img {
+    transform: scale(1.14);
+    will-change: transform;
+  }
+  .hero-grid.hero-loaded .hero-img img {
+    animation: heroKenBurns 1200ms ease forwards;
+  }
+  @keyframes heroKenBurns {
+    from { transform: scale(1.14); }
+    to   { transform: scale(1.02); }
+  }
+
+  /* blur -> clear for hero text */
+  .hero-grid .hero-title,
+  .hero-grid .hero-sub {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(10px);
+    will-change: transform, opacity, filter;
+  }
+
+  .hero-grid.hero-loaded .hero-title {
+    animation: blurClearUp 700ms ease 180ms forwards;
+  }
+  .hero-grid.hero-loaded .hero-sub {
+    animation: blurClearUp 760ms ease 320ms forwards;
+  }
+
+  @keyframes blurClearUp {
+    from { opacity: 0; transform: translateY(14px); filter: blur(10px); }
+    to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
+  }
+
+  /* on-scroll reveal system */
+  .reveal .reveal-item {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 650ms ease, transform 850ms ease, filter 750ms ease;
+    transition-delay: var(--d, 0ms);
+    filter: blur(6px);
+    will-change: opacity, transform, filter;
+  }
+  .reveal.is-visible .reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  .reveal .reveal-card {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 700ms ease, transform 900ms ease;
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible .reveal-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* image reveal for normal images */
+  .reveal img.img-reveal {
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 700ms ease, transform 950ms ease;
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible img.img-reveal {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-img img,
+    .hero-grid .hero-title, .hero-grid .hero-sub,
+    .reveal .reveal-item, .reveal .reveal-card,
+    .reveal img.img-reveal {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="pl-wrap">
+
+  <div class="container hero-wrap">
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-title">{{ hero_title }}</h1>
+
+        <p class="hero-sub">
+          {{ hero_desc }}
+          {% if not collection %}
+          Explore <a href="{% url 'catalog:product_list' %}?cat=earrings">Earrings</a>,
+          <a href="{% url 'catalog:product_list' %}?cat=hoops">Hoops</a>,
+          and <a href="{% url 'catalog:product_list' %}?cat=cuffs">Cuffs</a>
+          to build your collection.
+          {% endif %}
+        </p>
+      </div>
+
+{% static 'img/about_b.jpg' as default_hero %}
+
+<div class="hero-img">
+  <img
+    src="{% if hero_img_url %}{{ hero_img_url }}{% else %}{{ default_hero }}{% endif %}"
+    alt="{{ hero_title|default:'Shop' }}"
+    loading="eager"
+    onerror="this.onerror=null;this.src='{{ default_hero }}';"
+  >
+</div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="pl-top">
+    <div class="container pl-top-inner">
+
+      <div class="filters-head">
+        <div class="filters-left">
+          <button class="filters-toggle" type="button" id="toggleFilters">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3" />
+              <path d="M2 14h4M10 8h4M18 16h4" />
+            </svg>
+            <span id="filterText">Hide filters</span>
+
+            <!-- ? selected count badge -->
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+              <span id="filtersBadge"
+                style="min-width:18px;height:18px;padding:0 6px;border:1px solid rgba(0,0,0,.55);font-size:11px;line-height:18px;text-align:center;">
+                {{ selected_total|default:0 }}
+              </span>
+              <span class="caret" id="filterCaret">^</span>
+            </span>
+          </button>
+
+          <div class="results-count">{{ total_count }} Results</div>
+        </div>
+
+        <!-- ? sort preserves existing filters -->
+        <form class="sort-box" method="get">
+          {% for k,vlist in request.GET.lists %}
+          {% if k != "sort" and k != "page" %}
+          {% for v in vlist %}
+          <input type="hidden" name="{{ k }}" value="{{ v }}">
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+          <span>Sort:</span>
+          <select name="sort" onchange="this.form.submit()">
+            <option value="best" {% if current_sort == "best" %}selected{% endif %}>Best selling</option>
+            <option value="new" {% if current_sort == "new" %}selected{% endif %}>New arrivals</option>
+            <option value="price_asc" {% if current_sort == "price_asc" %}selected{% endif %}>Price: Low to high</option>
+            <option value="price_desc" {% if current_sort == "price_desc" %}selected{% endif %}>Price: High to low
+            </option>
+          </select>
+        </form>
+      </div>
+
+      <!-- ? Selected chips row -->
+      <div id="selectedRow" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        {% if selected_total|default:0 > 0 %}
+        <!-- chips -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+
+          {% for a in selected_av %}
+          <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=availability:{{ a }}" class="chip"
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            {% if a == "in" %}In stock{% else %}Out of stock{% endif %} <span style="opacity:.7;">&times;</span>
+          </a>
+          {% endfor %}
+
+          {% if selected_min or selected_max %}
+          <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=price" class="chip"
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            Rs.{{ selected_min|default:"0" }} - Rs.{{ selected_max|default:max_price_bound }}
+            <span style="opacity:.7;">&times;</span>
+          </a>
+          {% endif %}
+
+          {% for s in selected_rs %}
+          <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=ring_size:{{ s }}" class="chip"
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            {{ s }} <span style="opacity:.7;">&times;</span>
+          </a>
+          {% endfor %}
+
+          {% for s in selected_style %}
+          <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=style:{{ s|urlencode }}" class="chip"
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            {{ s }} <span style="opacity:.7;">&times;</span>
+          </a>
+          {% endfor %}
+
+          {% for c in selected_color %}
+          <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=color:{{ c|urlencode }}" class="chip"
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            {{ c }} <span style="opacity:.7;">&times;</span>
+          </a>
+          {% endfor %}
+
+        </div>
+
+        {% if collection %}
+  <a href="{% url 'catalog:collection_products' slug=collection.slug %}"
+     style="color:rgba(0,0,0,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
+    Clear filters
+  </a>
+{% else %}
+  <a href="{% url 'catalog:all_products' %}"
+     style="color:rgba(0,0,0,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
+    Clear filters
+  </a>
+{% endif %}
+        {% endif %}
+      </div>
+
+      <!-- ? Real filters row -->
+      <div class="filters-row" id="filtersRow" style="position:relative;">
+        <form id="filtersForm" method="get" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;">
+          <!-- keep collection query stuff -->
+          {% if request.GET.cat %}<input type="hidden" name="cat" value="{{ request.GET.cat }}">{% endif %}
+          {% if request.GET.tag %}<input type="hidden" name="tag" value="{{ request.GET.tag }}">{% endif %}
+          {% if current_sort %}<input type="hidden" name="sort" value="{{ current_sort }}">{% endif %}
+
+          <!-- Availability -->
+          <div class="fw-dd">
+            <button class="filter-dd" type="button" data-dd="avail">
+              Availability
+              <span
+                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                {{ selected_av|length }}
+              </span>
+              <span class="v"></span>
+            </button>
+
+            <div class="fw-panel" id="dd-avail">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                  {{ selected_av|length }} selected
+                </div>
+                <a href="#" class="fw-clear" data-clear="availability"
+                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+              </div>
+
+              <label class="fw-opt">
+                <input type="checkbox" name="availability" value="in" {% if "in" in selected_av %}checked{% endif %}>
+                <span>In stock ({{ availability_counts.in|default:0 }})</span>
+              </label>
+              <label class="fw-opt">
+                <input type="checkbox" name="availability" value="out" {% if "out" in selected_av %}checked{% endif %}>
+                <span>Out of stock ({{ availability_counts.out|default:0 }})</span>
+              </label>
+
+              <button type="submit" class="fw-apply">Apply</button>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="fw-dd">
+            <button class="filter-dd" type="button" data-dd="price">
+              Price
+              <span
+                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                {% if selected_min or selected_max %}1{% else %}0{% endif %}
+              </span>
+              <span class="v"></span>
+            </button>
+
+            <div class="fw-panel" id="dd-price" style="min-width:320px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div style="font-size:12px;letter-spacing:.06em;color:rgba(0,0,0,.7);">
+                  The highest price is Rs.{{ max_price_bound }}
+                </div>
+                <a href="#" class="fw-clear" data-clear="price"
+                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+              </div>
+
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+                <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <input type="number" name="min_price" value="{{ selected_min }}" placeholder="0"
+                    style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
+                </div>
+                <div style="opacity:.6;">—</div>
+                <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <input type="number" name="max_price" value="{{ selected_max }}" placeholder="{{ max_price_bound }}"
+                    style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
+                </div>
+              </div>
+
+              <button type="submit" class="fw-apply">Apply</button>
+            </div>
+          </div>
+
+          <!-- Ring Size -->
+{% if show_ring_size_filter %}
+          <div class="fw-dd">
+            <button class="filter-dd" type="button" data-dd="rs">
+              Ring size
+              <span
+                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                {{ selected_rs|length }}
+              </span>
+              <span class="v"></span>
+            </button>
+
+            <div class="fw-panel" id="dd-rs" style="min-width:260px;max-height:340px;overflow:auto;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                  {{ selected_rs|length }} selected
+                </div>
+                <a href="#" class="fw-clear" data-clear="ring_size"
+                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+              </div>
+
+              {% for row in ring_size_rows %}
+              <label class="fw-opt">
+                <input type="checkbox" name="ring_size" value="{{ row.value }}" {% if row.value in selected_rs %}checked{% endif %}>
+                <span>{{ row.label }} ({{ row.count }})</span>
+              </label>
+              {% endfor %}
+
+
+              <button type="submit" class="fw-apply">Apply</button>
+            </div>
+          </div>
+{% endif %}
+
+          <!-- Color -->
+          <div class="fw-dd">
+            <button class="filter-dd" type="button" data-dd="color">
+              Color
+              <span
+                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                {{ selected_color|length }}
+              </span>
+              <span class="v"></span>
+            </button>
+
+            <div class="fw-panel" id="dd-color" style="min-width:220px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                  {{ selected_color|length }} selected
+                </div>
+                <a href="#" class="fw-clear" data-clear="color"
+                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+              </div>
+
+              {% for row in color_rows %}
+              <label class="fw-opt">
+                <input type="checkbox" name="color" value="{{ row.value }}" {% if row.value in selected_color %}checked{% endif %}>
+                <span>{{ row.value }} ({{ row.count }})</span>
+              </label>
+              {% endfor %}
+
+
+              <button type="submit" class="fw-apply">Apply</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div class="container">
+        <div class="pl-grid">
+
+          {% for p in products %}
+          <a class="p-card" href="{% url 'catalog:product_detail' slug=p.slug %}">
+
+            <div class="p-badges">
+              <span class="badge-mini">NEW</span>
+              {% if p.is_on_sale %}
+              <span class="badge-mini" style="border-color:#c40000;color:#c40000;">SALE</span>
+              {% endif %}
+            </div>
+
+            <div class="p-media">
+              {% with img=p.images.all.0 %}
+              {% if img %}
+              <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:p.title }}">
+              {% else %}
+              <img src="{% static 'img/placeholder-product.png' %}" alt="{{ p.title }}">
+              {% endif %}
+              {% endwith %}
+
+              <div class="quick-view">QUICK VIEW</div>
+            </div>
+
+            <div class="p-title">{{ p.title }}</div>
+
+            <div class="p-price">
+              {% if p.is_on_sale %}
+              <div style="display:flex;gap:10px;justify-content:center;align-items:baseline;flex-wrap:wrap;">
+                <span style="text-decoration:line-through;opacity:.55;">Rs.{{ p.old_price_inr }}</span>
+                <span style="color:#c40000;font-weight:900;">Rs.{{ p.price_inr }}</span>
+                <span style="color:#c40000;font-size:12px;letter-spacing:.06em;">{{ p.discount_percent }}% off</span>
+              </div>
+              {% else %}
+              Rs.{{ p.price_inr }}
+              {% endif %}
+            </div>
+
+          </a>
+          {% empty %}
+          <div style="grid-column: 1 / -1; padding: 60px 0; text-align:center; color: rgba(0,0,0,.6);">
+            No products found.
+          </div>
+          {% endfor %}
+
+        </div>
+
+
+        <!-- PAGINATION -->
+        {% if page_obj and page_obj.paginator.num_pages > 1 %}
+        <div class="pager">
+          <div class="pager-links">
+
+            {# Previous arrow #}
+            {% if page_obj.has_previous %}
+            <a class="pg"
+              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.previous_page_number }}">â€¹</a>
+            {% endif %}
+
+            {# page numbers with ellipsis like screenshot #}
+            {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+            <span class="pg active">{{ num }}</span>
+
+            {% elif num <= 3 %} <a class="pg"
+              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">
+              {{ num }}</a>
+
+              {% elif num > page_obj.paginator.num_pages|add:"-2" %}
+              <a class="pg"
+                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">{{
+                num }}</a>
+
+              {% elif num == page_obj.number|add:"-1" or num == page_obj.number|add:"1" %}
+              <a class="pg"
+                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">{{
+                num }}</a>
+
+              {% elif num == 4 and page_obj.paginator.num_pages > 6 %}
+              <span style="padding:0 6px;">â€¦</span>
+              {% endif %}
+              {% endfor %}
+
+              {# Next arrow #}
+              {% if page_obj.has_next %}
+              <a class="pg"
+                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.next_page_number }}">â€º</a>
+              {% endif %}
+
+          </div>
+
+          <div class="pager-note">
+            Youâ€™re viewing {{ start_index }}-{{ end_index }} of {{ total_count }} products
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      </div>
+
+      <!-- FEATURES STRIP -->
+      <section class="feature-strip">
+        <div class="container">
+          <div class="feature-grid">
+            <div>
+              <svg class="feat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M7 6h10M6 10h12M7 14h10M6 18h12" />
+              </svg>
+              <div class="feat-head">SMALL-BATCH</div>
+              <div class="feat-text">Each piece is part of a small, deliberate production cycle</div>
+            </div>
+
+            <div>
+              <svg class="feat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z" />
+              </svg>
+              <div class="feat-head">SUSTAINABLY MADE</div>
+              <div class="feat-text">Designed with care. Made entirely from 100% certified recycled gold and silver.
+              </div>
+            </div>
+
+            <div>
+              <svg class="feat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <div class="feat-head">QUALITY THAT LASTS</div>
+              <div class="feat-text">Designed for daily wear. Crafted to endure seasons and stories.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEASONAL BANNER -->
+      <section class="seasonal">
+        <div class="container">
+          <div class="seasonal-inner">
+            <div class="seasonal-left">
+              <div class="seasonal-title">SEASONAL MARKDOWNS</div>
+              <div class="seasonal-sep"></div>
+              <div class="seasonal-msg">This week only. Receive a free polishing cloth with orders over Rs.499.</div>
+            </div>
+            <a href="{% url 'catalog:product_list' %}?tag=sale">Shop now</a>
+          </div>
+        </div>
+      </section>
+
+
+    {% endblock %}
+
+
+{% block extra_js %}
+<script>
+  /* Smooth hide/show filters row (no display:none jump) */
+  (function () {
+    const btn = document.getElementById("toggleFilters");
+    const row = document.getElementById("filtersRow");
+    const txt = document.getElementById("filterText");
+    const caret = document.getElementById("filterCaret");
+    if (!btn || !row) return;
+
+    // start expanded
+    row.classList.add("is-expanded");
+    row.style.maxHeight = row.scrollHeight + "px";
+
+    let open = true;
+
+    function setRowState() {
+      if (open) {
+        row.classList.remove("is-collapsed");
+        row.classList.add("is-expanded");
+        row.style.maxHeight = row.scrollHeight + "px";
+        if (txt) txt.textContent = "Hide filters";
+        if (caret) caret.textContent = "^";
+      } else {
+        row.classList.add("is-collapsed");
+        row.classList.remove("is-expanded");
+        row.style.maxHeight = "0px";
+        if (txt) txt.textContent = "Show filters";
+        if (caret) caret.textContent = "v";
+      }
+    }
+
+    // keep height correct on resize
+    window.addEventListener("resize", function () {
+      if (!open) return;
+      row.style.maxHeight = row.scrollHeight + "px";
+    });
+
+    btn.addEventListener("click", () => {
+      open = !open;
+      setRowState();
+    });
+  })();
+</script>
+
+<script>
+  /* Dropdown open/close + keep inside viewport on desktop + mobile sheet */
+  (function () {
+    const wrap = document.getElementById("filtersRow");
+    if (!wrap) return;
+
+    const dds = wrap.querySelectorAll(".fw-dd");
+    const btns = wrap.querySelectorAll("[data-dd]");
+
+    function closeAll() {
+      dds.forEach(d => d.classList.remove("open"));
+    }
+
+    function clampPanelToViewport(panel) {
+      if (!panel) return;
+      // On mobile, CSS makes it fixed centered, skip JS clamp
+      if (window.matchMedia("(max-width: 768px)").matches) return;
+
+      // reset any previous adjustment
+      panel.style.left = "0px";
+
+      const r = panel.getBoundingClientRect();
+      const pad = 12;
+      const overflowRight = r.right - (window.innerWidth - pad);
+      const overflowLeft = pad - r.left;
+
+      if (overflowRight > 0) {
+        const currentLeft = parseFloat(panel.style.left || "0") || 0;
+        panel.style.left = (currentLeft - overflowRight) + "px";
+      } else if (overflowLeft > 0) {
+        const currentLeft = parseFloat(panel.style.left || "0") || 0;
+        panel.style.left = (currentLeft + overflowLeft) + "px";
+      }
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const box = btn.closest(".fw-dd");
+        const already = box.classList.contains("open");
+        closeAll();
+        if (!already) {
+          box.classList.add("open");
+          const panel = box.querySelector(".fw-panel");
+          // wait a tick so styles apply, then clamp
+          requestAnimationFrame(function () {
+            clampPanelToViewport(panel);
+          });
+        }
+      });
+    });
+
+    document.addEventListener("click", closeAll);
+    wrap.addEventListener("click", (e) => e.stopPropagation());
+
+    // clear buttons (client side)
+    const clears = wrap.querySelectorAll(".fw-clear");
+    clears.forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const what = a.getAttribute("data-clear");
+        const form = document.getElementById("filtersForm");
+        if (!form) return;
+
+        if (what === "price") {
+          form.querySelectorAll('input[name="min_price"],input[name="max_price"]').forEach(i => i.value = "");
+        } else {
+          form.querySelectorAll('input[name="' + what + '"]').forEach(i => i.checked = false);
+        }
+
+        // tiny UI smoothness before submit
+        form.style.opacity = "0.85";
+        setTimeout(function () { form.submit(); }, 120);
+      });
+    });
+  })();
+</script>
+
+<script>
+  /* HERO load animation trigger */
+  (function () {
+    const heroGrid = document.querySelector(".hero-grid");
+    if (!heroGrid) return;
+    requestAnimationFrame(function () {
+      heroGrid.classList.add("hero-loaded");
+    });
+  })();
+</script>
+
+<script>
+  /* On-scroll reveal for cards/text/images */
+  (function () {
+    function addRevealItems(section) {
+      // reveal text elements
+      const items = section.querySelectorAll(
+        "h1, h2, h3, h4, p, a, button, .results-count, .sort-box, .feat-head, .feat-text, .seasonal-title, .seasonal-msg, .pager, .pager-note"
+      );
+
+      // reveal cards (products)
+      const cards = section.querySelectorAll(".p-card");
+
+      let i = 0;
+
+      items.forEach(function (node) {
+        // skip inside product cards (we animate card itself)
+        if (node.closest(".p-card")) return;
+        node.classList.add("reveal-item");
+        node.style.setProperty("--d", String(Math.min(i * 70, 650)) + "ms");
+        i += 1;
+      });
+
+      cards.forEach(function (card) {
+        card.classList.add("reveal-card");
+        card.style.setProperty("--d", String(Math.min(i * 90, 900)) + "ms");
+        i += 1;
+      });
+
+      // reveal non-card images (hero already handled)
+      const imgs = section.querySelectorAll("img");
+      imgs.forEach(function (img) {
+        if (img.closest(".p-card")) return;
+        if (img.closest(".hero-img")) return;
+        img.classList.add("img-reveal");
+      });
+    }
+
+    function prepareSections() {
+      const sections = document.querySelectorAll("section, .hero-wrap, .pl-top, .pl-wrap .container");
+      sections.forEach(function (sec) {
+        // hero-wrap is above the fold: mark visible
+        if (sec.classList && sec.classList.contains("hero-wrap")) {
+          sec.classList.add("reveal", "is-visible");
+          addRevealItems(sec);
+          return;
+        }
+        // filter bar and grid container should reveal on scroll
+        sec.classList && sec.classList.add("reveal");
+        addRevealItems(sec);
+      });
+      return sections;
+    }
+
+    function setupObserver() {
+      const sections = prepareSections();
+
+      if (!("IntersectionObserver" in window)) {
+        sections.forEach(function (sec) {
+          sec.classList && sec.classList.add("is-visible");
+        });
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        function (entries, observer) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
+      );
+
+      sections.forEach(function (sec) {
+        if (!sec.classList) return;
+        if (!sec.classList.contains("reveal")) return;
+        if (sec.classList.contains("is-visible")) return;
+        io.observe(sec);
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupObserver);
+    } else {
+      setupObserver();
+    }
+  })();
+</script>
+{% endblock %}

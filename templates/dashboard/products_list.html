@@ -1,0 +1,158 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Products{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="text-muted" style="font-size:.82rem;">{{ total_count }} product{{ total_count|pluralize }} found</div>
+  <a href="{% url 'dashboard:product_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Product
+  </a>
+</div>
+
+<!-- Filters -->
+<form method="get" class="filter-bar">
+  <input type="text" name="q" class="form-control" placeholder="Search name or SKU..." value="{{ current_q }}" style="max-width:220px;">
+  <select name="col" class="form-select" style="max-width:180px;">
+    <option value="">All Collections</option>
+    {% for c in collections %}
+    <option value="{{ c.slug }}" {% if current_col == c.slug %}selected{% endif %}>{{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <select name="status" class="form-select" style="max-width:160px;">
+    <option value="">All Status</option>
+    <option value="active" {% if current_status == 'active' %}selected{% endif %}>Active</option>
+    <option value="inactive" {% if current_status == 'inactive' %}selected{% endif %}>Inactive</option>
+    <option value="out" {% if current_status == 'out' %}selected{% endif %}>Out of Stock</option>
+    <option value="featured" {% if current_status == 'featured' %}selected{% endif %}>Featured</option>
+    <option value="new" {% if current_status == 'new' %}selected{% endif %}>New Arrival</option>
+  </select>
+  <button type="submit" class="btn btn-accent btn-sm">Filter</button>
+  {% if current_q or current_col or current_status %}
+  <a href="{% url 'dashboard:products_list' %}" class="btn btn-sm btn-outline-secondary">Clear</a>
+  {% endif %}
+</form>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Collection</th>
+          <th>Price</th>
+          <th>Material</th>
+          <th>Stock</th>
+          <th>Flags</th>
+          <th>Status</th>
+          <th style="width:120px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in page_obj %}
+        <tr>
+          <td>
+            {% with img=product.images.first %}
+            {% if img and img.image %}
+            <img src="{{ img.image.url }}" class="prod-thumb" alt="">
+            {% else %}
+            <div class="prod-thumb-ph"><i class="bi bi-image"></i></div>
+            {% endif %}
+            {% endwith %}
+          </td>
+          <td>
+            <div class="fw-semibold" style="font-size:.85rem;">{{ product.title }}</div>
+            {% if product.sku %}<div class="text-muted" style="font-size:.7rem;">SKU: {{ product.sku }}</div>{% endif %}
+          </td>
+          <td style="font-size:.82rem;">{{ product.collection.name }}</td>
+          <td>
+            <div class="fw-semibold" style="font-size:.82rem;">&#8377;{{ product.price_inr }}</div>
+            {% if product.old_price_inr %}<div class="text-muted text-decoration-line-through" style="font-size:.72rem;">&#8377;{{ product.old_price_inr }}</div>{% endif %}
+          </td>
+          <td style="font-size:.78rem;">
+            {% if product.material %}{{ product.get_material_display }}{% if product.metal_purity %} / {{ product.metal_purity }}{% endif %}{% else %}—{% endif %}
+          </td>
+          <td>
+            {% if product.in_stock %}
+            <span class="badge bs-active">In Stock</span>
+            {% else %}
+            <span class="badge bs-inactive">Out of Stock</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if product.is_featured %}<span class="badge" style="background:#fef9c3;color:#854d0e;font-size:.65rem;">Featured</span> {% endif %}
+            {% if product.is_new_arrival %}<span class="badge" style="background:#dbeafe;color:#1d4ed8;font-size:.65rem;">New</span>{% endif %}
+          </td>
+          <td>
+            {% if product.is_active %}
+            <span class="badge bs-active">Active</span>
+            {% else %}
+            <span class="badge bs-inactive">Inactive</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:product_edit' product.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <form method="post" action="{% url 'dashboard:product_toggle' product.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon {% if product.is_active %}btn-warning{% else %}btn-success{% endif %}" title="{% if product.is_active %}Deactivate{% else %}Activate{% endif %}" style="font-size:.75rem;">
+                  <i class="bi bi-{% if product.is_active %}pause-fill{% else %}play-fill{% endif %}"></i>
+                </button>
+              </form>
+              <form method="post" action="{% url 'dashboard:product_delete' product.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" title="Delete" onclick="return confirm('Delete {{ product.title }}?')">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9" class="text-center py-5 text-muted">
+            <i class="bi bi-gem fs-2 d-block mb-2"></i>
+            No products found.<br>
+            <a href="{% url 'dashboard:product_add' %}" class="btn btn-accent btn-sm mt-3">Add First Product</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  {% if page_obj.has_other_pages %}
+  <div class="d-flex justify-content-center py-3">
+    <nav>
+      <ul class="pagination mb-0">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ current_q }}&col={{ current_col }}&status={{ current_status }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ current_q }}&col={{ current_col }}&status={{ current_status }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ current_q }}&col={{ current_col }}&status={{ current_status }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

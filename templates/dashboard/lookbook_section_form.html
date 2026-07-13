@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" novalidate>
+{% csrf_token %}
+{{ formset.management_form }}
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="form-card">
+      <div class="form-section-title">Section Info</div>
+      <div class="row g-3">
+        <div class="col-md-9">
+          <label class="form-label">Section Title</label>
+          {{ form.title }}
+        </div>
+        <div class="col-md-3 d-flex align-items-end pb-1">
+          <div class="form-check">{{ form.is_active }}<label class="form-check-label ms-2">Active</label></div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Subtitle</label>
+          {{ form.subtitle }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Layout</label>
+          {{ form.layout }}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Sort Order</label>
+          {{ form.sort_order }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card mt-3">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="form-section-title mb-0">Grid Images</div>
+        <span class="text-muted" style="font-size:.78rem;">Add images with links for each grid cell</span>
+      </div>
+      {% for item_form in formset %}
+      <div class="border rounded p-3 mb-3 position-relative" style="background:#f8fafc;">
+        {{ item_form.id }}
+        {% if item_form.instance.pk %}
+        <div class="d-flex align-items-center gap-3 mb-2">
+          {% if item_form.instance.image %}<img src="{{ item_form.instance.image.url }}" style="height:70px;width:100px;object-fit:cover;border-radius:6px;" alt="">{% endif %}
+          <div class="fw-semibold" style="font-size:.82rem;">Item #{{ forloop.counter }}</div>
+        </div>
+        {% else %}
+        <div class="fw-semibold mb-2" style="font-size:.82rem;color:#64748b;">New Item #{{ forloop.counter }}</div>
+        {% endif %}
+        <div class="row g-2">
+          <div class="col-md-6">
+            <label class="form-label">Image</label>{{ item_form.image }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Collection / Link URL</label>{{ item_form.link_url }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Alt Text</label>{{ item_form.alt_text }}
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Order</label>{{ item_form.sort_order }}
+          </div>
+          <div class="col-md-3 d-flex align-items-end pb-1">
+            <div class="form-check">{{ item_form.DELETE }}<label class="form-check-label ms-2" style="color:#ef4444;">Delete</label></div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="d-flex gap-3 mt-3 mb-4">
+  <button type="submit" class="btn btn-accent px-4"><i class="bi bi-check-lg me-2"></i>Save Section</button>
+  <a href="{% url 'dashboard:lookbook_sections_list' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+</div>
+</form>
+{% endblock %}

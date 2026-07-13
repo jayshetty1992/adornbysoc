@@ -1,0 +1,76 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Collections{% endblock %}
+{% block page_title %}Collections{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:collection_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Collection
+  </a>
+</div>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Products</th>
+          <th>Home Order</th>
+          <th>Show on Home</th>
+          <th>Active</th>
+          <th style="width:100px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for col in collections %}
+        <tr>
+          <td>
+            {% if col.card_image %}
+            <img src="{{ col.card_image.url }}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;" alt="">
+            {% else %}
+            <div class="prod-thumb-ph"><i class="bi bi-folder2"></i></div>
+            {% endif %}
+          </td>
+          <td class="fw-semibold" style="font-size:.85rem;">{{ col.name }}</td>
+          <td class="text-muted" style="font-size:.78rem;">{{ col.slug }}</td>
+          <td>
+            <span class="badge" style="background:#eff6ff;color:#3b82f6;">{{ col.product_count }}</span>
+          </td>
+          <td class="text-center">{{ col.home_order }}</td>
+          <td class="text-center">
+            {% if col.show_on_home %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %}
+          </td>
+          <td>
+            {% if col.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}
+          </td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:collection_edit' col.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <form method="post" action="{% url 'dashboard:collection_delete' col.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" title="Delete" onclick="return confirm('Delete collection {{ col.name }}? Products linked to it cannot be deleted this way.')">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center py-5 text-muted">
+            <i class="bi bi-folder2 fs-2 d-block mb-2"></i>
+            No collections yet.<br>
+            <a href="{% url 'dashboard:collection_add' %}" class="btn btn-accent btn-sm mt-3">Add First Collection</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

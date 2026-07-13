@@ -1,0 +1,41 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Store Locations{% endblock %}
+{% block page_title %}Store Locations{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:store_location_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Location
+  </a>
+</div>
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Image</th><th>Name</th><th>Address</th><th>Country</th><th>Order</th><th>Active</th><th style="width:100px;">Actions</th></tr></thead>
+      <tbody>
+        {% for loc in locations %}
+        <tr>
+          <td>
+            {% if loc.image %}<img src="{{ loc.image.url }}" style="width:50px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;" alt="">
+            {% else %}<div class="prod-thumb-ph"><i class="bi bi-geo-alt"></i></div>{% endif %}
+          </td>
+          <td class="fw-semibold" style="font-size:.85rem;">{{ loc.name }}</td>
+          <td style="font-size:.78rem;color:#475569;">{{ loc.address_line_1 }}{% if loc.address_line_2 %}, {{ loc.address_line_2 }}{% endif %}{% if loc.postal_code %} - {{ loc.postal_code }}{% endif %}</td>
+          <td style="font-size:.82rem;">{{ loc.country|default:"—" }}</td>
+          <td>{{ loc.sort_order }}</td>
+          <td>{% if loc.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:store_location_edit' loc.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-pencil-fill"></i></a>
+              <form method="post" action="{% url 'dashboard:store_location_delete' loc.pk %}">{% csrf_token %}<button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete {{ loc.name }}?')"><i class="bi bi-trash-fill"></i></button></form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center py-4 text-muted"><i class="bi bi-geo-alt fs-2 d-block mb-2"></i>No locations added.<br><a href="{% url 'dashboard:store_location_add' %}" class="btn btn-accent btn-sm mt-2">Add Location</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

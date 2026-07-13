@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Size Guides{% endblock %}
+{% block page_title %}Size Guides{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:size_guide_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Size Guide
+  </a>
+</div>
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr><th>Guide Type</th><th>Title</th><th>Image</th><th>Active</th><th style="width:100px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for guide in guides %}
+        <tr>
+          <td><span class="badge" style="background:#eff6ff;color:#3b82f6;font-size:.78rem;">{{ guide.get_guide_type_display }}</span></td>
+          <td class="fw-semibold" style="font-size:.85rem;">{{ guide.title|default:"—" }}</td>
+          <td>
+            {% if guide.image %}<img src="{{ guide.image.url }}" style="height:40px;width:60px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;" alt="">
+            {% else %}<span class="text-muted" style="font-size:.78rem;">No image</span>{% endif %}
+          </td>
+          <td>{% if guide.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:size_guide_edit' guide.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+              <form method="post" action="{% url 'dashboard:size_guide_delete' guide.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this size guide?')"><i class="bi bi-trash-fill"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center py-5 text-muted"><i class="bi bi-rulers fs-2 d-block mb-2"></i>No size guides yet.<br><a href="{% url 'dashboard:size_guide_add' %}" class="btn btn-accent btn-sm mt-3">Add First Guide</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

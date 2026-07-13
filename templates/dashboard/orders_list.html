@@ -1,0 +1,112 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Orders{% endblock %}
+{% block page_title %}Orders & Payments{% endblock %}
+
+{% block content %}
+
+<!-- Status tabs -->
+<div class="d-flex gap-2 mb-3 flex-wrap">
+  <a href="{% url 'dashboard:orders_list' %}" class="btn btn-sm {% if not current_status %}btn-accent{% else %}btn-outline-secondary{% endif %}">
+    All <span class="badge bg-secondary ms-1">{{ stats.all }}</span>
+  </a>
+  <a href="?status=paid" class="btn btn-sm {% if current_status == 'paid' %}btn-success{% else %}btn-outline-secondary{% endif %}">
+    Paid <span class="badge bg-success ms-1">{{ stats.paid }}</span>
+  </a>
+  <a href="?status=created" class="btn btn-sm {% if current_status == 'created' %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+    Pending <span class="badge bg-warning text-dark ms-1">{{ stats.created }}</span>
+  </a>
+  <a href="?status=failed" class="btn btn-sm {% if current_status == 'failed' %}btn-danger{% else %}btn-outline-secondary{% endif %}">
+    Failed <span class="badge bg-danger ms-1">{{ stats.failed }}</span>
+  </a>
+  <a href="?status=cancelled" class="btn btn-sm {% if current_status == 'cancelled' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">
+    Cancelled <span class="badge bg-secondary ms-1">{{ stats.cancelled }}</span>
+  </a>
+</div>
+
+<!-- Search -->
+<form method="get" class="filter-bar">
+  {% if current_status %}<input type="hidden" name="status" value="{{ current_status }}">{% endif %}
+  <input type="text" name="q" class="form-control" placeholder="Search customer name, email, phone..." value="{{ current_q }}" style="max-width:320px;">
+  <button type="submit" class="btn btn-accent btn-sm">Search</button>
+  {% if current_q %}<a href="?status={{ current_status }}" class="btn btn-sm btn-outline-secondary">Clear</a>{% endif %}
+</form>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Customer</th>
+          <th>Contact</th>
+          <th>Subtotal</th>
+          <th>Discount</th>
+          <th>Total</th>
+          <th>Coupon</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in page_obj %}
+        <tr>
+          <td>
+            <a href="{% url 'dashboard:order_detail' order.pk %}" class="fw-semibold text-decoration-none" style="color:var(--accent);">
+              #{{ order.id }}
+            </a>
+          </td>
+          <td>
+            <div class="fw-semibold" style="font-size:.82rem;">{{ order.full_name }}</div>
+            <div class="text-muted" style="font-size:.72rem;">{{ order.city }}, {{ order.state }}</div>
+          </td>
+          <td>
+            <div style="font-size:.78rem;">{{ order.email }}</div>
+            <div class="text-muted" style="font-size:.72rem;">{{ order.phone }}</div>
+          </td>
+          <td style="font-size:.82rem;">&#8377;{{ order.subtotal_inr }}</td>
+          <td style="font-size:.82rem;">
+            {% if order.discount_inr %}<span class="text-success">-&#8377;{{ order.discount_inr }}</span>{% else %}—{% endif %}
+          </td>
+          <td class="fw-semibold" style="font-size:.85rem;">&#8377;{{ order.total_inr }}</td>
+          <td style="font-size:.75rem;">
+            {% if order.coupon_code %}<span class="badge" style="background:#f1f5f9;color:#334155;">{{ order.coupon_code }}</span>{% else %}—{% endif %}
+          </td>
+          <td>
+            <span class="badge bs-{{ order.status }}" style="font-size:.7rem;">{{ order.get_status_display }}</span>
+          </td>
+          <td class="text-muted" style="font-size:.75rem;">{{ order.created_at|date:"d M Y, H:i" }}</td>
+          <td>
+            <a href="{% url 'dashboard:order_detail' order.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="View Detail">
+              <i class="bi bi-eye-fill"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="10" class="text-center py-5 text-muted">
+            <i class="bi bi-bag fs-2 d-block mb-2"></i>No orders found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj.has_other_pages %}
+  <div class="d-flex justify-content-center py-3">
+    <nav>
+      <ul class="pagination mb-0">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}&q={{ current_q }}"><i class="bi bi-chevron-left"></i></a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ current_status }}&q={{ current_q }}"><i class="bi bi-chevron-right"></i></a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

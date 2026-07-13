@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout | ADORN{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --cream:#f6f2ea;
+    --ink:#0c0c0d;
+    --gold:#b7862b;
+    --line: rgba(0,0,0,.14);
+    --muted: rgba(0,0,0,.62);
+    --soft: rgba(0,0,0,.06);
+  }
+
+  .ck-wrap{
+    background: linear-gradient(180deg, var(--cream) 0%, #fff 70%);
+    padding: 30px 0 70px;
+  }
+
+  .ck-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom: 18px;
+  }
+  .ck-title{
+    margin:0;
+    font-size: 34px;
+    letter-spacing:.06em;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .ck-sub{
+    margin:0;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing:.06em;
+  }
+
+  .ck-grid{
+    display:grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    gap: 26px;
+    align-items:start;
+  }
+
+  .cardx{
+    background:#fff;
+    border:1px solid var(--soft);
+    box-shadow: 0 12px 30px rgba(0,0,0,.06);
+    border-radius: 14px;
+    overflow:hidden;
+  }
+
+  .cardx .cap{
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .cap h3{
+    margin:0;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing:.18em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.75);
+  }
+  .cap .mini{
+    font-size: 11px;
+    letter-spacing:.12em;
+    color: rgba(0,0,0,.55);
+    text-transform: uppercase;
+  }
+
+  .pad{
+    padding: 18px;
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap: 7px;
+    margin-bottom: 12px;
+  }
+  .field label{
+    font-size: 11px;
+    letter-spacing:.14em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.62);
+    font-weight: 800;
+  }
+  .field input, .field textarea, .field select{
+    width:100%;
+    border:1px solid rgba(0,0,0,.18);
+    border-radius: 10px;
+    padding: 12px 12px;
+    outline:none;
+    font-size: 14px;
+    letter-spacing:.02em;
+    background:#fff;
+  }
+  .field input:focus, .field textarea:focus{
+    border-color: rgba(183,134,43,.55);
+    box-shadow: 0 0 0 3px rgba(183,134,43,.12);
+  }
+
+  .row2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .btn-gold{
+    height: 48px;
+    width:100%;
+    border-radius: 12px;
+    border: 1px solid rgba(183,134,43,.95);
+    background: rgba(122, 90, 26, .95);
+    color:#fff;
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:.18s ease;
+  }
+  .btn-gold:hover{ filter: brightness(.97); transform: translateY(-1px); }
+
+  .btn-outline{
+    height: 48px;
+    width:100%;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.22);
+    background: transparent;
+    color: rgba(0,0,0,.78);
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-size: 11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+  }
+  .btn-outline:hover{ background: rgba(0,0,0,.03); }
+
+  /* summary */
+  .sum-items{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .sum-item{
+    display:grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 12px;
+    align-items:center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,.08);
+  }
+  .sum-item:last-child{ border-bottom:none; }
+
+  .thumb{
+    width:56px; height:56px;
+    border-radius: 12px;
+    border:1px solid rgba(0,0,0,.10);
+    background: #fff;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    position:relative;
+  }
+  .thumb img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  .qty-badge{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    width:22px; height:22px;
+    border-radius:999px;
+    background: var(--gold);
+    color:#fff;
+    font-size: 11px;
+    display:grid;
+    place-items:center;
+    border: 2px solid #fff;
+    font-weight: 900;
+  }
+
+  .pname{
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing:.02em;
+    color: rgba(0,0,0,.82);
+    margin:0 0 2px;
+  }
+  .pmuted{
+    font-size: 12px;
+    color: rgba(0,0,0,.55);
+    letter-spacing:.04em;
+    margin:0;
+  }
+  .price{
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing:.06em;
+    color: rgba(0,0,0,.78);
+  }
+
+  .sum-tot{
+    margin-top: 14px;
+    border-top: 1px solid rgba(0,0,0,.12);
+    padding-top: 14px;
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .line{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    color: rgba(0,0,0,.72);
+    letter-spacing:.06em;
+    font-size: 13px;
+  }
+  .grand{
+    font-weight: 900;
+    color: rgba(0,0,0,.9);
+    font-size: 15px;
+    letter-spacing:.08em;
+  }
+
+  .note{
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: rgba(183,134,43,.08);
+    border: 1px solid rgba(183,134,43,.22);
+    border-radius: 12px;
+    color: rgba(0,0,0,.72);
+    font-size: 12px;
+    letter-spacing:.06em;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 991px){
+    .ck-grid{ grid-template-columns: 1fr; }
+    .ck-title{ font-size: 28px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ck-wrap">
+  <div class="container">
+
+    <div class="ck-head">
+      <div>
+        <h1 class="ck-title">Checkout</h1>
+        <p class="ck-sub">Premium finish. Minimal steps. Secure payment.</p>
+      </div>
+      <div class="ck-sub">Items: <b>{{ items|length }}</b></div>
+    </div>
+
+    <div class="ck-grid">
+
+      <!-- LEFT: FORM -->
+      <div class="cardx">
+        <div class="cap">
+          <h3>Delivery details</h3>
+          <div class="mini">Step 1 of 2</div>
+        </div>
+
+        <div class="pad">
+          <form method="post" action="{% url 'orders:checkout_view' %}">
+            {% csrf_token %}
+
+            <div class="row2">
+              <div class="field">
+                <label>Full name</label>
+                <input name="full_name" required placeholder="Your full name">
+              </div>
+              <div class="field">
+                <label>Phone</label>
+                <input name="phone" required placeholder="+91 9xxxx xxxxx">
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label>Email</label>
+                <input name="email" type="email" required placeholder="you@example.com">
+              </div>
+              <div class="field">
+                <label>City</label>
+                <input name="city" required placeholder="City">
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label>State</label>
+                <input name="state" required placeholder="State">
+              </div>
+              <div class="field">
+                <label>Pincode</label>
+                <input name="pincode" required placeholder="Pincode">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Address line 1</label>
+              <input name="address1" required placeholder="House no, street, area">
+            </div>
+
+            <div class="field">
+              <label>Address line 2</label>
+              <input name="address2" placeholder="Apartment, suite, landmark (optional)">
+            </div>
+
+            <div class="field">
+              <label>Order note (optional)</label>
+              <textarea name="order_note" rows="3" placeholder="Add special instructions...">{% if cart.order_note %}{{ cart.order_note }}{% endif %}</textarea>
+            </div>
+
+            <button class="btn-gold" type="submit">
+              Continue to payment
+              <span style="font-size:14px; opacity:.9;"></span>
+            </button>
+
+            <div style="margin-top:10px;">
+              <a class="btn-outline" href="{% url 'index' %}">Continue shopping</a>
+            </div>
+
+            <div class="note">
+              Payments are processed securely via Stripe. We never store card details.
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- RIGHT: SUMMARY -->
+      <div class="cardx">
+        <div class="cap">
+          <h3>Order summary</h3>
+          <div class="mini">Review</div>
+        </div>
+
+        <div class="pad">
+          <div class="sum-items">
+            {% for it in items %}
+              {% with img=it.product.images.first %}
+              <div class="sum-item">
+                <div class="thumb">
+                  <span class="qty-badge">{{ it.qty }}</span>
+                  {% if img and img.image.url %}
+                    <img src="{{ img.image.url }}" alt="{{ it.product.title }}">
+                  {% else %}
+                    <img src="{% static 'img/placeholder-product.png' %}" alt="{{ it.product.title }}">
+                  {% endif %}
+                </div>
+
+                <div>
+                  <p class="pname">{{ it.product.title }}</p>
+                  <p class="pmuted">Total : {{ it.product.price_inr }} x {{ it.qty }}</p>
+                </div>
+
+                <div class="price">
+                  Rs.{{ it.line_total_inr }}
+                </div>
+              </div>
+              {% endwith %}
+            {% endfor %}
+          </div>
+
+          <div class="sum-tot">
+            <div class="line">
+              <span>Subtotal</span>
+              <b>Rs.{{ subtotal }}</b>
+            </div>
+            <div class="line">
+              <span>Shipping</span>
+              <b>Rs.{{ shipping }}</b>
+            </div>
+            <div class="line grand">
+              <span>Total</span>
+              <span>Rs.{{ total }}</span>
+            </div>
+          </div>
+
+          {% if cart.order_note %}
+          <div class="note" style="margin-top:14px;">
+            <b>Note:</b> {{ cart.order_note }}
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

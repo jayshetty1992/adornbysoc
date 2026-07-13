@@ -1,0 +1,86 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Newsletter{% endblock %}
+{% block page_title %}Newsletter Subscribers{% endblock %}
+
+{% block content %}
+<!-- Stats -->
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#fdf4ff;color:#a855f7;"><i class="bi bi-envelope-at-fill"></i></div>
+      <div class="stat-val">{{ total }}</div>
+      <div class="stat-label">Total Subscribers</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#f0fdf4;color:#22c55e;"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="stat-val" style="color:#22c55e;">{{ active_count }}</div>
+      <div class="stat-label">Active</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#fef2f2;color:#ef4444;"><i class="bi bi-x-circle-fill"></i></div>
+      <div class="stat-val" style="color:#ef4444;">{{ total|add:"-"|add:active_count }}</div>
+      <div class="stat-label">Unsubscribed</div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-bar mb-3">
+  <a href="{% url 'dashboard:newsletter_list' %}" class="btn btn-sm {% if not current_status %}btn-accent{% else %}btn-outline-secondary{% endif %}">All</a>
+  <a href="?status=active" class="btn btn-sm {% if current_status == 'active' %}btn-success{% else %}btn-outline-secondary{% endif %}">Active</a>
+  <a href="?status=inactive" class="btn btn-sm {% if current_status == 'inactive' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Inactive</a>
+</div>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr><th>#</th><th>Email</th><th>Name</th><th>Status</th><th>Subscribed On</th><th style="width:120px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for sub in page_obj %}
+        <tr>
+          <td class="text-muted" style="font-size:.78rem;">{{ sub.pk }}</td>
+          <td class="fw-semibold" style="font-size:.85rem;">{{ sub.email }}</td>
+          <td style="font-size:.82rem;">{{ sub.name|default:"—" }}</td>
+          <td>
+            {% if sub.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Unsubscribed</span>{% endif %}
+          </td>
+          <td class="text-muted" style="font-size:.78rem;">{{ sub.subscribed_at|date:"d M Y" }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <form method="post" action="{% url 'dashboard:newsletter_toggle' sub.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon {% if sub.is_active %}btn-warning{% else %}btn-success{% endif %}" title="Toggle">
+                  <i class="bi bi-{% if sub.is_active %}pause-fill{% else %}play-fill{% endif %}"></i>
+                </button>
+              </form>
+              <form method="post" action="{% url 'dashboard:newsletter_delete' sub.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this subscriber?')">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center py-5 text-muted"><i class="bi bi-envelope fs-2 d-block mb-2"></i>No subscribers yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.has_other_pages %}
+  <div class="d-flex justify-content-center py-3">
+    <nav><ul class="pagination mb-0">
+      {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}"><i class="bi bi-chevron-left"></i></a></li>{% endif %}
+      <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+      {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ current_status }}"><i class="bi bi-chevron-right"></i></a></li>{% endif %}
+    </ul></nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

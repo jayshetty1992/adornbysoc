@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %} — Adorn Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --sb-bg: #0f172a;
+      --sb-hover: #1e293b;
+      --sb-active-bg: rgba(233,69,96,.13);
+      --sb-active-color: #e94560;
+      --sb-text: #94a3b8;
+      --sb-w: 256px;
+      --top-h: 58px;
+      --accent: #e94560;
+    }
+    *{box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;margin:0;}
+
+    /* ─── SIDEBAR ─── */
+    #sb{position:fixed;top:0;left:0;width:var(--sb-w);height:100vh;background:var(--sb-bg);overflow-y:auto;z-index:1040;display:flex;flex-direction:column;transition:transform .28s ease;}
+    #sb::-webkit-scrollbar{width:4px;}
+    #sb::-webkit-scrollbar-thumb{background:#334155;border-radius:4px;}
+    .sb-brand{padding:18px 22px 14px;border-bottom:1px solid #1e293b;}
+    .sb-brand .name{color:#f1f5f9;font-weight:800;letter-spacing:3px;font-size:.9rem;margin:0;}
+    .sb-brand .sub{color:#475569;font-size:.65rem;letter-spacing:1px;}
+    .sb-section{padding:10px 0 4px;}
+    .sb-label{padding:6px 22px 4px;font-size:.6rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#475569;}
+    .sb-link{display:flex;align-items:center;gap:9px;padding:8px 22px;color:var(--sb-text);text-decoration:none;font-size:.82rem;transition:all .15s;position:relative;}
+    .sb-link:hover{background:var(--sb-hover);color:#e2e8f0;}
+    .sb-link.active{background:var(--sb-active-bg);color:var(--sb-active-color);}
+    .sb-link.active::before{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--sb-active-color);border-radius:2px 0 0 2px;}
+    .sb-link .bi{font-size:.95rem;width:16px;text-align:center;}
+    .sb-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:.6rem;padding:2px 6px;border-radius:10px;font-weight:700;}
+    .sb-divider{border-top:1px solid #1e293b;margin:8px 0;}
+
+    /* ─── MAIN ─── */
+    #main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column;}
+
+    /* ─── TOPBAR ─── */
+    #topbar{background:#fff;border-bottom:1px solid #e2e8f0;height:var(--top-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+    .topbar-title{font-size:.95rem;font-weight:700;color:#0f172a;margin:0;}
+    .user-dot{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;}
+
+    /* ─── PAGE BODY ─── */
+    .page-body{padding:22px 24px;flex:1;}
+
+    /* ─── STAT CARDS ─── */
+    .stat-card{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #e2e8f0;transition:box-shadow .2s;}
+    .stat-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);}
+    .stat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .stat-val{font-size:1.7rem;font-weight:800;line-height:1.1;color:#0f172a;}
+    .stat-label{font-size:.75rem;color:#64748b;margin-top:2px;}
+
+    /* ─── DATA TABLE CARD ─── */
+    .tbl-card{background:#fff;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden;}
+    .tbl-card .tbl-head{padding:14px 18px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .tbl-card .tbl-head .title{font-size:.875rem;font-weight:700;color:#0f172a;}
+    .tbl-card table{margin:0;width:100%;}
+    .tbl-card thead th{background:#f8fafc;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#64748b;border-bottom:1px solid #e2e8f0;padding:10px 16px;white-space:nowrap;}
+    .tbl-card tbody td{padding:10px 16px;vertical-align:middle;border-bottom:1px solid #f8fafc;font-size:.82rem;color:#1e293b;}
+    .tbl-card tbody tr:last-child td{border-bottom:none;}
+    .tbl-card tbody tr:hover{background:#fafcff;}
+
+    /* ─── FORM CARD ─── */
+    .form-card{background:#fff;border-radius:12px;border:1px solid #e2e8f0;padding:22px;}
+    .form-section{margin-bottom:24px;}
+    .form-section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#64748b;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f1f5f9;}
+
+    /* ─── INLINE FORMSET ─── */
+    .fs-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:10px;position:relative;}
+    .fs-del-wrap{position:absolute;top:10px;right:10px;}
+
+    /* ─── BADGES ─── */
+    .bs-paid{background:#dcfce7;color:#15803d;}
+    .bs-created{background:#fef9c3;color:#854d0e;}
+    .bs-failed{background:#fee2e2;color:#991b1b;}
+    .bs-cancelled{background:#f1f5f9;color:#475569;}
+    .bs-active{background:#dcfce7;color:#15803d;}
+    .bs-inactive{background:#fee2e2;color:#991b1b;}
+    .bs-approved{background:#dbeafe;color:#1d4ed8;}
+    .bs-pending{background:#fef9c3;color:#854d0e;}
+    .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
+
+    /* ─── PRODUCT THUMB ─── */
+    .prod-thumb{width:44px;height:44px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;}
+    .prod-thumb-ph{width:44px;height:44px;border-radius:8px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:1.1rem;}
+
+    /* ─── ACTION BTNS ─── */
+    .btn-icon{width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:.85rem;}
+    .btn-accent{background:var(--accent);color:#fff;border:none;}
+    .btn-accent:hover{background:#c73652;color:#fff;}
+
+    /* ─── FILTERS BAR ─── */
+    .filter-bar{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+    .filter-bar .form-control,.filter-bar .form-select{font-size:.82rem;height:34px;border-radius:6px;}
+    .filter-bar .btn{font-size:.82rem;height:34px;padding:0 14px;}
+
+    /* ─── PAGINATION ─── */
+    .pagination .page-link{font-size:.8rem;padding:5px 10px;}
+
+    /* ─── IMAGE PREVIEW ─── */
+    .img-preview{border:2px dashed #cbd5e1;border-radius:8px;padding:8px;text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .img-preview img{max-height:100px;max-width:100%;border-radius:6px;}
+
+    /* ─── STARS ─── */
+    .stars{color:#f59e0b;font-size:.85rem;}
+
+    /* ─── MOBILE ─── */
+    @media(max-width:768px){
+      #sb{transform:translateX(-100%);}
+      #sb.show{transform:translateX(0);}
+      #main{margin-left:0;}
+      .sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1039;}
+      .sb-overlay.show{display:block;}
+    }
+
+    .table-responsive{overflow-x:auto;}
+    label.form-label{font-size:.8rem;font-weight:600;color:#374151;margin-bottom:4px;}
+    .form-control,.form-select{font-size:.875rem;}
+    .form-control:focus,.form-select:focus{border-color:#e94560;box-shadow:0 0 0 3px rgba(233,69,96,.12);}
+    .btn-sm-soft-danger{background:#fee2e2;color:#991b1b;border:none;font-size:.75rem;padding:3px 10px;border-radius:6px;}
+    .btn-sm-soft-danger:hover{background:#fecaca;}
+    .btn-sm-soft-success{background:#dcfce7;color:#15803d;border:none;font-size:.75rem;padding:3px 10px;border-radius:6px;}
+    .btn-sm-soft-success:hover{background:#bbf7d0;}
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- Overlay for mobile -->
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<nav id="sb">
+  <div class="sb-brand">
+    <div class="name">ADORN</div>
+    <div class="sub">ADMIN PANEL</div>
+  </div>
+
+  <!-- Overview -->
+  <div class="sb-section">
+    <a href="{% url 'dashboard:home' %}" class="sb-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+      <i class="bi bi-grid-1x2-fill"></i> Dashboard
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Catalog -->
+  <div class="sb-section">
+    <div class="sb-label">Catalog</div>
+    <a href="{% url 'dashboard:products_list' %}" class="sb-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-gem"></i> Products
+    </a>
+    <a href="{% url 'dashboard:collections_list' %}" class="sb-link {% if 'collection' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-folder2-open"></i> Collections
+    </a>
+    <a href="{% url 'dashboard:tags_list' %}" class="sb-link {% if 'tag' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-tags-fill"></i> Tags
+    </a>
+    <a href="{% url 'dashboard:ring_sizes_list' %}" class="sb-link {% if 'ring_size' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-circle"></i> Ring Sizes
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Orders -->
+  <div class="sb-section">
+    <div class="sb-label">Orders & Payments</div>
+    <a href="{% url 'dashboard:orders_list' %}" class="sb-link {% if 'order' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-bag-check-fill"></i> All Orders
+    </a>
+    <a href="{% url 'dashboard:orders_list' %}?status=paid" class="sb-link">
+      <i class="bi bi-check-circle"></i> Paid Orders
+    </a>
+    <a href="{% url 'dashboard:orders_list' %}?status=created" class="sb-link">
+      <i class="bi bi-hourglass-split"></i> Pending Orders
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Marketing -->
+  <div class="sb-section">
+    <div class="sb-label">Marketing</div>
+    <a href="{% url 'dashboard:coupons_list' %}" class="sb-link {% if 'coupon' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-ticket-perforated-fill"></i> Coupons
+    </a>
+    <a href="{% url 'dashboard:newsletter_list' %}" class="sb-link {% if 'newsletter' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-envelope-at-fill"></i> Newsletter
+    </a>
+    <a href="{% url 'dashboard:reviews_list' %}" class="sb-link {% if 'review' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-star-fill"></i> Reviews
+      {% if pending_reviews_count %}<span class="sb-badge">{{ pending_reviews_count }}</span>{% endif %}
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Content -->
+  <div class="sb-section">
+    <div class="sb-label">Content & Media</div>
+    <a href="{% url 'dashboard:lookbook_list' %}" class="sb-link {% if url_name == 'lookbook_list' or url_name == 'lookbook_add' or url_name == 'lookbook_edit' %}active{% endif %}">
+      <i class="bi bi-images"></i> Lookbook Hero
+    </a>
+    <a href="{% url 'dashboard:lookbook_sections_list' %}" class="sb-link {% if 'lookbook_section' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-layout-split"></i> Lookbook Sections
+    </a>
+    <a href="{% url 'dashboard:shop_the_look_list' %}" class="sb-link {% if 'shop_the_look' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-eye-fill"></i> Shop The Look
+    </a>
+    <a href="{% url 'dashboard:size_guides_list' %}" class="sb-link {% if 'size_guide' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-rulers"></i> Size Guides
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Support -->
+  <div class="sb-section">
+    <div class="sb-label">Support & Store</div>
+    <a href="{% url 'dashboard:contact_messages_list' %}" class="sb-link {% if 'contact_message' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-chat-dots-fill"></i> Contact Messages
+      {% if pending_contact_count %}<span class="sb-badge">{{ pending_contact_count }}</span>{% endif %}
+    </a>
+    <a href="{% url 'dashboard:contact_faqs_list' %}" class="sb-link {% if 'contact_faq' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-question-circle-fill"></i> Contact FAQs
+    </a>
+    <a href="{% url 'dashboard:store_locations_list' %}" class="sb-link {% if 'store_location' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-geo-alt-fill"></i> Store Locations
+    </a>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- External -->
+  <div class="sb-section">
+    <a href="/admin/" target="_blank" class="sb-link">
+      <i class="bi bi-shield-lock"></i> Django Admin
+    </a>
+    <a href="/" target="_blank" class="sb-link">
+      <i class="bi bi-box-arrow-up-right"></i> View Website
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div id="main">
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-sm border-0 d-md-none p-1" onclick="toggleSidebar()">
+        <i class="bi bi-list fs-4"></i>
+      </button>
+      <h1 class="topbar-title mb-0">{% block page_title %}Dashboard{% endblock %}</h1>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/" target="_blank" class="btn btn-sm btn-outline-secondary d-none d-sm-inline-flex align-items-center gap-1">
+        <i class="bi bi-eye"></i> <span class="d-none d-md-inline">View Site</span>
+      </a>
+      <div class="d-flex align-items-center gap-2">
+        <div class="user-dot">{{ request.user.username|first|upper }}</div>
+        <small class="text-muted d-none d-md-block fw-semibold">{{ request.user.username }}</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flash messages -->
+  {% if messages %}
+  <div class="px-4 pt-3">
+    {% for msg in messages %}
+    <div class="alert alert-{{ msg.tags|default:'info' }} alert-dismissible fade show py-2" role="alert" style="font-size:.85rem;">
+      {% if msg.tags == 'success' %}<i class="bi bi-check-circle-fill me-2"></i>{% elif msg.tags == 'error' %}<i class="bi bi-x-circle-fill me-2"></i>{% endif %}
+      {{ msg }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Page content -->
+  <div class="page-body">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleSidebar(){
+  document.getElementById('sb').classList.toggle('show');
+  document.getElementById('sbOverlay').classList.toggle('show');
+}
+
+// Image preview helper
+document.addEventListener('change', function(e){
+  if(e.target.type === 'file' && e.target.accept && e.target.accept.includes('image')){
+    const file = e.target.files[0];
+    if(!file) return;
+    const box = e.target.closest('[data-preview]');
+    if(box){
+      const img = box.querySelector('img');
+      if(img){ img.src = URL.createObjectURL(file); }
+    }
+  }
+});
+
+// Confirm delete
+document.querySelectorAll('[data-confirm]').forEach(function(el){
+  el.addEventListener('click', function(e){
+    if(!confirm(el.dataset.confirm || 'Are you sure?')){
+      e.preventDefault();
+    }
+  });
+});
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

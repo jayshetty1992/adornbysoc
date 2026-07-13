@@ -1,0 +1,43 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Lookbook Heroes{% endblock %}
+{% block page_title %}Lookbook Hero Banners{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'dashboard:lookbook_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> Add Lookbook
+  </a>
+</div>
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Image</th><th>Title</th><th>Subtitle</th><th>CTA</th><th>Order</th><th>Active</th><th style="width:100px;">Actions</th></tr></thead>
+      <tbody>
+        {% for lb in lookbooks %}
+        <tr>
+          <td>
+            {% if lb.image %}<img src="{{ lb.image.url }}" style="width:80px;height:50px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;" alt="">
+            {% else %}<div class="prod-thumb-ph"><i class="bi bi-image"></i></div>{% endif %}
+          </td>
+          <td class="fw-semibold" style="font-size:.85rem;">{{ lb.title|default:"(no title)" }}</td>
+          <td style="font-size:.78rem;color:#475569;">{{ lb.subtitle|default:"—"|truncatechars:50 }}</td>
+          <td style="font-size:.78rem;">
+            {% if lb.cta_text %}<a href="{{ lb.cta_url|default:'#' }}" target="_blank" rel="noopener" class="text-primary">{{ lb.cta_text }}</a>{% else %}—{% endif %}
+          </td>
+          <td>{{ lb.sort_order }}</td>
+          <td>{% if lb.is_active %}<span class="badge bs-active">Active</span>{% else %}<span class="badge bs-inactive">Inactive</span>{% endif %}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{% url 'dashboard:lookbook_edit' lb.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-pencil-fill"></i></a>
+              <form method="post" action="{% url 'dashboard:lookbook_delete' lb.pk %}">{% csrf_token %}<button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this lookbook?')"><i class="bi bi-trash-fill"></i></button></form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center py-5 text-muted"><i class="bi bi-images fs-2 d-block mb-2"></i>No lookbook banners yet.<br><a href="{% url 'dashboard:lookbook_add' %}" class="btn btn-accent btn-sm mt-3">Add First Banner</a></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

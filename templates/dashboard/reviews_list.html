@@ -1,0 +1,88 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Reviews{% endblock %}
+{% block page_title %}Customer Reviews{% endblock %}
+
+{% block content %}
+<div class="d-flex gap-2 mb-3 flex-wrap align-items-center justify-content-between">
+  <div class="d-flex gap-2">
+    <a href="{% url 'dashboard:reviews_list' %}" class="btn btn-sm {% if not current_status %}btn-accent{% else %}btn-outline-secondary{% endif %}">All</a>
+    <a href="?status=pending" class="btn btn-sm {% if current_status == 'pending' %}btn-warning{% else %}btn-outline-secondary{% endif %}">
+      Pending {% if pending_count %}<span class="badge bg-warning text-dark ms-1">{{ pending_count }}</span>{% endif %}
+    </a>
+    <a href="?status=approved" class="btn btn-sm {% if current_status == 'approved' %}btn-success{% else %}btn-outline-secondary{% endif %}">Approved</a>
+  </div>
+</div>
+
+<div class="tbl-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr><th>Product</th><th>Reviewer</th><th>Rating</th><th>Review</th><th>Status</th><th>Date</th><th style="width:120px;">Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for review in page_obj %}
+        <tr>
+          <td>
+            <div class="fw-semibold" style="font-size:.82rem;">{{ review.product.title }}</div>
+            <div class="text-muted" style="font-size:.72rem;">{{ review.product.collection.name }}</div>
+          </td>
+          <td>
+            <div class="fw-semibold" style="font-size:.82rem;">{{ review.name }}</div>
+            <div class="text-muted" style="font-size:.72rem;">{{ review.email }}</div>
+          </td>
+          <td>
+            <div class="stars">
+              {% for i in "12345" %}{% if forloop.counter <= review.rating %}&#9733;{% else %}&#9734;{% endif %}{% endfor %}
+            </div>
+            <div style="font-size:.72rem;color:#64748b;">{{ review.rating }}/5</div>
+          </td>
+          <td style="max-width:280px;">
+            {% if review.title %}<div class="fw-semibold" style="font-size:.8rem;">{{ review.title }}</div>{% endif %}
+            <div style="font-size:.78rem;color:#374151;">{{ review.body|truncatechars:100 }}</div>
+          </td>
+          <td>
+            {% if review.is_approved %}
+            <span class="badge bs-approved">Approved</span>
+            {% else %}
+            <span class="badge bs-pending">Pending</span>
+            {% endif %}
+          </td>
+          <td class="text-muted" style="font-size:.75rem;">{{ review.created_at|date:"d M Y" }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <form method="post" action="{% url 'dashboard:review_toggle' review.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon {% if review.is_approved %}btn-warning{% else %}btn-success{% endif %}" title="{% if review.is_approved %}Unapprove{% else %}Approve{% endif %}">
+                  <i class="bi bi-{% if review.is_approved %}x-lg{% else %}check-lg{% endif %}"></i>
+                </button>
+              </form>
+              <form method="post" action="{% url 'dashboard:review_delete' review.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-icon btn-danger" title="Delete" onclick="return confirm('Delete this review?')">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center py-5 text-muted">
+            <i class="bi bi-star fs-2 d-block mb-2"></i>No reviews found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.has_other_pages %}
+  <div class="d-flex justify-content-center py-3">
+    <nav><ul class="pagination mb-0">
+      {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ current_status }}"><i class="bi bi-chevron-left"></i></a></li>{% endif %}
+      <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+      {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ current_status }}"><i class="bi bi-chevron-right"></i></a></li>{% endif %}
+    </ul></nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

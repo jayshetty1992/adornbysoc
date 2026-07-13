@@ -1,0 +1,623 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Privacy Policy | ADORN{% endblock %}
+
+{% block extra_css %}
+<style>
+:root{
+  --cream:#f6f2ea;
+  --ink:#0c0c0d;
+  --gold:#b7862b;
+  --muted:rgba(12,12,13,.68);
+  --line:rgba(0,0,0,.14);
+  --panel:#ffffff;
+  --shadow:0 18px 50px rgba(0,0,0,.10);
+}
+
+/* Page base */
+.policy-hero{
+  background:var(--cream);
+  padding:84px 0 64px;
+  border-bottom:1px solid var(--line);
+}
+.policy-hero-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:54px;
+  align-items:center;
+}
+.policy-kicker{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(0,0,0,.55);
+}
+.policy-title{
+  margin:12px 0 8px;
+  font-size:44px;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.policy-sub{
+  margin:0;
+  max-width:640px;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.95;
+  color:rgba(0,0,0,.74);
+}
+.policy-meta{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.meta-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(0,0,0,.10);
+  font-size:12px;
+  letter-spacing:.08em;
+  color:rgba(0,0,0,.70);
+  backdrop-filter: blur(6px);
+}
+.meta-pill b{
+  font-weight:900;
+  letter-spacing:.12em;
+  color:rgba(0,0,0,.85);
+}
+
+.policy-card{
+  background:var(--panel);
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+.policy-card h3{
+  margin:0 0 10px;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.policy-card ul{
+  margin:0;
+  padding-left:18px;
+  color:rgba(0,0,0,.75);
+  line-height:1.85;
+  letter-spacing:.05em;
+  font-size:13px;
+}
+.policy-card li{ margin:6px 0; }
+
+.policy-wrap{
+  max-width:1120px;
+  margin:60px auto 90px;
+  padding:0 16px;
+}
+.policy-grid{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:28px;
+  align-items:start;
+}
+
+.toc{
+  position:sticky;
+  top:18px;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,.06);
+  padding:16px;
+}
+.toc-title{
+  margin:0 0 10px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(0,0,0,.65);
+}
+.toc a{
+  display:block;
+  padding:10px 10px;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.10em;
+  color:rgba(0,0,0,.70);
+  border:1px solid transparent;
+}
+.toc a:hover{
+  background:rgba(183,134,43,.10);
+  border-color:rgba(183,134,43,.22);
+  color:rgba(0,0,0,.85);
+}
+.toc a.active{
+  background:rgba(183,134,43,.14);
+  border-color:rgba(183,134,43,.28);
+  color:rgba(0,0,0,.92);
+}
+.toc-note{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(0,0,0,.10);
+  font-size:12px;
+  letter-spacing:.06em;
+  line-height:1.7;
+  color:rgba(0,0,0,.62);
+}
+.toc-note a{
+  display:inline;
+  padding:0;
+  border:none;
+  border-radius:0;
+  text-decoration:underline;
+  color:rgba(0,0,0,.75);
+}
+
+.policy-content{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+  box-shadow:0 12px 34px rgba(0,0,0,.06);
+  padding:26px;
+}
+.policy-section{
+  padding:18px 0;
+  border-top:1px solid rgba(0,0,0,.08);
+  scroll-margin-top:90px;
+}
+.policy-section:first-child{
+  border-top:none;
+  padding-top:0;
+}
+.policy-h{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.policy-p{
+  margin:10px 0;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.95;
+  color:rgba(0,0,0,.76);
+}
+.policy-list{
+  margin:10px 0 0;
+  padding-left:18px;
+  font-size:14px;
+  letter-spacing:.06em;
+  line-height:1.9;
+  color:rgba(0,0,0,.76);
+}
+.policy-list li{ margin:7px 0; }
+
+.policy-mini{
+  margin-top:12px;
+  border:1px solid rgba(183,134,43,.28);
+  background:rgba(183,134,43,.08);
+  border-radius:14px;
+  padding:14px 14px;
+}
+.policy-mini b{
+  font-weight:900;
+  letter-spacing:.10em;
+}
+.policy-mini .policy-p{
+  margin:8px 0 0;
+  color:rgba(0,0,0,.74);
+}
+
+.policy-cta{
+  margin-top:22px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.btn-gold{
+  display:inline-block;
+  padding:12px 18px;
+  background:var(--gold);
+  color:#fff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  border-radius:12px;
+}
+.btn-ghost{
+  display:inline-block;
+  padding:12px 18px;
+  background:transparent;
+  color:rgba(0,0,0,.78);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.16);
+}
+.btn-ghost:hover{
+  border-color:rgba(183,134,43,.45);
+  background:rgba(183,134,43,.08);
+}
+
+.small-muted{
+  font-size:12px;
+  letter-spacing:.08em;
+  color:rgba(0,0,0,.62);
+  line-height:1.7;
+}
+
+/* Scroll reveal */
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .75s ease, transform .75s ease;
+  will-change:opacity, transform;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.reveal.delay-1{ transition-delay:.08s; }
+.reveal.delay-2{ transition-delay:.16s; }
+.reveal.delay-3{ transition-delay:.24s; }
+
+/* Responsive */
+@media(max-width:991px){
+  .policy-hero-grid{ grid-template-columns:1fr; }
+  .policy-title{ font-size:34px; }
+  .policy-grid{ grid-template-columns:1fr; }
+  .toc{ position:relative; top:auto; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="policy-hero">
+  <div class="container">
+    <div class="policy-hero-grid">
+      <div class="reveal">
+        <div class="policy-kicker">Company policy</div>
+        <h1 class="policy-title">Privacy Policy</h1>
+        <p class="policy-sub">
+          This Privacy Policy explains how ADORN by SOC collects, uses, shares, and protects
+          information when you visit our website, contact us, or place an order. It also explains
+          the choices you have about your information.
+        </p>
+
+        <div class="policy-meta">
+          <span class="meta-pill"><b>Last updated</b> Jan 3, 2026</span>
+          <span class="meta-pill"><b>Applies to</b> adornbysoc.com</span>
+          <span class="meta-pill"><b>Contact</b> Shop@adornbysoc.com</span>
+        </div>
+      </div>
+
+      <div class="policy-card reveal delay-1">
+        <h3>Quick summary</h3>
+        <ul>
+          <li>We collect information you give us to process orders and support requests.</li>
+          <li>Payment details are handled by payment providers; we do not store full card data.</li>
+          <li>We use cookies and similar tools for site functionality and analytics.</li>
+          <li>You can request access, correction, or deletion of your personal data.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="policy-wrap">
+  <div class="policy-grid">
+
+    <aside class="toc reveal">
+      <div class="toc-title">On this page</div>
+      <a href="#scope">Scope</a>
+      <a href="#collect">Information we collect</a>
+      <a href="#use">How we use information</a>
+      <a href="#cookies">Cookies and tracking</a>
+      <a href="#share">How we share information</a>
+      <a href="#transfers">International transfers</a>
+      <a href="#retain">Data retention</a>
+      <a href="#security">Security</a>
+      <a href="#rights">Your choices and rights</a>
+      <a href="#marketing">Marketing preferences</a>
+      <a href="#children">Children</a>
+      <a href="#changes">Changes to this policy</a>
+      <a href="#contact">Contact us</a>
+
+      <div class="toc-note">
+        Need help fast? Email us at <a href="mailto:Shop@adornbysoc.com">Shop@adornbysoc.com</a>.
+      </div>
+    </aside>
+
+    <article class="policy-content">
+
+      <section id="scope" class="policy-section reveal">
+        <h2 class="policy-h">Scope</h2>
+        <p class="policy-p">
+          This Privacy Policy covers information collected through our website and related services,
+          including when you browse, create an account (if available), place an order, subscribe to updates,
+          or contact us.
+        </p>
+        <p class="policy-p">
+          Our website may include links to third-party platforms (for example, social media). We are not responsible
+          for the privacy practices of those third parties. Please review their policies separately.
+        </p>
+      </section>
+
+      <section id="collect" class="policy-section reveal">
+        <h2 class="policy-h">Information we collect</h2>
+        <p class="policy-p">
+          We collect information in three main ways: (1) information you provide, (2) information collected automatically
+          when you use the site, and (3) information from service providers needed to complete your requests.
+        </p>
+
+        <div class="policy-mini">
+          <b>Information you provide</b>
+          <ul class="policy-list">
+            <li>Contact details such as name, email address, phone number, and shipping address.</li>
+            <li>Order details such as items purchased, size preferences (where applicable), and delivery instructions.</li>
+            <li>Account information (if you create an account) such as login credentials and saved addresses.</li>
+            <li>Messages you send us through forms or email, including any attachments you choose to share.</li>
+          </ul>
+        </div>
+
+        <div class="policy-mini">
+          <b>Information collected automatically</b>
+          <ul class="policy-list">
+            <li>Device and browser information, operating system, and approximate location (based on IP address).</li>
+            <li>Usage data such as pages viewed, time spent, clicks, and referring URLs.</li>
+            <li>Log data for security and troubleshooting (for example, timestamps and error logs).</li>
+            <li>Cookie identifiers and similar technologies (see Cookies and tracking below).</li>
+          </ul>
+        </div>
+
+        <div class="policy-mini">
+          <b>Payment information</b>
+          <p class="policy-p">
+            When you pay for an order, payment details are handled by third-party payment providers. We receive confirmation
+            of payment status and limited details needed for accounting and fraud prevention. We do not store complete card numbers
+            or card security codes on our servers.
+          </p>
+        </div>
+
+        <div class="policy-mini">
+          <b>reCAPTCHA</b>
+          <p class="policy-p">
+            Our contact forms may be protected by Google reCAPTCHA to prevent spam and abuse. Your use of reCAPTCHA is subject to
+            Google's terms and privacy practices.
+          </p>
+        </div>
+      </section>
+
+      <section id="use" class="policy-section reveal">
+        <h2 class="policy-h">How we use information</h2>
+        <p class="policy-p">
+          We use personal information to operate our business, provide products and services, and improve your experience.
+          Typical uses include:
+        </p>
+        <ul class="policy-list">
+          <li>Processing orders, payments, shipping, returns, and exchanges.</li>
+          <li>Sending order updates, invoices, delivery notifications, and customer support responses.</li>
+          <li>Providing customer service, resolving issues, and responding to requests.</li>
+          <li>Improving site performance, user experience, and product offerings.</li>
+          <li>Preventing fraud, misuse, and protecting the security of our systems and customers.</li>
+          <li>Complying with legal obligations, accounting rules, and enforcing our terms.</li>
+        </ul>
+        <p class="policy-p small-muted">
+          Legal bases may include performance of a contract (for example, fulfilling your order), legitimate interests (for example, security and improvement),
+          and consent (for example, marketing emails where required).
+        </p>
+      </section>
+
+      <section id="cookies" class="policy-section reveal">
+        <h2 class="policy-h">Cookies and tracking</h2>
+        <p class="policy-p">
+          Cookies are small files stored on your device that help websites work properly. We use cookies and similar technologies for:
+        </p>
+        <ul class="policy-list">
+          <li>Essential functions (for example, keeping items in your cart and enabling checkout).</li>
+          <li>Preferences (for example, remembering choices and settings).</li>
+          <li>Analytics (for example, understanding traffic and improving pages).</li>
+          <li>Security (for example, detecting suspicious behavior).</li>
+        </ul>
+        <p class="policy-p">
+          You can manage cookies in your browser settings. If you disable some cookies, parts of the site may not function as intended.
+        </p>
+      </section>
+
+      <section id="share" class="policy-section reveal">
+        <h2 class="policy-h">How we share information</h2>
+        <p class="policy-p">
+          We do not sell your personal information. We share information only as needed to run our services, fulfill orders, and comply with law.
+          We may share information with:
+        </p>
+        <ul class="policy-list">
+          <li>Shipping and logistics partners to deliver your order.</li>
+          <li>Payment processors to process transactions and prevent fraud.</li>
+          <li>Service providers that support website hosting, analytics, email delivery, and customer support tools.</li>
+          <li>Legal or regulatory authorities if required by law, or to protect rights, safety, and security.</li>
+        </ul>
+        <p class="policy-p">
+          When we use service providers, we limit access to what is needed for their work and expect them to protect the information.
+        </p>
+      </section>
+
+      <section id="transfers" class="policy-section reveal">
+        <h2 class="policy-h">International transfers</h2>
+        <p class="policy-p">
+          We may ship to customers in multiple regions. Some of our service providers may process information on servers located outside your country.
+          Where required, we take steps designed to protect your information during transfers, such as contractual safeguards and security controls.
+        </p>
+      </section>
+
+      <section id="retain" class="policy-section reveal">
+        <h2 class="policy-h">Data retention</h2>
+        <p class="policy-p">
+          We keep personal information only as long as necessary for the purposes described in this policy, including:
+        </p>
+        <ul class="policy-list">
+          <li>Completing your orders and providing customer support.</li>
+          <li>Maintaining records required for accounting, tax, and legal compliance.</li>
+          <li>Resolving disputes and enforcing our agreements.</li>
+        </ul>
+        <p class="policy-p">
+          When information is no longer needed, we take steps to delete it or anonymize it.
+        </p>
+      </section>
+
+      <section id="security" class="policy-section reveal">
+        <h2 class="policy-h">Security</h2>
+        <p class="policy-p">
+          We use reasonable administrative, technical, and physical safeguards designed to protect personal information.
+          However, no method of transmission over the internet or electronic storage is 100 percent secure.
+        </p>
+        <p class="policy-p">
+          Please help keep your account secure by using a strong password and not sharing login credentials.
+        </p>
+      </section>
+
+      <section id="rights" class="policy-section reveal">
+        <h2 class="policy-h">Your choices and rights</h2>
+        <p class="policy-p">
+          Depending on your location and applicable law, you may have rights to:
+        </p>
+        <ul class="policy-list">
+          <li>Access the personal information we hold about you.</li>
+          <li>Correct inaccurate or incomplete information.</li>
+          <li>Request deletion of certain information.</li>
+          <li>Withdraw consent where processing is based on consent.</li>
+          <li>Object to certain processing or request restriction (in some cases).</li>
+          <li>Request a copy of your information in a portable format (in some cases).</li>
+        </ul>
+
+        <div class="policy-mini">
+          <b>How to make a request</b>
+          <p class="policy-p">
+            Email us at Shop@adornbysoc.com with your request and enough information to verify your identity.
+            We may ask for additional details to protect your account and prevent unauthorized access.
+          </p>
+        </div>
+      </section>
+
+      <section id="marketing" class="policy-section reveal">
+        <h2 class="policy-h">Marketing preferences</h2>
+        <p class="policy-p">
+          If you subscribe to emails, you can opt out at any time by using the unsubscribe link in our messages or by contacting us.
+          Even if you opt out of marketing, we may still send transactional messages such as order confirmations and delivery updates.
+        </p>
+      </section>
+
+      <section id="children" class="policy-section reveal">
+        <h2 class="policy-h">Children</h2>
+        <p class="policy-p">
+          Our website and products are not intended for children. We do not knowingly collect personal information from children.
+          If you believe a child has provided personal information, contact us so we can take appropriate action.
+        </p>
+      </section>
+
+      <section id="changes" class="policy-section reveal">
+        <h2 class="policy-h">Changes to this policy</h2>
+        <p class="policy-p">
+          We may update this Privacy Policy from time to time to reflect changes to our practices or for legal and operational reasons.
+          When we update it, we will revise the "Last updated" date at the top of this page.
+        </p>
+      </section>
+
+      <section id="contact" class="policy-section reveal">
+        <h2 class="policy-h">Contact us</h2>
+        <p class="policy-p">
+          For privacy questions, requests, or complaints, contact:
+        </p>
+        <ul class="policy-list">
+          <li>Email: <a href="mailto:Shop@adornbysoc.com">Shop@adornbysoc.com</a></li>
+          <li>Address: 605, Tower 11, Blueridge Hinjewadi phase 1, Pune (M.H.) 411057 India</li>
+        </ul>
+
+        <div class="policy-cta">
+          <a class="btn-gold" href="{% url 'catalog:contact' %}">Contact form</a>
+          <a class="btn-ghost" href="#scope">Back to top</a>
+        </div>
+
+        <p class="policy-p small-muted">
+          Note: For order support, please include your order number and the email used at checkout.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  // Scroll reveal
+  var els = document.querySelectorAll(".reveal");
+  if(els && els.length){
+    if(!("IntersectionObserver" in window)){
+      els.forEach(function(el){ el.classList.add("is-visible"); });
+    }else{
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+
+      els.forEach(function(el){ io.observe(el); });
+    }
+  }
+
+  // Active TOC highlight
+  var tocLinks = document.querySelectorAll(".toc a[href^='#']");
+  var sections = [];
+  tocLinks.forEach(function(a){
+    var id = a.getAttribute("href").slice(1);
+    var sec = document.getElementById(id);
+    if(sec) sections.push(sec);
+  });
+
+  function setActive(id){
+    tocLinks.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === ("#" + id));
+    });
+  }
+
+  if("IntersectionObserver" in window && sections.length){
+    var tocObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          setActive(entry.target.id);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "-15% 0px -70% 0px" });
+
+    sections.forEach(function(sec){ tocObserver.observe(sec); });
+  }
+})();
+</script>
+{% endblock %}

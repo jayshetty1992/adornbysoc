@@ -1,0 +1,848 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ADORN - Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="container hero-inner">
+    <div>
+      <!-- one-by-one reveal (delay via --d) -->
+      <div class="hero-kicker hero-reveal" style="--d: 120ms;">Modern Heirlooms</div>
+      <h1 class="hero-title hero-reveal" style="--d: 340ms;">Statement Gold</h1>
+
+      <div class="hero-actions hero-reveal" style="--d: 620ms;">
+        <a class="btn btn-hero btn-hero-light"
+          href="{% if hero_primary_slug %}{% url 'catalog:collection_products' slug=hero_primary_slug %}{% else %}{% url 'catalog:collection_products' slug='earrings' %}{% endif %}">
+          Shop Earrings
+        </a>
+
+        <a class="btn btn-hero btn-hero-outline" href="{% url 'catalog:collection_products' slug='gold' %}">
+          Gold Pieces
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOVING ICON + TEXT STRIP (hover stop, no links) -->
+<section class="mini-marquee">
+  <div class="container-fluid px-0">
+    <div class="marquee-track" id="miniMarqueeTrack">
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="">Sustainably Designed</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="">Handmade by Artisans</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-09-10-15-25.png' %}" alt="">Made in Athens, GC</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-15-12-37-20.png' %}" alt="">Sustainably Designed</div>
+      <div class="marquee-item"><img src="{% static 'img/gifs/GIF-2025-11-14-10-09-50.gif' %}" alt="">Handmade by Artisans</div>
+
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="">Sustainably Designed</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="">Handmade by Artisans</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-09-10-15-25.png' %}" alt="">Made in Athens, GC</div>
+      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-15-12-37-20.png' %}" alt="">Sustainably Designed</div>
+      <div class="marquee-item"><img src="{% static 'img/gifs/GIF-2025-11-14-10-09-50.gif' %}" alt="">Handmade by Artisans</div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP COLLECTIONS -->
+<section class="shop-collections">
+  <div class="container">
+    <div class="shop-head">
+      <h2 class="shop-title">Shop Collections</h2>
+
+     <div class="arrivals-arrows">
+        <button class="arrivals-btn" type="button" id="colPrev" aria-label="Previous">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+</button>        
+<button class="arrivals-btn" type="button" id="colNext" aria-label="Next">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</button>
+      </div>
+    </div>
+
+    <div class="collections-row" id="collectionsRow">
+      {% if home_collections %}
+      {% for c in home_collections %}
+      <!-- Card goes to /catalog/collections/<slug>/ -->
+      <a class="collection-card" href="{% url 'catalog:collection_products' slug=c.slug %}">
+        <img class="collection-img"
+          src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}"
+          alt="{{ c.name }}">
+
+        <div class="card-bottom">
+          <div class="card-label">{{ c.name }}</div>
+          <div class="card-mini-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+      {% else %}
+      <a class="collection-card" href="{% url 'catalog:collection_list' %}">
+        <img class="collection-img" src="{% static 'img/ring-transparent-2.webp' %}" alt="Collections">
+        <div class="card-bottom">
+          <div class="card-label">View Collections</div>
+          <div class="card-mini-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </div>
+        </div>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- SPLIT COLLECTIONS (ADAPT / POISE) -->
+<section class="split-collections">
+  <div class="split-grid">
+    <div class="split-card">
+      <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adapt Collection">
+      <div class="split-content">
+        <h2 class="split-title">Adapt Collection</h2>
+        <p class="split-sub">Fluid silhouettes and adjustable fits.</p>
+
+        <!-- collection/adapt/ -->
+        <a class="split-btn" href="{% url 'catalog:collection_products' slug='adapt' %}">Shop Now</a>
+      </div>
+    </div>
+
+    <div class="split-card">
+      <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Poise Collection">
+      <div class="split-content">
+        <h2 class="split-title">Poise Collection</h2>
+        <p class="split-sub">Minimal lines, bold intent. Made for self-expression.</p>
+
+        <!-- collection/poise/ -->
+        <a class="split-btn" href="{% url 'catalog:collection_products' slug='poise' %}">Shop Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO BACKGROUND SECTION (COASTAL EDIT) -->
+<section class="video-hero">
+  <video autoplay muted loop playsinline preload="metadata">
+    <source src="{% static 'img/videos/vdo.mp4' %}" type="video/mp4">
+  </video>
+  <div class="video-overlay" aria-hidden="true"></div>
+
+  <div class="video-center container">
+    <div>
+      <div class="v-kicker">New Collection</div>
+      <h2 class="v-title">Coastal Edit</h2>
+
+      <img class="v-ring" src="{% static 'img/nwc.png' %}" alt="Ring">
+      <div class="v-sub">Effortless Style for Life by the Coast</div>
+
+      <!-- collection/coastal/ -->
+      <a class="v-link" href="{% url 'catalog:collection_products' slug='bangles' %}">Shop the Edit</a>
+    </div>
+  </div>
+</section>
+
+<!-- SEASONAL MARKDOWNS -->
+<section class="seasonal">
+  <img class="seasonal-bg" src="{% static 'img/3.png' %}" alt="Seasonal background">
+
+  <div class="container seasonal-inner">
+    <div class="seasonal-grid">
+      <div class="seasonal-left">
+        <h2>Seasonal<br>Markdowns -</h2>
+      </div>
+
+      <div class="seasonal-right">
+        <h3>Up to 30% off select<br>earrings, rings, and<br>bangles</h3>
+        <p>
+          This week only. Receive a free polishing cloth<br>
+          with orders over $200.
+        </p>
+        <a class="seasonal-btn" href="{% url 'catalog:sale_page' %}">Shop the Sale</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section class="arrivals">
+  <div class="container">
+    <div class="arrivals-head">
+      <div>
+        <h2 class="arrivals-title">New Arrivals</h2>
+        <a class="shopall-link" href="{% url 'catalog:product_list' %}?tag=new">Shop all</a>
+      </div>
+
+      <div class="arrivals-arrows">
+        <button class="arrivals-btn" type="button" id="arrPrev" aria-label="Previous">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button class="arrivals-btn" type="button" id="arrNext" aria-label="Next">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="arrivals-row" id="arrivalsRow">
+      {% for p in new_arrivals %}
+      <a class="product-card" href="{% url 'catalog:product_detail' slug=p.slug %}">
+        <span class="badge-new">New</span>
+
+        <div class="product-media">
+          {% with img=p.primary_image_obj %}
+          <img class="product-img primary"
+            src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/4.jpg' %}{% endif %}" alt="{{ p.title }}">
+          {% endwith %}
+
+          {% with h=p.hover_image_obj %}
+          <img class="product-img alt" src="{% if h %}{{ h.image.url }}{% else %}{% static 'img/5.jpg' %}{% endif %}"
+            alt="{{ p.title }} hover">
+          {% endwith %}
+
+          <div class="quick-view">Quick View</div>
+        </div>
+
+        <div class="product-meta">
+          <div class="product-name">{{ p.title }}</div>
+          <div class="product-price">Rs.{{ p.price_inr }}</div>
+        </div>
+      </a>
+      {% empty %}
+      <div style="padding:18px; color:rgba(255,255,255,.75)">No new arrivals yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL 2-IMAGE SECTION -->
+<section class="editorial-2">
+  <div class="container">
+    <div class="editorial-grid">
+      <div class="editorial-card">
+        <img class="editorial-img-one" src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Editorial left">
+        <h3 class="editorial-title">Sculpted by Nature, Made to Adorn.</h3>
+      </div>
+
+      <div class="editorial-card">
+        <img class="editorial-img" src="{% static 'img/3.png' %}" alt="Editorial right">
+        <h3 class="editorial-title">From Dawn to Dusk, Elegance in Motion.</h3>
+
+        <!-- collections/bracelets/ -->
+        <a class="editorial-btn" href="{% url 'catalog:collection_products' slug='bangles' %}">Explore Bangles</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BAZAAR STRIP -->
+<section class="bazaar-strip">
+  <div class="container-fluid px-0">
+    <div class="bazaar-track">
+      <div class="bazaar-item">"A masterclass in minimalism and craftsmanship."</div>
+      <div class="bazaar-logo">ADORN</div>
+      <div class="bazaar-item">Certified recycled metals</div>
+      <div class="bazaar-item">Every piece hallmarked for authenticity</div>
+
+      <div class="bazaar-item">"A masterclass in minimalism and craftsmanship."</div>
+      <div class="bazaar-logo">ADORN</div>
+      <div class="bazaar-item">Certified recycled metals</div>
+      <div class="bazaar-item">Every piece hallmarked for authenticity</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE TILES -->
+<section class="feature-tiles">
+  <div class="container">
+    <div class="tiles-grid">
+      <div class="tile">
+        <img src="{% static 'img/3.png' %}" alt="Flora">
+        <div class="tile-content">
+          <div class="tile-kicker">Earrings</div>
+          <div class="tile-title">Flora</div>
+          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='earrings' %}">Shop Now</a>
+        </div>
+      </div>
+
+      <div class="tile">
+        <img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="Einai">
+        <div class="tile-content">
+          <div class="tile-kicker">Pendant</div>
+          <div class="tile-title">Einai</div>
+          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='pendant' %}">Shop Now</a>
+        </div>
+      </div>
+
+      <div class="tile">
+        <img src="{% static 'img/PHOTO-2025-11-06-10-59-07.png' %}" alt="Entelechy">
+        <div class="tile-content">
+          <div class="tile-kicker">Bracelets</div>
+          <div class="tile-title">Entelechy</div>
+          <a class="tile-btn" href="{% url 'catalog:collection_products' slug='bracelets' %}">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+  </div>
+</section>
+
+<section class="compare-section mb-5">
+  <div class="container">
+    <div class="compare-wrap">
+      <div class="compare-box" id="finishCompare">
+        <img class="compare-img base" src="{% static 'img/PHOTO-2025-11-06-10-59-15.png' %}" alt="Gold finish">
+
+        <div class="compare-overlay" id="compareOverlay">
+          <img class="compare-img top" src="{% static 'img/PHOTO-2025-11-06-10-59-14 - Copy.png' %}" alt="Silver finish">
+        </div>
+
+        <div class="compare-divider" id="compareDivider"></div>
+
+        <button class="compare-handle" id="compareHandle" aria-label="Drag to compare" type="button">
+          <span class="chev">&lt;</span><span class="chev">&gt;</span>
+        </button>
+      </div>
+
+      <div class="compare-copy">
+        <h2>TWO FINISHES. ONE<br> SIGNATURE DESIGN.</h2>
+        <p>
+          Each piece is available in both luminous gold and
+          understated silver, hand-finished for all-day wear.
+        </p>
+        <a class="compare-btn" href="{% url 'catalog:collection_list' %}">EXPLORE THE COLLECTION</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =======================
+   SECTION: Exclusive Capsule
+   (Best seller section REMOVED as requested)
+======================= -->
+<section class="capsule">
+  <div class="capsule-grid">
+    <div class="capsule-media">
+      <img src="{% static 'img/4.png' %}" alt="Exclusive Capsule">
+    </div>
+
+    <div class="capsule-panel">
+      <div class="capsule-inner">
+        <div class="capsule-kicker">LIMITED EDITION</div>
+        <h2 class="capsule-title">EXCLUSIVE CAPSULE</h2>
+        <p class="capsule-sub">Inspired by a muse of timeless grace.</p>
+
+        <!-- collections/exclusive/ -->
+        <a class="capsule-btn" href="{% url 'catalog:collection_list' %}">SHOP EXCLUSIVE</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =======================
+   SECTION: Gold Marquee + London Split
+======================= -->
+<section class="gold-strip">
+  <div class="gold-track">
+    <span class="gold-item">HAND-CRAFTED JEWELLERY</span><span class="gold-dot">|</span>
+    <span class="gold-item">ATHENS, GR</span><span class="gold-dot">|</span>
+    <span class="gold-item">ADORN</span><span class="gold-dot">|</span>
+
+    <span class="gold-item">HAND-CRAFTED JEWELLERY</span><span class="gold-dot">|</span>
+    <span class="gold-item">ATHENS, GR</span><span class="gold-dot">|</span>
+    <span class="gold-item">ADORN</span><span class="gold-dot"></span>
+  </div>
+</section>
+
+<section class="london-split">
+  <div class="london-grid">
+    <div class="london-left">
+      <div class="london-inner">
+        <div class="london-kicker">NOW One</div>
+        <h2 class="london-title">EXCLUSIVE</h2>
+        <p class="london-text">
+          Discover our full collection, explore new arrivals, and experience exclusive in-store
+          moments - from curated capsule collections to private styling.
+        </p>
+
+        <div class="london-actions">
+          <a class="london-btn primary" href="{% url 'catalog:contact' %}">VISIT US</a>
+          <a class="london-btn outline" href="{% url 'catalog:contact' %}">BOOK AN APPOINTMENT</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="london-right">
+      <img src="{% static 'img/5.png' %}" alt="London Store">
+    </div>
+  </div>
+</section>
+
+<section class="brand-note">
+  <div class="note-inner">
+    <div class="note-mini">ADORN JEWELRY</div>
+
+    <p class="note-text">
+      This store is a demonstration of a jewellery brand using the<br>
+      Stiletto Shopify theme. Products and imagery for this demo<br>
+      graciously provided by <a href="#" class="note-link">Adorn</a>
+    </p>
+  </div>
+  <div class="note-rule"></div>
+</section>
+
+<!-- Shop the Look Section -->
+<section class="shop-look">
+  <div class="shop-look-wrap">
+
+    <div class="look-media" id="lookMedia">
+      <img
+        src="{% if shop_look and shop_look.image %}{{ shop_look.image.url }}{% else %}{% static 'img/look/model.jpg' %}{% endif %}"
+        alt="Shop the look">
+
+      {% if shop_look %}
+      {% for it in shop_look.items.all %}
+      <button class="hotspot" style="left:{{ it.x }}%; top:{{ it.y }}%;" data-index="{{ forloop.counter0 }}"
+        aria-label="Show product {{ forloop.counter }}"></button>
+      {% endfor %}
+      {% else %}
+      <!-- fallback -->
+      <button class="hotspot" style="left:30%; top:28%;" data-index="0" aria-label="Show product 1"></button>
+      {% endif %}
+    </div>
+
+    <div class="look-side">
+      <div class="look-head">
+        <h3>{% if shop_look %}{{ shop_look.title }}{% else %}SHOP THE LOOK{% endif %}</h3>
+        <a href="{% if shop_look and shop_look.more_url %}{{ shop_look.more_url }}{% else %}#{% endif %}"
+          class="look-more">
+          {% if shop_look %}{{ shop_look.more_text }}{% else %}More looks{% endif %}
+        </a>
+      </div>
+
+      <div class="look-card-wrap">
+  <button class="arrivals-btn" type="button" id="lookPrev" aria-label="Previous">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+</button>
+        <div class="look-card" id="lookCard">
+          <div class="look-card-frame">
+            <img id="lookProdImg" src="{% static 'img/look/p1.jpg' %}" alt="Product">
+          </div>
+
+          <div class="look-prod-meta">
+            <div class="look-prod-name" id="lookProdName">LAMARK EARRINGS</div>
+            <div class="look-prod-price" id="lookProdPrice">Rs.737.00</div>
+            <a class="look-quick" id="lookProdLink" href="#">QUICK VIEW</a>
+          </div>
+        </div>
+
+ <button class="arrivals-btn" type="button" id="lookNext" aria-label="Next">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</button>
+      </div>
+
+      <div class="look-count" id="lookCount">1 / {% if shop_look %}{{ shop_look.items.all|length }}{% else %}3{% endif %}</div>
+    </div>
+
+  </div>
+
+  <div class="shop-look-rule"></div>
+</section>
+
+<section class="journal">
+  <div class="journal-wrap">
+    <div class="journal-top">
+      <div>
+        <h2 class="journal-title">THE JOURNAL</h2>
+      </div>
+    </div>
+
+    <div class="journal-grid">
+      <article class="journal-card">
+        <div class="journal-img">
+          <img src="{% static 'img/PHOTO-2025-11-06-10-59-06.png' %}" alt="Journal 1">
+        </div>
+
+        <div class="journal-float">
+          <h3>THE BEST JEWELLERY BRANDS</h3>
+          <div class="journal-date">Nov 15, 2025</div>
+          <p>
+            Stalo, an archaeologist who worked on excavations across Greece in the 1980s,
+            has always been fascinated by the emotive power of jewellery as a vehicle for women
+            to express themselves
+          </p>
+        </div>
+      </article>
+
+      <article class="journal-card">
+        <div class="journal-img">
+          <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Journal 2">
+        </div>
+
+        <div class="journal-float">
+          <h3>WHAT TO WEAR TO GREECE</h3>
+          <div class="journal-date">Nov 8, 2025</div>
+          <p>
+            Combining their unique experiences, the two creatives tap into their Greek heritage
+            to design organic and sculptural pieces, each handcrafted and completely unique.
+            Mother-daughter duo, Alexia and Stalo Karides
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="our-story">
+  <div class="story-hero" style="background-image:url('{% static 'img/hero_about.jpg' %}')">
+    <div class="story-overlay"></div>
+
+    <div class="story-content">
+      <h2>OUR STORY</h2>
+      <p>
+        From the hands of skilled artisans to the touch of your own, each piece begins as raw metal
+        and becomes a timeless companion. Learn more about our philosophy of slow craft, sustainable materials,
+        and designs created to endure.
+      </p>
+      <a href="{% url 'catalog:about_page' %}" class="story-btn">DISCOVER OUR STORY</a>
+    </div>
+  </div>
+
+  <div class="story-features">
+    <div class="story-feat">
+      <h4>SMALL-BATCH</h4>
+      <p>Each piece is part of a small, deliberate production cycle</p>
+    </div>
+
+    <div class="story-feat">
+      <h4>SUSTAINABLY MADE</h4>
+      <p>Designed with care. Made entirely from 100% certified recycled gold and silver.</p>
+    </div>
+
+    <div class="story-feat">
+      <h4>QUALITY THAT LASTS</h4>
+      <p>Designed for daily wear. Crafted to endure seasons and stories.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<!-- Products JSON (from backend; links use real Django urls) -->
+<script>
+  window.SHOP_LOOK_PRODUCTS = [
+    {% if shop_look %}
+    {% for it in shop_look.items.all %}
+    {
+      name: "{{ it.product.title|escapejs }}",
+      price: "Rs.{{ it.product.price_inr }}",
+      img: "{% if it.product.primary_image_obj and it.product.primary_image_obj.image %}{{ it.product.primary_image_obj.image.url }}{% else %}{% static 'img/look/p1.jpg' %}{% endif %}",
+      link: "{% url 'catalog:product_detail' slug=it.product.slug %}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    {% endif %}
+  ];
+</script>
+
+<script>
+  /* HERO: start animation on load */
+  (function () {
+    var hero = document.querySelector(".hero");
+    if (!hero) return;
+    requestAnimationFrame(function () {
+      hero.classList.add("hero-loaded");
+    });
+  })();
+
+  (function () {
+    var row = document.getElementById("collectionsRow");
+    var prev = document.getElementById("colPrev");
+    var next = document.getElementById("colNext");
+    if (!row || !prev || !next) return;
+
+    function step() {
+      var firstCard = row.querySelector(".collection-card");
+      var w = firstCard ? firstCard.getBoundingClientRect().width : 320;
+      return Math.max(260, Math.floor(w + 22));
+    }
+    prev.addEventListener("click", function () {
+      row.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+    next.addEventListener("click", function () {
+      row.scrollBy({ left: step(), behavior: "smooth" });
+    });
+  })();
+
+  (function () {
+    var box = document.getElementById("finishCompare");
+    var overlay = document.getElementById("compareOverlay");
+    var divider = document.getElementById("compareDivider");
+    var handle = document.getElementById("compareHandle");
+    if (!box || !overlay || !divider || !handle) return;
+
+    var dragging = false;
+
+    function setPos(clientX) {
+      var r = box.getBoundingClientRect();
+      var x = clientX - r.left;
+      x = Math.max(0, Math.min(x, r.width));
+      var pct = (x / r.width) * 100;
+      overlay.style.width = pct + "%";
+      divider.style.left = pct + "%";
+      handle.style.left = pct + "%";
+    }
+    function startDrag(clientX) {
+      dragging = true;
+      setPos(clientX);
+      document.body.style.userSelect = "none";
+    }
+    function stopDrag() {
+      dragging = false;
+      document.body.style.userSelect = "";
+    }
+
+    box.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    box.addEventListener("mousedown", function (e) { startDrag(e.clientX); });
+    window.addEventListener("mousemove", function (e) { if (dragging) setPos(e.clientX); });
+    window.addEventListener("mouseup", stopDrag);
+
+    box.addEventListener("touchstart", function (e) { startDrag(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener("touchmove", function (e) { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener("touchend", stopDrag);
+
+    overlay.style.width = "50%";
+    divider.style.left = "50%";
+    handle.style.left = "50%";
+  })();
+
+  (function () {
+    var row = document.getElementById("arrivalsRow");
+    var prev = document.getElementById("arrPrev");
+    var next = document.getElementById("arrNext");
+    if (!row || !prev || !next) return;
+
+    function step() {
+      var card = row.querySelector(".product-card");
+      var w = card ? card.getBoundingClientRect().width : 380;
+      return Math.max(260, Math.floor(w + 34));
+    }
+    prev.addEventListener("click", function () {
+      row.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+    next.addEventListener("click", function () {
+      row.scrollBy({ left: step(), behavior: "smooth" });
+    });
+  })();
+
+  (function () {
+    var products = window.SHOP_LOOK_PRODUCTS || [];
+    if (!products.length) return;
+
+    var cardImg = document.getElementById("lookProdImg");
+    var cardName = document.getElementById("lookProdName");
+    var cardPrice = document.getElementById("lookProdPrice");
+    var cardLink = document.getElementById("lookProdLink");
+    var countEl = document.getElementById("lookCount");
+
+    var dots = Array.prototype.slice.call(document.querySelectorAll(".hotspot"));
+    var btnPrev = document.getElementById("lookPrev");
+    var btnNext = document.getElementById("lookNext");
+
+    var active = 0;
+
+    function render(idx) {
+      active = (idx + products.length) % products.length;
+      var p = products[active];
+
+      if (cardImg) {
+        cardImg.src = p.img;
+        cardImg.alt = p.name;
+      }
+      if (cardName) cardName.textContent = p.name;
+      if (cardPrice) cardPrice.textContent = p.price;
+      if (cardLink) cardLink.href = p.link || "#";
+
+      if (countEl) countEl.textContent = (active + 1) + " / " + products.length;
+
+      for (var i = 0; i < dots.length; i++) dots[i].classList.remove("is-active");
+      for (var j = 0; j < dots.length; j++) {
+        if (Number(dots[j].dataset.index) === active) {
+          dots[j].classList.add("is-active");
+          break;
+        }
+      }
+    }
+
+    for (var i = 0; i < dots.length; i++) {
+      (function (d) {
+        d.addEventListener("click", function () {
+          render(Number(d.dataset.index));
+        });
+      })(dots[i]);
+    }
+
+    if (btnPrev) btnPrev.addEventListener("click", function () { render(active - 1); });
+    if (btnNext) btnNext.addEventListener("click", function () { render(active + 1); });
+
+    render(0);
+  })();
+
+  /* SMOOTH REVEAL ON SCROLL (updated, cool + smooth) */
+  (function () {
+    function isExcluded(el) {
+      if (!el) return true;
+      return (
+        el.classList.contains("mini-marquee") ||
+        el.classList.contains("bazaar-strip") ||
+        el.classList.contains("gold-strip")
+      );
+    }
+
+    function isInsideMovingTrack(node) {
+      return !!(node.closest(".marquee-track") || node.closest(".bazaar-track") || node.closest(".gold-track"));
+    }
+
+    function addRevealItems(section) {
+      var textNodes = section.querySelectorAll(
+        "h1,h2,h3,h4,p,.hero-kicker,.hero-title,.hero-actions,.card-label,.tile-content,.product-meta,.compare-copy,.capsule-inner,.london-inner,.note-inner,.look-side,.journal-float,.story-content,.story-feat"
+      );
+
+      var cards = section.querySelectorAll(
+        ".collection-card,.product-card,.tile,.split-card,.editorial-card,.journal-card,.look-card,.capsule-media,.london-right,.compare-box,.look-media"
+      );
+
+      var t = 0;
+      for (var i = 0; i < textNodes.length; i++) {
+        var node = textNodes[i];
+        if (!node || isInsideMovingTrack(node)) continue;
+        node.classList.add("reveal-item");
+        node.style.setProperty("--d", String(Math.min(t * 60, 480)) + "ms");
+        t += 1;
+      }
+
+      var c = 0;
+      for (var j = 0; j < cards.length; j++) {
+        var card = cards[j];
+        if (!card || isInsideMovingTrack(card)) continue;
+
+        card.classList.add("reveal-card");
+        card.style.setProperty("--d", String(Math.min(c * 120, 900)) + "ms");
+        c += 1;
+
+        var mediaTargets = card.querySelectorAll("img,video,.product-media");
+        for (var k = 0; k < mediaTargets.length; k++) {
+          var m = mediaTargets[k];
+          if (!m || isInsideMovingTrack(m)) continue;
+
+          if (m.classList.contains("product-media")) {
+            m.classList.add("zoom-media");
+            continue;
+          }
+          if (m.tagName === "IMG" || m.tagName === "VIDEO") {
+            m.classList.add("zoom-media");
+          }
+        }
+      }
+
+      var imgs = section.querySelectorAll("img");
+      for (var z = 0; z < imgs.length; z++) {
+        var img = imgs[z];
+        if (!img || isInsideMovingTrack(img)) continue;
+        if (img.classList.contains("zoom-media")) continue;
+        img.classList.add("img-reveal");
+      }
+    }
+
+    function prepareSections() {
+      var sections = document.querySelectorAll("section");
+      for (var i = 0; i < sections.length; i++) {
+        var sec = sections[i];
+        if (isExcluded(sec)) continue;
+
+        if (sec.classList.contains("hero")) {
+          sec.classList.add("reveal", "is-visible");
+          addRevealItems(sec);
+
+          requestAnimationFrame(function () {
+            var heroK = sec.querySelector(".hero-kicker");
+            var heroT = sec.querySelector(".hero-title");
+            var heroA = sec.querySelector(".hero-actions");
+            if (heroK) heroK.style.setProperty("--d", "420ms");
+            if (heroT) heroT.style.setProperty("--d", "720ms");
+            if (heroA) heroA.style.setProperty("--d", "1020ms");
+          });
+
+          continue;
+        }
+
+        sec.classList.add("reveal");
+        addRevealItems(sec);
+      }
+      return sections;
+    }
+
+    function setupObserver() {
+      var sections = prepareSections();
+
+      if (!("IntersectionObserver" in window)) {
+        for (var i = 0; i < sections.length; i++) sections[i].classList.add("is-visible");
+        return;
+      }
+
+      var io = new IntersectionObserver(
+        function (entries, observer) {
+          for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        },
+        {
+          threshold: 0.14,
+          rootMargin: "0px 0px -10% 0px"
+        }
+      );
+
+      for (var j = 0; j < sections.length; j++) {
+        var sec = sections[j];
+        if (!sec.classList.contains("reveal")) continue;
+        if (sec.classList.contains("is-visible")) continue;
+        io.observe(sec);
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setupObserver);
+    } else {
+      setupObserver();
+    }
+  })();
+</script>
+
+{% endblock %}

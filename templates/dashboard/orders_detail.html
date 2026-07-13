@@ -1,0 +1,134 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block page_title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+
+  <!-- Order Items + Customer -->
+  <div class="col-lg-8">
+
+    <!-- Items -->
+    <div class="tbl-card mb-3">
+      <div class="tbl-head">
+        <span class="title"><i class="bi bi-bag me-2"></i>Order Items</span>
+        <span class="badge bs-{{ order.status }} px-3 py-2" style="font-size:.8rem;">{{ order.get_status_display }}</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr><th>Product</th><th>Unit Price</th><th>Qty</th><th>Line Total</th></tr>
+          </thead>
+          <tbody>
+            {% for item in order.items.all %}
+            <tr>
+              <td class="fw-semibold" style="font-size:.85rem;">{{ item.product_title }}</td>
+              <td style="font-size:.82rem;">&#8377;{{ item.unit_price_inr }}</td>
+              <td>{{ item.qty }}</td>
+              <td class="fw-semibold">&#8377;{{ item.line_total }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot style="background:#f8fafc;">
+            <tr>
+              <td colspan="3" class="text-end fw-semibold" style="font-size:.82rem;">Subtotal</td>
+              <td class="fw-semibold">&#8377;{{ order.subtotal_inr }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end" style="font-size:.82rem;">Shipping</td>
+              <td>&#8377;{{ order.shipping_inr }}</td>
+            </tr>
+            {% if order.discount_inr %}
+            <tr>
+              <td colspan="3" class="text-end" style="font-size:.82rem;">
+                Discount {% if order.coupon_code %}<span class="badge" style="background:#f1f5f9;color:#334155;">{{ order.coupon_code }}</span>{% endif %}
+              </td>
+              <td class="text-success fw-semibold">-&#8377;{{ order.discount_inr }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td colspan="3" class="text-end fw-bold" style="font-size:.9rem;">Total</td>
+              <td class="fw-bold" style="font-size:.95rem;">&#8377;{{ order.total_inr }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Customer Address -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Shipping Address</div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div style="font-size:.8rem;color:#64748b;">Full Name</div>
+          <div class="fw-semibold" style="font-size:.875rem;">{{ order.full_name }}</div>
+        </div>
+        <div class="col-md-6">
+          <div style="font-size:.8rem;color:#64748b;">Phone</div>
+          <div class="fw-semibold" style="font-size:.875rem;">{{ order.phone }}</div>
+        </div>
+        <div class="col-md-6">
+          <div style="font-size:.8rem;color:#64748b;">Email</div>
+          <div style="font-size:.875rem;">{{ order.email }}</div>
+        </div>
+        <div class="col-md-6">
+          <div style="font-size:.8rem;color:#64748b;">Pincode</div>
+          <div style="font-size:.875rem;">{{ order.pincode }}</div>
+        </div>
+        <div class="col-12">
+          <div style="font-size:.8rem;color:#64748b;">Address</div>
+          <div style="font-size:.875rem;">
+            {{ order.address_line1 }}{% if order.address_line2 %}, {{ order.address_line2 }}{% endif %}<br>
+            {{ order.city }}, {{ order.state }}
+          </div>
+        </div>
+        {% if order.order_note %}
+        <div class="col-12">
+          <div style="font-size:.8rem;color:#64748b;">Order Note</div>
+          <div style="font-size:.875rem;background:#fef9c3;padding:8px 12px;border-radius:6px;">{{ order.order_note }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right: Status Update + Payment -->
+  <div class="col-lg-4">
+
+    <!-- Update Status -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Update Order Status</div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Status</label>
+          {{ status_form.status }}
+        </div>
+        <button type="submit" class="btn btn-accent w-100">
+          <i class="bi bi-check-lg me-2"></i>Update Status
+        </button>
+      </form>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Payment Information</div>
+      <div class="mb-2">
+        <div style="font-size:.75rem;color:#64748b;">Payment Intent ID</div>
+        <code style="font-size:.72rem;word-break:break-all;">{{ order.stripe_payment_intent_id|default:"—" }}</code>
+      </div>
+      <div>
+        <div style="font-size:.75rem;color:#64748b;">Order Date</div>
+        <div style="font-size:.82rem;">{{ order.created_at|date:"d M Y, H:i" }}</div>
+      </div>
+    </div>
+
+    <!-- Back -->
+    <a href="{% url 'dashboard:orders_list' %}" class="btn btn-outline-secondary w-100">
+      <i class="bi bi-arrow-left me-2"></i>Back to Orders
+    </a>
+  </div>
+
+</div>
+{% endblock %}

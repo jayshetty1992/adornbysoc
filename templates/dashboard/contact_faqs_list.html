@@ -1,0 +1,60 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Contact FAQs{% endblock %}
+{% block page_title %}Contact FAQs{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="tbl-card">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>Order</th><th>Question</th><th>Answer</th><th>Active</th><th style="width:100px;">Actions</th></tr></thead>
+          <tbody>
+            {% for faq in faqs %}
+            <tr>
+              <td class="text-muted" style="font-size:.78rem;">{{ faq.sort_order }}</td>
+              <td class="fw-semibold" style="font-size:.85rem;max-width:240px;">{{ faq.question }}</td>
+              <td style="font-size:.78rem;color:#475569;max-width:300px;">{{ faq.answer|truncatechars:80 }}</td>
+              <td>{% if faq.is_active %}<span class="badge bs-active">Yes</span>{% else %}<span class="badge bs-inactive">No</span>{% endif %}</td>
+              <td>
+                <div class="d-flex gap-1">
+                  <a href="{% url 'dashboard:contact_faq_edit' faq.pk %}" class="btn btn-icon" style="background:#eff6ff;color:#3b82f6;" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                  <form method="post" action="{% url 'dashboard:contact_faq_delete' faq.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-icon btn-danger" onclick="return confirm('Delete this FAQ?')"><i class="bi bi-trash-fill"></i></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center py-4 text-muted">No FAQs added yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="form-card">
+      <div class="form-section-title">{% if editing_faq %}Edit FAQ{% else %}Add New FAQ{% endif %}</div>
+      <form method="post" {% if editing_faq %}action="{% url 'dashboard:contact_faq_edit' editing_faq.pk %}"{% endif %} novalidate>
+        {% csrf_token %}
+        <div class="mb-2">
+          <label class="form-label">Question *</label>{{ form.question }}
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Answer *</label>{{ form.answer }}
+        </div>
+        <div class="d-flex gap-3 align-items-center mb-3">
+          <div class="form-check">{{ form.is_active }}<label class="form-check-label" style="font-size:.85rem;">Active</label></div>
+          <div><label class="form-label mb-0 me-1">Order</label>{{ form.sort_order }}</div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-accent btn-sm px-4">{% if editing_faq %}Update{% else %}Add FAQ{% endif %}</button>
+          {% if editing_faq %}<a href="{% url 'dashboard:contact_faqs_list' %}" class="btn btn-sm btn-outline-secondary">Cancel</a>{% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

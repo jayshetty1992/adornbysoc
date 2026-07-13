@@ -1,0 +1,56 @@
+from django.contrib import messages
+from django.views.decorators.http import require_POST
+from catalog.models import Collection, Product
+
+from django.db.models import Prefetch
+from catalog.models import ShopTheLook, ShopTheLookItem 
+
+def home(request):
+    new_arrivals = Product.objects.order_by("-created_at")[:10]
+    home_collections = Collection.objects.only("id", "name", "slug", "card_image").order_by("name")[:12]
+
+    # Shop The Look (safe for first migrations)
+    shop_look = None
+    try:
+        shop_look = (
+            ShopTheLook.objects.filter(is_active=True)
+            .prefetch_related(
+                Prefetch(
+                    "items",
+                    queryset=ShopTheLookItem.objects.select_related("product").prefetch_related("product__images"),
+                )
+            )
+            .order_by("position", "-created_at")
+            .first()
+        )
+    except Exception:
+        shop_look = None
+
+    return render(request, "index.html", {
+        "new_arrivals": new_arrivals,
+        "home_collections": home_collections,
+        "shop_look": shop_look,   # add
+    })
+
+
+def page(request, slug):
+    # basic CMS-like static pages (you can expand later)
+    template_map = {
+        "about": "pages/about.html",
+        "contact": "pages/contact.html",
+        "shipping": "pages/shipping.html",
+        "returns": "pages/returns.html",
+        "privacy": "pages/privacy.html",
+    }
+    tpl = template_map.get(slug, "pages/generic.html")
+    return render(request, tpl, {"slug": slug})
+
+@require_POST
+def newsletter_subscribe(request):
+    email = request.POST.get("email", "").strip()
+    if email:
+        # store in DB later; for now just flash
+        messages.success(request, "Thanks! You’re subscribed.")
+    else:
+        messages.error(request, "Please enter a valid email.")
+    return redirect("home")

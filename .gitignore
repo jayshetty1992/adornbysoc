@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# IDE and system files
+.DS_Store
+.vscode/
+.idea/
+
+# Backup and archive files
+*.zip
+*.tar
+*.gz
+
+# Credentials
+credentials.json
+service-account*.json

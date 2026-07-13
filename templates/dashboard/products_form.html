@@ -1,0 +1,307 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" novalidate>
+{% csrf_token %}
+
+<div class="row g-3">
+  <!-- LEFT COLUMN: Main Info + Material + Classification -->
+  <div class="col-lg-8">
+
+    <!-- Basic Info -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Basic Information</div>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Product Title *</label>
+          {{ form.title }}
+          {% if form.title.errors %}<div class="text-danger" style="font-size:.75rem;">{{ form.title.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Slug (auto-fill)</label>
+          {{ form.slug }}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Collection *</label>
+          {{ form.collection }}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">SKU / Product Code</label>
+          {{ form.sku }}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Gender</label>
+          {{ form.gender }}
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          {{ form.description }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing & Stock -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Pricing & Stock</div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Price (INR) *</label>
+          {{ form.price_inr }}
+          {% if form.price_inr.errors %}<div class="text-danger" style="font-size:.75rem;">{{ form.price_inr.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Old Price (INR) <small class="text-muted">for sale badge</small></label>
+          {{ form.old_price_inr }}
+        </div>
+        <div class="col-md-4 d-flex align-items-end gap-4 pb-1">
+          <div class="form-check">
+            {{ form.in_stock }}
+            <label class="form-check-label" style="font-size:.85rem;">In Stock</label>
+          </div>
+          <div class="form-check">
+            {{ form.is_active }}
+            <label class="form-check-label" style="font-size:.85rem;">Active</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Material & Stone -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Material & Stone Details</div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Material</label>
+          {{ form.material }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Metal Purity</label>
+          {{ form.metal_purity }}
+          <small class="text-muted d-block mt-1" style="font-size:.7rem;">e.g. 18K, 22K, 925 Sterling</small>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Weight (grams)</label>
+          {{ form.weight_grams }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Stone Type</label>
+          {{ form.stone_type }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Stone Weight (carats)</label>
+          {{ form.stone_weight_ct }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Certificate / Hallmark</label>
+          {{ form.certificate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Classification -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Classification & Attributes</div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Occasion</label>
+          {{ form.occasion }}
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Style</label>
+          {{ form.style }}
+          <small class="text-muted d-block mt-1" style="font-size:.7rem;">e.g. Minimal, Statement, Boho</small>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Color</label>
+          {{ form.color }}
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Ring Sizes</label>
+          <div style="max-height:140px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;">
+            {{ form.ring_sizes }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Tags</label>
+          <div style="max-height:140px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;">
+            {{ form.tags }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Care Instructions -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Care Instructions</div>
+      {{ form.care_instructions }}
+    </div>
+
+    <!-- SEO -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">SEO (Optional)</div>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Meta Title <small class="text-muted">(max 80 chars)</small></label>
+          {{ form.meta_title }}
+        </div>
+        <div class="col-12">
+          <label class="form-label">Meta Description <small class="text-muted">(max 200 chars)</small></label>
+          {{ form.meta_description }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN: Flags + Images + FAQs -->
+  <div class="col-lg-4">
+
+    <!-- Marketing Flags -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Marketing Flags</div>
+      <div class="form-check form-switch mb-2">
+        {{ form.is_featured }}
+        <label class="form-check-label">Featured / Bestseller</label>
+      </div>
+      <div class="form-check form-switch">
+        {{ form.is_new_arrival }}
+        <label class="form-check-label">New Arrival</label>
+      </div>
+    </div>
+
+    <!-- Product Images -->
+    <div class="form-card mb-3">
+      <div class="form-section-title d-flex justify-content-between align-items-center">
+        <span>Product Images</span>
+        <small class="text-muted">Primary · Hover · Gallery</small>
+      </div>
+      {{ image_formset.management_form }}
+      {% for img_form in image_formset %}
+      <div class="fs-item">
+        <div class="d-flex gap-2 align-items-start">
+          <!-- Preview -->
+          <div data-preview style="flex-shrink:0;">
+            {% if img_form.instance.image %}
+            <img src="{{ img_form.instance.image.url }}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;" alt="">
+            {% else %}
+            <div style="width:60px;height:60px;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:1.3rem;border:1px solid #e2e8f0;"><i class="bi bi-image"></i></div>
+            {% endif %}
+          </div>
+          <div class="flex-grow-1">
+            <div class="mb-1">{{ img_form.image }}</div>
+            <div class="d-flex gap-2">
+              {{ img_form.role }}
+              {{ img_form.sort_order }}
+            </div>
+            {{ img_form.alt_text }}
+            {% for hf in img_form.hidden_fields %}{{ hf }}{% endfor %}
+            {% if img_form.errors %}
+            <div class="text-danger" style="font-size:.72rem;">{{ img_form.errors }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% if image_formset.can_delete %}
+        <div class="fs-del-wrap">
+          <div class="form-check">
+            {{ img_form.DELETE }}
+            <label class="form-check-label text-danger" style="font-size:.72rem;">Delete</label>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% if image_formset.non_form_errors %}
+      <div class="text-danger" style="font-size:.78rem;">{{ image_formset.non_form_errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Product FAQs -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Product FAQs</div>
+      {{ faq_formset.management_form }}
+      {% for faq_form in faq_formset %}
+      <div class="fs-item mb-2">
+        <div class="mb-1">
+          <label class="form-label">Question</label>
+          {{ faq_form.question }}
+        </div>
+        <div class="mb-1">
+          <label class="form-label">Answer</label>
+          {{ faq_form.answer }}
+        </div>
+        <div class="d-flex gap-3 align-items-center">
+          <div class="form-check">
+            {{ faq_form.is_active }}
+            <label class="form-check-label" style="font-size:.75rem;">Active</label>
+          </div>
+          <div class="d-flex align-items-center gap-1" style="font-size:.75rem;">
+            Order: {{ faq_form.sort_order }}
+          </div>
+          {% for hf in faq_form.hidden_fields %}{{ hf }}{% endfor %}
+        </div>
+        {% if faq_formset.can_delete %}
+        <div class="form-check mt-1">
+          {{ faq_form.DELETE }}
+          <label class="form-check-label text-danger" style="font-size:.72rem;">Delete this FAQ</label>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<!-- Submit Bar -->
+<div class="d-flex gap-3 mt-2 mb-4">
+  <button type="submit" class="btn btn-accent px-4">
+    <i class="bi bi-check-lg me-2"></i>Save Product
+  </button>
+  <a href="{% url 'dashboard:products_list' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+</div>
+
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-fill slug from title
+const titleInput = document.querySelector('[name="title"]');
+const slugInput = document.querySelector('[name="slug"]');
+if(titleInput && slugInput){
+  titleInput.addEventListener('input', function(){
+    if(!slugInput.dataset.dirty){
+      slugInput.value = this.value.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g,'')
+        .replace(/\s+/g,'-')
+        .replace(/-+/g,'-');
+    }
+  });
+  slugInput.addEventListener('input', function(){ this.dataset.dirty = '1'; });
+}
+
+// Image preview on file select
+document.querySelectorAll('input[type="file"]').forEach(function(input){
+  input.addEventListener('change', function(){
+    const file = this.files[0];
+    if(!file) return;
+    const wrap = this.closest('.fs-item');
+    if(!wrap) return;
+    const img = wrap.querySelector('img');
+    if(img){
+      img.src = URL.createObjectURL(file);
+    } else {
+      const ph = wrap.querySelector('[style*="background:#f1f5f9"]');
+      if(ph){
+        const newImg = document.createElement('img');
+        newImg.src = URL.createObjectURL(file);
+        newImg.style = 'width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;';
+        ph.replaceWith(newImg);
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

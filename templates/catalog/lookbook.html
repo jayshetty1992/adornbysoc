@@ -1,0 +1,820 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lookbook | ADORN{% endblock %}
+
+{% block extra_css %}
+<style>
+:root{
+  --lb-brown:#3a231c;
+  --lb-ink:#0c0c0d;
+  --lb-muted:rgba(0,0,0,.62);
+  --lb-line:rgba(0,0,0,.16);
+
+  /* ? CONTROL PANEL (change values here anytime) */
+  --lb-page-max: 1550px;     /* left-right space reduce = increase this */
+  --lb-page-pad: 35px;       /* side padding */
+
+  --lb-grid-gap: 25px;       /* grid6 gap */
+  --lb-grid-img-h: 600px;    /* grid6 image height */
+
+  --lb-split-min-h: 520px;   /* split2 image height */
+  --lb-media-min-h: 560px;   /* media image height */
+
+  --lb-prod-img: 200px;      /* product image size inside right grid */
+}
+
+
+  /* ======================
+     HERO (Brown)
+  ====================== */
+  .lb-hero{
+    background: var(--lb-brown);
+    padding: 34px 0 70px;
+  }
+  .lb-hero-grid{
+    display:grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 56px;
+    align-items:center;
+  }
+  .lb-hero-left{ border-radius:4px; overflow:hidden; background: rgba(255,255,255,.06); }
+  .lb-hero-left img{ width:100%; height:min(99vh,900px); object-fit:cover; display:block; }
+  .lb-hero-right{ color: rgba(255,255,255,.92); text-align: center; }
+  .lb-kicker{ font-size:10px; letter-spacing:.18em; text-transform:uppercase; font-weight:700; margin-bottom:10px; color: rgba(255,255,255,.78); }
+  .lb-title{ font-size:clamp(34px,4vw,56px); letter-spacing:.04em; font-weight:900; text-transform:uppercase; margin:0 0 18px; line-height:1.05; }
+  .lb-side-img{ width:225px; height:325px; border-radius:2px; overflow:hidden; border:1px solid rgba(255,255,255,.12); margin:10px 0 18px; display: inline-block;}
+  .lb-side-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .lb-desc{ max-width:380px; font-size:12px; letter-spacing:.08em; color: rgba(255,255,255,.72); line-height:1.8; text-transform:uppercase; margin-bottom:20px; display: inline-block;}
+  .lb-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding: 12px 18px;
+    border:1px solid rgba(255,255,255,.65);
+    color: rgba(255,255,255,.95);
+    text-decoration:none;
+    letter-spacing:.16em;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    transition:.18s ease;
+    white-space: nowrap;
+  }
+  .lb-btn:hover{ background: rgba(255,255,255,.10); color:#fff; }
+
+  @media (max-width: 992px){
+    .lb-hero-grid{ grid-template-columns: 1fr; gap: 26px; }
+    .lb-hero-left img{ height: 52vh; }
+  }
+
+  /* ======================
+     WHITE SECTIONS
+  ====================== */
+  .lb-section{
+    background:#fff;
+    padding: 70px 0;
+  }
+
+  .lb-head{
+    text-align:center;
+    margin-bottom: 38px;
+  }
+  .lb-head h2{
+    margin:0;
+    font-weight: 900;
+    letter-spacing:.06em;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+  .lb-head p{
+    margin: 10px auto 0;
+    max-width: 560px;
+    color: var(--lb-muted);
+    font-size: 11px;
+    line-height: 1.9;
+    letter-spacing:.08em;
+    text-transform: uppercase;
+  }
+
+  /* GRID 6 */
+.lb-grid6{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--lb-grid-gap);
+  align-items: start;
+}
+
+.lb-tile img{
+  width:100%;
+  height: var(--lb-grid-img-h);
+  object-fit: cover;
+  display:block;
+  border-radius: 0;
+  background:#f2f2f2;
+}
+
+  .lb-cap{
+    margin-top: 10px;
+    font-size: 10px;
+    letter-spacing:.08em;
+    color: rgba(0,0,0,.75);
+    text-transform: capitalize;
+  }
+  @media (max-width: 992px){
+    .lb-grid6{ grid-template-columns: 1fr; }
+    .lb-tile img{ height: 360px; }
+  }
+
+  /* SPLIT 2 (two large images) */
+  .lb-split2{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid rgba(0,0,0,.08);
+  }
+.lb-split-card{
+  position: relative;
+  overflow:hidden;
+  background:#ddd;
+  min-height: var(--lb-split-min-h);
+}
+
+  .lb-split-card img{
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    display:block;
+    transform: scale(1.01);
+  }
+  .lb-split-card + .lb-split-card{
+    border-left: 1px solid rgba(255,255,255,.10);
+  }
+  .lb-split-label{
+    position:absolute;
+    left: 20px;
+    bottom: 16px;
+    color:#fff;
+    font-size: 12px;
+    letter-spacing:.08em;
+    text-transform: capitalize;
+    text-shadow: 0 12px 30px rgba(0,0,0,.35);
+    max-width: calc(100% - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lb-split-card a{ display:block; width:100%; height:100%; }
+
+  @media (max-width: 992px){
+    .lb-split2{ grid-template-columns: 1fr; }
+    .lb-split-card{ min-height: 360px; }
+    .lb-split-card + .lb-split-card{ border-left:none; border-top:1px solid rgba(255,255,255,.10); }
+  }
+
+  /* MEDIA + PRODUCTS (2x2 tiles) */
+  .lb-media-products{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    /* border: 1px solid rgba(0,0,0,.10); */
+  }
+.lb-media{
+  /* background:#eee; */
+  overflow:hidden;
+  min-height: var(--lb-media-min-h);
+}
+
+  .lb-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .lb-prod-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    /* border-left: 1px solid rgba(0,0,0,.10); */
+  }
+  .lb-prod{
+    padding: 44px 26px;
+    text-align:center;
+    border-bottom: 1px solid rgba(0,0,0,.10);
+  }
+  .lb-prod:nth-child(odd){ border-right: 1px solid rgba(0,0,0,.10); }
+  .lb-prod:nth-last-child(-n+2){ border-bottom:none; }
+
+.lb-prod img{
+  width: var(--lb-prod-img);
+  height: var(--lb-prod-img);
+  object-fit: contain;
+  display:block;
+  margin: 0 auto 18px;
+}
+
+  .lb-prod .name{
+    font-size: 10px;
+    letter-spacing:.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lb-prod .price{
+    font-size: 12px;
+    letter-spacing:.08em;
+    color: rgba(0,0,0,.82);
+    margin-bottom: 10px;
+  }
+  .lb-prod .price .old{
+    color: rgba(0,0,0,.45);
+    text-decoration: line-through;
+    margin-right: 8px;
+  }
+  .lb-qv{
+    display:inline-flex;
+    padding: 8px 12px;
+    border: 1px solid rgba(0,0,0,.35);
+    font-size: 10px;
+    letter-spacing:.14em;
+    text-transform: uppercase;
+    text-decoration:none;
+    color: rgba(0,0,0,.85);
+    white-space: nowrap;
+  }
+  .lb-qv:hover{ background: rgba(0,0,0,.04); }
+
+  /* media right layout */
+  .lb-media-right{ grid-template-columns: 1fr 1.1fr; }
+  .lb-media-right .lb-prod-grid{ border-left:none; border-right:1px solid rgba(0,0,0,.10); }
+
+  @media (max-width: 992px){
+    .lb-media-products,
+    .lb-media-right{
+      grid-template-columns: 1fr;
+    }
+    .lb-media{
+      min-height: 340px;
+    }
+    .lb-prod-grid{
+      border-left:none;
+      border-right:none;
+      border-top: 1px solid rgba(0,0,0,.10);
+    }
+  }
+
+  /* QUOTE section */
+  .lb-quote{
+    text-align:center;
+    padding-top: 24px;
+  }
+  .lb-quote .q{
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: 12px;
+    letter-spacing:.10em;
+    line-height: 2.1;
+    color: rgba(0,0,0,.70);
+    text-transform: none;
+  }
+  .lb-quote .sign{
+    margin-top: 16px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 34px;
+    font-style: italic;
+    color: rgba(0,0,0,.75);
+  }
+  .lb-quote .role{
+    margin-top: 6px;
+    font-size: 9px;
+    letter-spacing:.18em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.55);
+  }
+
+  /* helpers */
+/* ? Reduce left-right space on all sections */
+.lb-container-narrow{
+  max-width: var(--lb-page-max);
+  margin: 0 auto;
+  padding-left: var(--lb-page-pad);
+  padding-right: var(--lb-page-pad);
+}
+
+/* If Bootstrap container is adding extra padding, tighten it just for lookbook */
+.lb-hero .container,
+.lb-section .container{
+  padding-left: var(--lb-page-pad);
+  padding-right: var(--lb-page-pad);
+}
+
+  /* ==========================================================
+     ? MOBILE LIKE YOUR SCREENSHOTS (CSS ONLY)
+     No HTML structure changes
+  ========================================================== */
+
+  /* Tablet polish */
+  @media (max-width: 1200px){
+    .lb-hero{ padding: 28px 0 56px; }
+    .lb-hero-grid{ gap: 50px; }
+    .lb-section{ padding: 56px 0; }
+    .lb-prod{ padding: 36px 18px; }
+  }
+
+  /* Mobile hero = image on top, centered text below (like screenshot) */
+  @media (max-width: 768px){
+    .lb-hero{ padding: 18px 0 34px; }
+    .lb-hero-grid{ gap: 18px; }
+    .lb-hero-left{ border-radius: 0; }
+    .lb-hero-left img{ height: 54vh; }
+
+    .lb-hero-right{
+      text-align:center;
+      padding: 2px 6px 0;
+    }
+    .lb-kicker{ margin-bottom: 8px; font-size: 9px; }
+    .lb-title{
+      font-size: clamp(30px, 9vw, 44px);
+      margin-bottom: 14px;
+      letter-spacing: .05em;
+    }
+    .lb-side-img{
+      width: 150px; height: 150px;
+      margin: 0 auto 16px;
+    }
+    .lb-desc{
+      max-width: 520px;
+      margin: 0 auto 18px;
+      font-size: 11px;
+      line-height: 1.95;
+      letter-spacing: .07em;
+      text-transform: none; /* reads better on mobile */
+      color: rgba(255,255,255,.80);
+    }
+    .lb-btn{
+      width: auto;
+      min-width: 210px;
+      padding: 12px 16px;
+      margin: 0 auto;
+      letter-spacing: .14em;
+    }
+
+    /* Section spacing */
+    .lb-section{ padding: 44px 0; }
+    .lb-head{ margin-bottom: 24px; }
+    .lb-head h2{ font-size: 14px; }
+    .lb-head p{ font-size: 10px; line-height: 1.85; }
+
+    /* GRID6 -> 2 columns on mobile (like your screenshots) */
+    .lb-grid6{
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .lb-tile img{ height: 220px; }
+    .lb-cap{ font-size: 10px; margin-top: 8px; }
+
+    /* Split2 slightly shorter */
+    .lb-split-card{ min-height: 320px; }
+    .lb-split-label{ left: 14px; bottom: 12px; font-size: 11px; }
+
+    /* Media+Products: media top already, now products like LIST rows */
+    .lb-media{ min-height: 320px; }
+
+    .lb-prod-grid{
+      grid-template-columns: 1fr; /* list style */
+    }
+    .lb-prod{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+      text-align:left;
+      padding: 18px 16px;
+      border-bottom: 1px solid rgba(0,0,0,.10);
+    }
+    .lb-prod:nth-child(odd){ border-right: none; }
+
+    .lb-prod img{
+      width: 64px; height: 64px;
+      margin: 0;
+      flex: 0 0 auto;
+    }
+    .lb-prod .name{
+      font-size: 10px;
+      margin-bottom: 4px;
+      letter-spacing: .10em;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      line-height: 1.2;
+    }
+    .lb-prod .price{
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .lb-qv{
+      padding: 8px 10px;
+      font-size: 10px;
+    }
+
+    /* quote */
+    .lb-quote{ padding-top: 20px; }
+    .lb-quote .q{
+      font-size: 11px;
+      line-height: 2.0;
+      letter-spacing: .08em;
+      padding: 0 10px;
+    }
+    .lb-quote .sign{ font-size: 30px; }
+  }
+
+  /* Smaller phones */
+  @media (max-width: 480px){
+    .lb-hero-left img{ height: 52vh; }
+    .lb-side-img{ width: 140px; height: 140px; }
+    .lb-desc{ padding: 0 8px; }
+
+    /* grid6 -> 1 column on very small */
+    .lb-grid6{ grid-template-columns: 1fr; }
+    .lb-tile img{ height: 280px; }
+
+    .lb-split-card{ min-height: 280px; }
+    .lb-split-label{ font-size: 10px; letter-spacing: .06em; }
+
+    .lb-prod{ padding: 16px 14px; }
+    .lb-prod img{ width: 60px; height: 60px; }
+
+    .lb-quote .sign{ font-size: 28px; }
+  }
+
+  /* Ultra small */
+  @media (max-width: 360px){
+    .lb-hero-left img{ height: 48vh; }
+    .lb-btn{ min-width: 190px; font-size: 10px; }
+  }
+
+  @media (max-width: 992px){
+  :root{
+    --lb-page-max: 980px;
+    --lb-grid-img-h: 300px;
+    --lb-split-min-h: 360px;
+    --lb-media-min-h: 340px;
+  }
+}
+
+@media (max-width: 768px){
+  :root{
+    --lb-page-max: 100%;
+    --lb-page-pad: 10px;
+
+    --lb-grid-gap: 14px;
+    --lb-grid-img-h: 240px;
+    --lb-split-min-h: 320px;
+    --lb-media-min-h: 320px;
+
+    --lb-prod-img: 64px; /* list-style mobile */
+  }
+}
+
+@media (max-width: 480px){
+  :root{
+    --lb-page-pad: 8px;
+    --lb-grid-img-h: 280px; /* when you switch to 1 column */
+  }
+}
+
+  /* reveal animation safe mode
+     by default visible, only hidden when body has .lb-anim-on */
+  .lb-reveal-up{
+    opacity: 1;
+    transform: none;
+  }
+
+  body.lb-anim-on .lb-reveal-up{
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition: transform 700ms ease, opacity 700ms ease;
+    will-change: transform, opacity;
+  }
+
+  body.lb-anim-on .lb-reveal-up.is-visible{
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+
+  /* reveal animation (bottom to top, one by one) */
+  .lb-reveal-up{
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition: transform 700ms ease, opacity 700ms ease;
+    will-change: transform, opacity;
+  }
+  .lb-reveal-up.is-visible{
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .lb-reveal-up{
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     HERO (Brown)
+========================= -->
+<section class="lb-hero">
+  <div class="container">
+    <div class="lb-hero-grid">
+      <div class="lb-hero-left lb-reveal-up">
+        {% if lookbook and lookbook.main_image %}
+          <img src="{{ lookbook.main_image.url }}" alt="{{ lookbook.title|default:'Lookbook' }}">
+        {% else %}
+          <img src="{% static 'img/lookbook/main.jpg' %}" alt="Lookbook">
+        {% endif %}
+      </div>
+
+      <div class="lb-hero-right lb-reveal-up">
+        <div class="lb-kicker">{{ lookbook.kicker|default:"2025 COLLECTION" }}</div>
+        <h1 class="lb-title">{{ lookbook.title|default:"LOOKBOOK" }}</h1>
+
+        <div class="lb-side-img">
+          {% if lookbook and lookbook.side_image %}
+            <img src="{{ lookbook.side_image.url }}" alt="Side">
+          {% else %}
+            <img src="{% static 'img/lookbook/side.jpg' %}" alt="Side">
+          {% endif %}
+        </div>
+
+        <p class="lb-desc">
+
+{{ lookbook.description|default:"A celebration of timeless design and modern expression - this is jewelry created to be lived in, layered, and loved through every season." }}    
+
+</p>
+
+        {% if lookbook and lookbook.cta_url %}
+          <a class="lb-btn" href="{{ lookbook.cta_url }}">{{ lookbook.cta_text|default:"SHOP ALL JEWELRY" }}</a>
+        {% else %}
+          <a class="lb-btn" href="{% url 'catalog:product_list' %}">SHOP ALL JEWELRY</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================
+     NEXT SECTIONS (White)
+========================= -->
+{% for sec in sections %}
+<section class="lb-section">
+  <div class="container lb-container-narrow">
+
+    {% if sec.title or sec.subtitle %}
+      <div class="lb-head lb-reveal-up">
+        {% if sec.title %}<h2>{{ sec.title }}</h2>{% endif %}
+        {% if sec.subtitle %}<p>{{ sec.subtitle }}</p>{% endif %}
+      </div>
+    {% endif %}
+
+    {# GRID 6 #}
+    {% if sec.layout == "grid6" %}
+      <div class="lb-grid6">
+        {% for it in sec.grid_items.all %}
+          <div class="lb-tile lb-reveal-up">
+            {% if it.product %}
+              <a href="{% url 'catalog:product_detail' it.product.slug %}">
+                <img src="{{ it.image.url }}" alt="{{ it.caption }}">
+              </a>
+            {% else %}
+              <img src="{{ it.image.url }}" alt="{{ it.caption }}">
+            {% endif %}
+            <div class="lb-cap">{{ it.caption }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# SPLIT 2 #}
+    {% if sec.layout == "split2" %}
+      <div class="lb-split2">
+
+        <div class="lb-split-card lb-reveal-up">
+          {% if sec.split_left_image %}
+            {% if sec.split_left_product %}
+              <a href="{% url 'catalog:product_detail' sec.split_left_product.slug %}">
+                <img src="{{ sec.split_left_image.url }}" alt="{{ sec.split_left_caption }}">
+              </a>
+            {% else %}
+              <img src="{{ sec.split_left_image.url }}" alt="{{ sec.split_left_caption }}">
+            {% endif %}
+          {% else %}
+            <img src="{% static 'img/lookbook/placeholder.jpg' %}" alt="Left">
+          {% endif %}
+          {% if sec.split_left_caption %}
+            <div class="lb-split-label">{{ sec.split_left_caption }}</div>
+          {% endif %}
+        </div>
+
+        <div class="lb-split-card lb-reveal-up">
+          {% if sec.split_right_image %}
+            {% if sec.split_right_product %}
+              <a href="{% url 'catalog:product_detail' sec.split_right_product.slug %}">
+                <img src="{{ sec.split_right_image.url }}" alt="{{ sec.split_right_caption }}">
+              </a>
+            {% else %}
+              <img src="{{ sec.split_right_image.url }}" alt="{{ sec.split_right_caption }}">
+            {% endif %}
+          {% else %}
+            <img src="{% static 'img/lookbook/placeholder.jpg' %}" alt="Right">
+          {% endif %}
+          {% if sec.split_right_caption %}
+            <div class="lb-split-label">{{ sec.split_right_caption }}</div>
+          {% endif %}
+        </div>
+
+      </div>
+    {% endif %}
+
+    {# MEDIA + 4 PRODUCTS (only for media_products and quote_media_products) #}
+    {% if sec.layout == "media_products" or sec.layout == "quote_media_products" %}
+      <div class="lb-media-products {% if sec.media_side == 'right' %}lb-media-right{% endif %}">
+
+        {% if sec.media_side == "left" %}
+          <div class="lb-media lb-reveal-up">
+            {% if sec.media_image %}
+              <img src="{{ sec.media_image.url }}" alt="{{ sec.title }}">
+            {% else %}
+              <img src="{% static 'img/lookbook/placeholder.jpg' %}" alt="Media">
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="lb-prod-grid">
+
+          {% if sec.product_1 %}
+          <div class="lb-prod lb-reveal-up">
+            {% with pimg=sec.product_1.images.first %}
+              {% if pimg and pimg.image %}
+                <img src="{{ pimg.image.url }}" alt="{{ sec.product_1.title }}">
+              {% else %}
+                <img src="{% static 'img/no-product.png' %}" alt="{{ sec.product_1.title }}">
+              {% endif %}
+            {% endwith %}
+            <div>
+              <div class="name">{{ sec.product_1.title }}</div>
+              <div class="price">
+                {% if sec.old_price_1 %}
+                  <span class="old">Rs.{{ sec.old_price_1 }}</span>
+                  <span style="color:#c40000;font-weight:800;">Rs.{{ sec.product_1.price_inr }}</span>
+                {% else %}
+                  Rs.{{ sec.product_1.price_inr }}
+                {% endif %}
+              </div>
+              <a class="lb-qv" href="{% url 'catalog:product_detail' sec.product_1.slug %}">Quick View</a>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if sec.product_2 %}
+          <div class="lb-prod lb-reveal-up">
+            {% with pimg=sec.product_2.images.first %}
+              {% if pimg and pimg.image %}
+                <img src="{{ pimg.image.url }}" alt="{{ sec.product_2.title }}">
+              {% else %}
+                <img src="{% static 'img/no-product.png' %}" alt="{{ sec.product_2.title }}">
+              {% endif %}
+            {% endwith %}
+            <div>
+              <div class="name">{{ sec.product_2.title }}</div>
+              <div class="price">
+                {% if sec.old_price_2 %}
+                  <span class="old">Rs.{{ sec.old_price_2 }}</span>
+                  <span style="color:#c40000;font-weight:800;">Rs.{{ sec.product_2.price_inr }}</span>
+                {% else %}
+                  Rs.{{ sec.product_2.price_inr }}
+                {% endif %}
+              </div>
+              <a class="lb-qv" href="{% url 'catalog:product_detail' sec.product_2.slug %}">Quick View</a>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if sec.product_3 %}
+          <div class="lb-prod lb-reveal-up">
+            {% with pimg=sec.product_3.images.first %}
+              {% if pimg and pimg.image %}
+                <img src="{{ pimg.image.url }}" alt="{{ sec.product_3.title }}">
+              {% else %}
+                <img src="{% static 'img/no-product.png' %}" alt="{{ sec.product_3.title }}">
+              {% endif %}
+            {% endwith %}
+            <div>
+              <div class="name">{{ sec.product_3.title }}</div>
+              <div class="price">
+                {% if sec.old_price_3 %}
+                  <span class="old">Rs.{{ sec.old_price_3 }}</span>
+                  <span style="color:#c40000;font-weight:800;">Rs.{{ sec.product_3.price_inr }}</span>
+                {% else %}
+                  Rs.{{ sec.product_3.price_inr }}
+                {% endif %}
+              </div>
+              <a class="lb-qv" href="{% url 'catalog:product_detail' sec.product_3.slug %}">Quick View</a>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if sec.product_4 %}
+          <div class="lb-prod lb-reveal-up">
+            {% with pimg=sec.product_4.images.first %}
+              {% if pimg and pimg.image %}
+                <img src="{{ pimg.image.url }}" alt="{{ sec.product_4.title }}">
+              {% else %}
+                <img src="{% static 'img/no-product.png' %}" alt="{{ sec.product_4.title }}">
+              {% endif %}
+            {% endwith %}
+            <div>
+              <div class="name">{{ sec.product_4.title }}</div>
+              <div class="price">
+                {% if sec.old_price_4 %}
+                  <span class="old">Rs.{{ sec.old_price_4 }}</span>
+                  <span style="color:#c40000;font-weight:800;">Rs.{{ sec.product_4.price_inr }}</span>
+                {% else %}
+                  Rs.{{ sec.product_4.price_inr }}
+                {% endif %}
+              </div>
+              <a class="lb-qv" href="{% url 'catalog:product_detail' sec.product_4.slug %}">Quick View</a>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+
+        {% if sec.media_side == "right" %}
+          <div class="lb-media lb-reveal-up">
+            {% if sec.media_image %}
+              <img src="{{ sec.media_image.url }}" alt="{{ sec.title }}">
+            {% else %}
+              <img src="{% static 'img/lookbook/placeholder.jpg' %}" alt="Media">
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+    {# QUOTE ONLY (new layout) #}
+    {% if sec.layout == "quote_only" and sec.quote_text %}
+      <div class="lb-quote lb-reveal-up">
+        <div class="q">"{{ sec.quote_text }}"</div>
+        {% if sec.quote_author %}<div class="sign">{{ sec.quote_author }}</div>{% endif %}
+        {% if sec.quote_role %}<div class="role">{{ sec.quote_role }}</div>{% endif %}
+      </div>
+    {% endif %}
+
+    {# QUOTE under Media+Products (only for quote_media_products) #}
+    {% if sec.layout == "quote_media_products" and sec.quote_text %}
+      <div class="lb-quote lb-reveal-up">
+        <div class="q">"{{ sec.quote_text }}"</div>
+        {% if sec.quote_author %}<div class="sign">{{ sec.quote_author }}</div>{% endif %}
+        {% if sec.quote_role %}<div class="role">{{ sec.quote_role }}</div>{% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endfor %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    const items = Array.from(document.querySelectorAll(".lb-reveal-up"));
+    if (!items.length) return;
+
+    // enable animation mode
+    document.body.classList.add("lb-anim-on");
+
+    // stagger delays
+    items.forEach((el, i) => {
+      el.style.transitionDelay = (i * 70) + "ms";
+    });
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -10% 0px" });
+
+    items.forEach(el => io.observe(el));
+  })();
+</script>
+{% endblock %}

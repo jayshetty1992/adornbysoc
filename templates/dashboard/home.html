@@ -1,0 +1,170 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+
+<!-- STAT CARDS ROW 1 -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="stat-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-gem"></i></div>
+        <span class="badge rounded-pill" style="background:#eff6ff;color:#3b82f6;font-size:.65rem;">Products</span>
+      </div>
+      <div class="stat-val">{{ total_products }}</div>
+      <div class="stat-label">Active Products</div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="stat-icon" style="background:#f0fdf4;color:#22c55e;"><i class="bi bi-bag-check-fill"></i></div>
+        <span class="badge rounded-pill" style="background:#f0fdf4;color:#22c55e;font-size:.65rem;">Orders</span>
+      </div>
+      <div class="stat-val">{{ total_orders }}</div>
+      <div class="stat-label">Total Orders &nbsp;<small class="text-muted">(+{{ orders_today }} today)</small></div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="stat-icon" style="background:#fff7ed;color:#f97316;"><i class="bi bi-currency-rupee"></i></div>
+        <span class="badge rounded-pill" style="background:#fff7ed;color:#f97316;font-size:.65rem;">Revenue</span>
+      </div>
+      <div class="stat-val" style="font-size:1.4rem;">&#8377;{{ revenue|floatformat:0 }}</div>
+      <div class="stat-label">Total Revenue &nbsp;<small class="text-muted">(&#8377;{{ revenue_today|floatformat:0 }} today)</small></div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="stat-icon" style="background:#fdf4ff;color:#a855f7;"><i class="bi bi-envelope-at-fill"></i></div>
+        <span class="badge rounded-pill" style="background:#fdf4ff;color:#a855f7;font-size:.65rem;">Newsletter</span>
+      </div>
+      <div class="stat-val">{{ subscribers }}</div>
+      <div class="stat-label">Active Subscribers</div>
+    </div>
+  </div>
+</div>
+
+<!-- STAT CARDS ROW 2 -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#fef9c3;color:#ca8a04;"><i class="bi bi-star-fill"></i></div>
+      <div class="stat-val" style="color:#ca8a04;">{{ pending_reviews }}</div>
+      <div class="stat-label">Reviews Pending</div>
+      <a href="{% url 'dashboard:reviews_list' %}?status=pending" class="btn btn-sm btn-warning mt-2 py-1 px-2" style="font-size:.75rem;">Review Now</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#fee2e2;color:#ef4444;"><i class="bi bi-x-circle-fill"></i></div>
+      <div class="stat-val" style="color:#ef4444;">{{ low_stock }}</div>
+      <div class="stat-label">Out of Stock</div>
+      <a href="{% url 'dashboard:products_list' %}?status=out" class="btn btn-sm btn-danger mt-2 py-1 px-2" style="font-size:.75rem;">View</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#e0f2fe;color:#0ea5e9;"><i class="bi bi-chat-dots-fill"></i></div>
+      <div class="stat-val" style="color:#0ea5e9;">{{ pending_messages }}</div>
+      <div class="stat-label">Pending Messages</div>
+      <a href="{% url 'dashboard:contact_messages_list' %}?status=pending" class="btn btn-sm btn-info mt-2 py-1 px-2" style="font-size:.75rem;">View</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon mb-2" style="background:#dcfce7;color:#22c55e;"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="stat-val" style="color:#22c55e;">{{ order_status_counts.paid }}</div>
+      <div class="stat-label">Paid Orders</div>
+      <a href="{% url 'dashboard:orders_list' %}?status=paid" class="btn btn-sm btn-success mt-2 py-1 px-2" style="font-size:.75rem;">View</a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Recent Orders -->
+  <div class="col-lg-8">
+    <div class="tbl-card">
+      <div class="tbl-head">
+        <span class="title"><i class="bi bi-bag-check me-2 text-success"></i>Recent Orders</span>
+        <a href="{% url 'dashboard:orders_list' %}" class="btn btn-sm" style="font-size:.75rem;background:#f1f5f9;color:#334155;">View All</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-borderless mb-0">
+          <thead>
+            <tr>
+              <th>#</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in recent_orders %}
+            <tr>
+              <td><a href="{% url 'dashboard:order_detail' order.pk %}" class="text-decoration-none fw-semibold">#{{ order.id }}</a></td>
+              <td>
+                <div class="fw-semibold" style="font-size:.82rem;">{{ order.full_name }}</div>
+                <div class="text-muted" style="font-size:.72rem;">{{ order.email }}</div>
+              </td>
+              <td class="fw-semibold">&#8377;{{ order.total_inr }}</td>
+              <td>
+                <span class="badge bs-{{ order.status }}" style="font-size:.7rem;">{{ order.get_status_display }}</span>
+              </td>
+              <td class="text-muted" style="font-size:.75rem;">{{ order.created_at|date:"d M, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">No orders yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Status Breakdown + Quick Links -->
+  <div class="col-lg-4">
+    <div class="form-card mb-3">
+      <div class="form-section-title">Order Status Breakdown</div>
+      {% for status, label, color in orders_breakdown %}{% endfor %}
+      <div class="d-flex flex-column gap-2">
+        <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:#f0fdf4;">
+          <span style="font-size:.82rem;"><span class="status-dot" style="background:#22c55e;"></span>Paid</span>
+          <strong>{{ order_status_counts.paid }}</strong>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:#fef9c3;">
+          <span style="font-size:.82rem;"><span class="status-dot" style="background:#eab308;"></span>Pending</span>
+          <strong>{{ order_status_counts.created }}</strong>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:#fee2e2;">
+          <span style="font-size:.82rem;"><span class="status-dot" style="background:#ef4444;"></span>Failed</span>
+          <strong>{{ order_status_counts.failed }}</strong>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background:#f1f5f9;">
+          <span style="font-size:.82rem;"><span class="status-dot" style="background:#94a3b8;"></span>Cancelled</span>
+          <strong>{{ order_status_counts.cancelled }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title">Quick Actions</div>
+      <div class="d-flex flex-column gap-2">
+        <a href="{% url 'dashboard:product_add' %}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+          <i class="bi bi-plus-circle"></i> Add New Product
+        </a>
+        <a href="{% url 'dashboard:collection_add' %}" class="btn btn-sm d-flex align-items-center gap-2" style="background:#eff6ff;color:#3b82f6;border:none;">
+          <i class="bi bi-plus-circle"></i> Add Collection
+        </a>
+        <a href="{% url 'dashboard:coupon_add' %}" class="btn btn-sm d-flex align-items-center gap-2" style="background:#f0fdf4;color:#22c55e;border:none;">
+          <i class="bi bi-ticket-perforated"></i> Create Coupon
+        </a>
+        <a href="{% url 'dashboard:reviews_list' %}?status=pending" class="btn btn-sm d-flex align-items-center gap-2" style="background:#fef9c3;color:#854d0e;border:none;">
+          <i class="bi bi-star"></i> Approve Reviews
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

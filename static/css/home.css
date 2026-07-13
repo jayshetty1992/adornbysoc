@@ -28,37 +28,6 @@ body {
 
 ::selection { background: var(--jb-gold); color: var(--jb-bg); }
 
-/* ---------- darken global chrome (homepage only) ---------- */
-.topbar {
-  background: #0E0B08;
-  color: var(--jb-gold-light);
-  border-bottom: 1px solid rgba(212, 166, 74, .15);
-}
-.topbar .arrow-btn { border-color: rgba(212, 166, 74, .25); color: var(--jb-gold-light); }
-.topbar .arrow-btn:hover { background: rgba(212, 166, 74, .12); }
-
-.site-header {
-  background: rgba(20, 16, 12, .92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--jb-hairline);
-}
-.site-header .brand { color: var(--jb-ivory); }
-.site-header .nav-link-custom { color: var(--jb-muted); }
-.site-header .nav-link-custom:hover { color: var(--jb-ivory); }
-.site-header .nav-link-custom::after { background: var(--jb-gold); }
-.site-header .icon-btn { border-color: rgba(245, 239, 228, .18); color: var(--jb-ivory); }
-.site-header .icon-btn:hover { background: rgba(245, 239, 228, .06); }
-.site-header .svg-ico { stroke: var(--jb-ivory); opacity: .85; }
-.site-header .cart-badge { border-color: var(--jb-bg); }
-.mobile-drawer { background: var(--jb-surface); border-top-color: var(--jb-hairline); }
-.mobile-drawer a { color: var(--jb-ivory); border-bottom-color: rgba(245, 239, 228, .08); }
-.mobile-drawer a:hover { background: rgba(212, 166, 74, .08); }
-
-.site-footer {
-  background: radial-gradient(1200px 500px at 50% 0%, rgba(212, 166, 74, .05), transparent 60%),
-    linear-gradient(180deg, #0E0B08 0%, #0A0806 100%);
-}
-
 /* ============================================================
    SIGNATURE DEVICE — jewel-box corner brackets
    thin gold L-corners framing key elements
@@ -501,3 +470,50 @@ body {
   .jsx .story { height: 300vh; }
   .story-progress { display: none; }
 }
+
+/* ============================================================
+   REVIEWS STRIP (real reviews only, approved via dashboard)
+   ============================================================ */
+.rev-row { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: none; }
+.rev-row::-webkit-scrollbar { display: none; }
+.rev-card {
+  flex: 0 0 min(340px, 82vw); scroll-snap-align: start;
+  background: var(--jb-surface); padding: 26px 24px; margin: 0;
+}
+.rev-stars { color: var(--jb-gold); font-size: 15px; letter-spacing: .2em; margin-bottom: 12px; }
+.rev-stars .dim { color: rgba(212, 166, 74, .25); }
+.rev-title { font-weight: 600; color: var(--jb-ivory); font-size: 14px; margin-bottom: 8px; letter-spacing: .04em; }
+.rev-card blockquote { font-size: 14px; line-height: 1.8; color: var(--jb-muted); margin: 0 0 16px; }
+.rev-card figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 12px; }
+.rev-card figcaption b { color: var(--jb-ivory); font-weight: 500; letter-spacing: .08em; }
+.rev-card figcaption a { color: var(--jb-gold); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.rev-card figcaption a:hover { color: var(--jb-gold-light); }
+
+/* ============================================================
+   INNER PAGES (about / journal / policies) — shared scaffolding
+   ============================================================ */
+.page-hero { padding: 84px 0 56px; border-bottom: 1px solid var(--jb-hairline); }
+.page-hero .jbx-h2 { margin-bottom: 10px; }
+.page-hero .lede { color: var(--jb-muted); font-size: 16px; line-height: 1.8; max-width: 720px; }
+.prose { max-width: 780px; }
+.prose h2 { font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, 2.4vw, 30px); color: var(--jb-ivory); margin: 40px 0 14px; }
+.prose h2 em { font-style: italic; color: var(--jb-gold-light); }
+.prose h3 { font-size: 16px; font-weight: 600; color: var(--jb-ivory); margin: 28px 0 10px; letter-spacing: .04em; }
+.prose p, .prose li { font-size: 15px; line-height: 1.9; color: var(--jb-muted); }
+.prose strong { color: var(--jb-ivory); font-weight: 500; }
+.prose a { color: var(--jb-gold); border-bottom: 1px solid var(--jb-hairline); }
+.prose a:hover { color: var(--jb-gold-light); }
+.prose ul { padding-left: 20px; }
+
+/* journal cards */
+.jr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media (max-width: 991px) { .jr-grid { grid-template-columns: 1fr; } }
+.jr-card { display: block; background: var(--jb-surface); transition: background .3s ease; }
+.jr-card:hover { background: var(--jb-surface-2); }
+.jr-card .jr-media { aspect-ratio: 16/10; overflow: hidden; background: var(--jb-surface-2); }
+.jr-card .jr-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.22,1,.36,1); }
+.jr-card:hover .jr-media img { transform: scale(1.05); }
+.jr-card .jr-body { padding: 20px 22px 24px; }
+.jr-card .jr-date { font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--jb-gold); margin-bottom: 8px; }
+.jr-card h3 { font-family: var(--font-display); font-weight: 500; font-size: 21px; color: var(--jb-ivory); margin: 0 0 8px; line-height: 1.25; }
+.jr-card p { font-size: 13.5px; line-height: 1.7; color: var(--jb-muted); margin: 0; }

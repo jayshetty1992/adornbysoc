@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Terms of Service | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Terms of service for shopping at Adorn by SOC — orders, pricing, payments, shipping, returns, warranty, and contact details.">
+<link rel="canonical" href="https://www.adornbysoc.com/page/terms/">
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">Legal</div>
+    <h1 class="jbx-h2">Terms of <em>Service</em></h1>
+    <p class="lede">The plain-language rules for shopping at adornbysoc.com.</p>
+  </div>
+</section>
+
+<section class="jbx-section" style="padding-top:56px">
+  <div class="container">
+    <div class="prose">
+      <h3>1. Who we are</h3>
+      <p>Adorn by SOC ("we", "us") operates adornbysoc.com from Pune, Maharashtra, India. By placing an order on
+        this site you agree to these terms.</p>
+
+      <h3>2. Products</h3>
+      <p>Our jewellery is 18K gold plated on 316L surgical-grade stainless steel — it is not solid gold, and we
+        say so plainly on every relevant page. Product images are as accurate as screens allow; minor variations
+        in shade can occur.</p>
+
+      <h3>3. Pricing &amp; payment</h3>
+      <p>All prices are in Indian Rupees (INR) and include applicable taxes unless stated otherwise. We accept
+        prepaid payments via our payment partner and Cash on Delivery (COD) across India. We may correct pricing
+        errors on unshipped orders; if we do, you can cancel for a full refund.</p>
+
+      <h3>4. Shipping</h3>
+      <p>We offer free shipping across India. Details are on our <a href="{% url 'page' 'shipping' %}">Shipping
+        page</a>.</p>
+
+      <h3>5. Returns &amp; exchanges</h3>
+      <p>7-day easy returns and exchanges, no questions asked — see the
+        <a href="{% url 'page' 'returns' %}">Returns policy</a> for the process.</p>
+
+      <h3>6. Warranty</h3>
+      <p>Every piece carries our <a href="{% url 'page' 'warranty' %}">6-month anti-tarnish warranty</a>. The
+        warranty covers plating failure in normal wear and excludes physical damage and chemical exposure.</p>
+
+      <h3>7. Your account &amp; conduct</h3>
+      <p>You're responsible for the accuracy of the address and contact details you provide. We may refuse or
+        cancel orders that appear fraudulent or abusive.</p>
+
+      <h3>8. Intellectual property</h3>
+      <p>All content on this site — photographs, copy, and design — belongs to Adorn by SOC and may not be
+        reproduced without written permission.</p>
+
+      <h3>9. Liability</h3>
+      <p>To the extent permitted by Indian law, our liability for any claim is limited to the amount you paid for
+        the product concerned.</p>
+
+      <h3>10. Governing law</h3>
+      <p>These terms are governed by the laws of India; courts in Pune, Maharashtra have jurisdiction.</p>
+
+      <h3>11. Contact</h3>
+      <p>Questions about these terms? Reach us via the <a href="{% url 'catalog:contact' %}">contact page</a>.</p>
+
+      <p><em>Last updated: July 2026.</em></p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

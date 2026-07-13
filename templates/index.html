@@ -15,6 +15,7 @@
 
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
@@ -372,6 +373,36 @@
     </div>
   </div>
 </section>
+
+{% if reviews %}
+<!-- ============================================================
+     10b. REVIEWS — real customer words (approved via dashboard)
+     ============================================================ -->
+<section class="jbx-section reviews-dark" id="reviews">
+  <div class="container">
+    <div class="rv" style="margin-bottom:36px">
+      <div class="jbx-kicker">Customer Words</div>
+      <h2 class="jbx-h2">Worn Daily Across <em>India</em></h2>
+    </div>
+
+    <div class="rev-row">
+      {% for r in reviews %}
+      <figure class="rev-card jb rv" style="--rd:{{ forloop.counter0 }}00ms">
+        <div class="rev-stars" aria-label="{{ r.rating }} out of 5 stars">
+          {% for _ in "12345"|make_list %}{% if forloop.counter <= r.rating %}★{% else %}<span class="dim">★</span>{% endif %}{% endfor %}
+        </div>
+        {% if r.title %}<div class="rev-title">{{ r.title }}</div>{% endif %}
+        <blockquote>{{ r.body|truncatechars:180 }}</blockquote>
+        <figcaption>
+          <b>{{ r.name }}</b>
+          <a href="{% url 'catalog:product_detail' slug=r.product.slug %}">{{ r.product.title }}</a>
+        </figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <!-- ============================================================
      11. FAQ

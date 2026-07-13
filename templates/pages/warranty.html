@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}6-Month Anti-Tarnish Warranty | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Every Adorn by SOC piece is covered by a 6-month anti-tarnish warranty. If it fades or tarnishes in normal wear, we replace it free — WhatsApp a photo and your order ID.">
+<link rel="canonical" href="https://www.adornbysoc.com/page/warranty/">
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">Our Promise</div>
+    <h1 class="jbx-h2">The 6-Month <em>Anti-Tarnish Warranty</em></h1>
+    <p class="lede">If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear,
+      we replace it free. No receipts hunt, no interrogation.</p>
+  </div>
+</section>
+
+<section class="jbx-section" style="padding-top:56px">
+  <div class="container">
+    <div class="prose">
+      <h2>How It <em>Works</em></h2>
+      <ul>
+        <li><strong>1. Take a photo</strong> of the affected piece.</li>
+        <li><strong>2. WhatsApp us</strong> the photo along with your order ID.</li>
+        <li><strong>3. We ship a replacement</strong> — a new piece dispatches within 48 hours of approval.</li>
+      </ul>
+
+      <h2>What's <em>Covered</em></h2>
+      <ul>
+        <li>Fading, tarnishing, or blackening of the plating in normal daily wear.</li>
+        <li>Plating loss within 6 months of your delivery date.</li>
+      </ul>
+
+      <h2>What's Not <em>Covered</em></h2>
+      <ul>
+        <li>Physical damage — bent, broken, or crushed pieces.</li>
+        <li>Damage from harsh chemicals: chlorine bleach, acetone, or perfume sprayed directly on the piece.</li>
+        <li>Lost or stolen items.</li>
+      </ul>
+
+      <h2>Why We Can <em>Offer This</em></h2>
+      <p>
+        Our jewellery is built on <strong>316L surgical-grade stainless steel</strong> with 18K gold plating.
+        Steel doesn't oxidise in normal wear — so there's nothing underneath to turn black. We publish our specs
+        because we're confident in them; the warranty is that confidence in writing.
+      </p>
+
+      <p>Also see our <a href="{% url 'page' 'returns' %}">7-day returns &amp; exchange policy</a>.</p>
+    </div>
+
+    <div style="margin-top:40px">
+      <a class="btn-metal" href="{% url 'catalog:contact' %}">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

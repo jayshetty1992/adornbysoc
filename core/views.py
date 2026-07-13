@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
 
-from catalog.models import Collection, Product, ShopTheLook, ShopTheLookItem, ProductImage
+from catalog.models import Collection, Product, ShopTheLook, ShopTheLookItem, ProductImage, ProductReview, JournalPost
 
 
 
@@ -42,6 +42,12 @@ def home(request):
     except Exception:
         shop_look = None
 
+    reviews = (
+        ProductReview.objects.filter(is_approved=True)
+        .select_related("product")
+        .order_by("-created_at")[:8]
+    )
+
     return render(
         request,
         "index.html",
@@ -49,6 +55,7 @@ def home(request):
             "new_arrivals": new_arrivals,
             "home_collections": home_collections,
             "shop_look": shop_look,
+            "reviews": reviews,
         },
     )
 
@@ -61,6 +68,8 @@ def page(request, slug):
         "shipping": "pages/shipping.html",
         "returns": "pages/returns.html",
         "privacy": "pages/privacy.html",
+        "warranty": "pages/warranty.html",
+        "terms": "pages/terms.html",
     }
     tpl = template_map.get(slug, "pages/generic.html")
     return render(request, tpl, {"slug": slug})
@@ -75,3 +84,15 @@ def newsletter_subscribe(request):
     else:
         messages.error(request, "Please enter a valid email.")
     return redirect("home")
+
+
+def journal_list(request):
+    posts = JournalPost.objects.filter(is_published=True)
+    return render(request, "journal/list.html", {"posts": posts})
+
+
+def journal_detail(request, slug):
+    from django.shortcuts import get_object_or_404
+    post = get_object_or_404(JournalPost, slug=slug, is_published=True)
+    more = JournalPost.objects.filter(is_published=True).exclude(pk=post.pk)[:3]
+    return render(request, "journal/detail.html", {"post": post, "more": more})

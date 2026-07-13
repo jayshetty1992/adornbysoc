@@ -1,555 +1,106 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About | ADORN{% endblock %}
+{% block title %}About Us — The Honest Specs Brand | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Adorn by SOC is an Indian anti-tarnish jewellery brand from Pune making waterproof 18K gold-plated jewellery on 316L surgical-grade stainless steel. Founded by stylist Shivani.">
+<link rel="canonical" href="https://www.adornbysoc.com/catalog/about/">
+{% endblock %}
 
 {% block extra_css %}
-<style>
-  :root{
-    --cream: #f6f2ea;
-    --ink: #0c0c0d;
-    --muted: rgba(0,0,0,.62);
-    --line: rgba(0,0,0,.14);
-    --max: 1200px;
-  }
-
-  .about-wrap{ background:#fff; }
-
-  /* ====== SECTION BASE ====== */
-  .ab-section{ padding: 44px 0; }
-  .ab-section.ab-intro{ padding: 26px 0 34px; }
-  .ab-container{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
-  .ab-divider{ height:1px; background: var(--line); width: 100%; }
-  .ab-center{ text-align:center; }
-
-  /* ====== TOP INTRO ====== */
-  .ab-kicker{
-    font-size: 11px;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: rgba(0,0,0,.65);
-    margin-top: 10px;
-  }
-  .ab-icon{
-    width: 54px;
-    height: 54px;
-    margin: -18 auto;
-    display: grid;
-    place-items: center;
-  }
-  .ab-icon img{ width: 52px; height: 52px; object-fit: contain; opacity:.85; }
-
-  .ab-title{
-    margin: 16px auto 0;
-    font-weight: 900;
-    letter-spacing: .02em;
-    text-transform: uppercase;
-    font-size: clamp(32px, 4.4vw, 64px);
-    line-height: 1.05;
-    color: var(--ink);
-    max-width: 980px;
-  }
-
-  /* ====== HERO IMAGE (was video) ====== */
-  .ab-video{
-    position: relative;
-    height: clamp(240px, 44vw, 520px);
-    overflow: hidden;
-    background:#d9d9d9;
-  }
-
-  .ab-image{
-    position: relative;
-    overflow: hidden;
-  }
-  .ab-image .ab-bg{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .ab-video::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background: rgba(0,0,0,.18);
-    pointer-events:none;
-  }
-
-  .ab-video-overlay{
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    display: grid;
-    place-items: center;
-  }
-  .ab-video-overlay img{
-    width: min(240px, 40vw);
-    height: auto;
-    filter: drop-shadow(0 16px 30px rgba(0,0,0,.25));
-  }
-
-  /* ====== CENTER PARAGRAPH ====== */
-  .ab-copy{
-    max-width: 860px;
-    margin: 0 auto;
-    color: rgba(0,0,0,.72);
-    font-size: 15px;
-    line-height: 1.9;
-    letter-spacing: .02em;
-  }
-
-  /* ====== TWO-COL GRID SECTIONS ====== */
-  .ab-grid-2{
-    display:grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 54px;
-    align-items: start;
-  }
-
-  /* images */
-  .ab-img{
-    background:#e9e9e9;
-    border: 1px solid rgba(0,0,0,.10);
-    overflow: hidden;
-  }
-  .ab-img img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    display:block;
-    transform: scale(1.02);
-    transition: transform .9s ease;
-  }
-  .ab-img.is-inview img{ transform: scale(1); }
-
-  /* OUR JEWELRY layout */
-  .ab-jewelry-left .ab-img{ height: 720px; }
-  .ab-jewelry-right{
-    display:grid;
-    grid-template-rows: 420px auto;
-    gap: 22px;
-  }
-  .ab-jewelry-right .ab-img{ height: 420px; }
-
-  .ab-h2{
-    font-weight: 900;
-    letter-spacing: .02em;
-    text-transform: uppercase;
-    font-size: clamp(26px, 3.4vw, 48px);
-    margin: 0 0 12px 0;
-    color: var(--ink);
-  }
-  .ab-text{
-    color: rgba(0,0,0,.72);
-    font-size: 14px;
-    line-height: 1.9;
-    letter-spacing: .02em;
-    max-width: 520px;
-  }
-  .ab-text p{ margin: 0 0 12px 0; }
-  .ab-text p:last-child{ margin-bottom: 0; }
-
-  /* OUR PHILOSOPHY layout */
-  .ab-philo-left{
-    display:grid;
-    gap: 18px;
-  }
-  .ab-philo-bw .ab-img{ height: 420px; }
-  .ab-philo-right .ab-img{ height: 760px; }
-
-  /* ====== THREE STRIP ====== */
-  .ab-triplet{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-    text-align:center;
-  }
-  .ab-triplet p{
-    margin:0;
-    color: rgba(0,0,0,.68);
-    font-size: 13px;
-    line-height: 1.8;
-    letter-spacing: .02em;
-  }
-
-  /* ====== GUIDING PRINCIPLES ====== */
-  .ab-gp-title{
-    text-align:center;
-    font-weight: 900;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    font-size: clamp(22px, 2.6vw, 34px);
-    margin: 0 0 28px 0;
-  }
-  .ab-gp-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 34px;
-  }
-  .ab-gp-card .ab-img{ height: 260px; }
-  .ab-gp-card h3{
-    margin: 16px 0 10px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: .02em;
-    font-size: 22px;
-  }
-  .ab-gp-card p{
-    margin:0;
-    color: rgba(0,0,0,.70);
-    font-size: 13.5px;
-    line-height: 1.85;
-    letter-spacing: .02em;
-  }
-
-  /* ====== QUOTE SECTION ====== */
-  .ab-quote-grid{
-    display:grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 54px;
-    align-items: center;
-  }
-  .ab-quote-left .ab-img{ height: 560px; }
-  .ab-quote{
-    text-align:center;
-  }
-  .ab-quote blockquote{
-    margin: 0 0 22px;
-    color: rgba(0,0,0,.78);
-    font-size: 16px;
-    line-height: 2.0;
-    letter-spacing: .02em;
-  }
-  .ab-sign{
-    font-family: "Georgia", "Times New Roman", serif;
-    font-size: 44px;
-    font-style: italic;
-    margin: 0 0 8px;
-    color: rgba(0,0,0,.85);
-  }
-  .ab-role{
-    font-size: 11px;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: rgba(0,0,0,.62);
-  }
-
-  /* ====== ON SCROLL ANIMATIONS ====== */
-  [data-animate]{
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .75s ease, transform .75s ease;
-    will-change: opacity, transform;
-  }
-  [data-animate].is-inview{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  /* slightly different feel for big images */
-  [data-animate="img"]{
-    transform: translateY(18px) scale(.985);
-  }
-  [data-animate="img"].is-inview{
-    transform: translateY(0) scale(1);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    [data-animate]{
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-    .ab-img img{ transition: none !important; transform: none !important; }
-  }
-
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 991px){
-    .ab-section{ padding: 46px 0; }
-    .ab-section.ab-intro{ padding: 22px 0 28px; }
-    .ab-grid-2{ grid-template-columns: 1fr; gap: 28px; }
-    .ab-jewelry-left .ab-img{ height: 520px; }
-    .ab-jewelry-right{ grid-template-rows: 340px auto; gap: 18px; }
-    .ab-jewelry-right .ab-img{ height: 340px; }
-    .ab-philo-right .ab-img{ height: 520px; }
-    .ab-triplet{ grid-template-columns: 1fr; gap: 18px; }
-    .ab-gp-grid{ grid-template-columns: 1fr; gap: 22px; }
-    .ab-quote-grid{ grid-template-columns: 1fr; gap: 28px; }
-    .ab-quote-left .ab-img{ height: 420px; }
-  }
-
-  @media (max-width: 520px){
-    .ab-container{ width: min(var(--max), calc(100% - 22px)); }
-    .ab-section{ padding: 34px 0; }
-    .ab-section.ab-intro{ padding: 18px 0 22px; }
-
-    .ab-title{ font-size: 32px; }
-    .ab-copy{ font-size: 14.5px; line-height: 1.85; }
-
-    .ab-video{ height: 260px; }
-
-    .ab-jewelry-left .ab-img{ height: 360px; }
-    .ab-jewelry-right{ grid-template-rows: 240px auto; }
-    .ab-jewelry-right .ab-img{ height: 240px; }
-
-    .ab-philo-bw .ab-img{ height: 240px; }
-    .ab-philo-right .ab-img{ height: 360px; }
-
-    .ab-gp-card .ab-img{ height: 220px; }
-    .ab-sign{ font-size: 40px; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="about-wrap">
 
-  <!-- 1) TOP INTRO -->
-  <section class="ab-section ab-intro">
-    <div class="ab-container ab-center">
-      <div class="ab-icon" data-animate>
-        <!-- <img src="{% static 'img/brand-1_gold.svg' %}" alt="Leaf icon"> -->
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">About Adorn by SOC</div>
+    <h1 class="jbx-h2">Jewellery That Lives <em>Your Life</em> With You</h1>
+    <p class="lede">
+      <strong style="color:var(--jb-ivory)">Adorn by SOC is an Indian anti-tarnish jewellery brand that makes
+      waterproof, 18K gold-plated jewellery on 316L surgical-grade stainless steel.</strong>
+      Designed in Pune. Made for everyday Indian life — the office, the gym, the monsoon.
+    </p>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="jbx-section" id="story">
+  <div class="container">
+    <div class="founder-grid">
+      <div>
+        <div class="jbx-kicker">The Founder</div>
+        <div class="founder-pull">"Luxury should feel personal, wearable, and accessible to everyone."</div>
       </div>
-
-      <div class="ab-kicker" data-animate>OUR STORY</div>
-
-      <h1 class="ab-title" data-animate>
-        JEWELRY DESIGNED TO ENDURE,<br>CRAFTED TO LIVE IN.
-      </h1>
-    </div>
-  </section>
-
-  <!-- 2) HERO IMAGE + OVERLAY -->
-  <section class="ab-video ab-image" aria-label="About image" data-animate="img">
-    <img class="ab-bg" src="{% static 'img/hero_about.jpg' %}" alt="About background">
-    <div class="ab-video-overlay" data-animate>
-      <img src="{% static 'img/nwc.png' %}" alt="Overlay">
-    </div>
-  </section>
-
-  <!-- 3) CENTER PARAGRAPH -->
-  <section class="ab-section">
-    <div class="ab-container ab-center">
-      <p class="ab-copy" data-animate>
-        At ADORN, we believe jewelry should tell a story - yours. Founded on the principles of mindful luxury
-        and timeless design, we create pieces that transcend fleeting trends to become cherished companions
-        in life's most meaningful moments.
-      </p>
-    </div>
-  </section>
-
-  <div class="ab-divider"></div>
-
-  <!-- 4+5) OUR JEWELRY -->
-  <section class="ab-section">
-    <div class="ab-container">
-      <div class="ab-grid-2">
-
-        <div class="ab-jewelry-left" data-animate="img">
-          <div class="ab-img">
-            <img src="{% static 'img/silver.jpg' %}" alt="Jewelry left">
-          </div>
-        </div>
-
-        <div class="ab-jewelry-right">
-          <div class="ab-img" data-animate="img">
-            <img src="{% static 'img/4.png' %}" alt="Jewelry right">
-          </div>
-
-          <div data-animate>
-            <h2 class="ab-h2">OUR JEWELRY</h2>
-            <div class="ab-text">
-              <p>
-                We believe jewelry should be more than an accessory. It should hold meaning, celebrate craft,
-                and move effortlessly through every chapter of your life.
-              </p>
-              <p>
-                Our pieces are sculptural forms - hand-finished in small batches using 100% recycled gold and silver.
-                From raw metal to refined finish, each design carries the story of skilled artisans shaping wearable art.
-              </p>
-            </div>
-          </div>
-
-        </div>
-
+      <div class="founder-body">
+        <h2 class="jbx-h2" style="font-size:clamp(24px,2.6vw,34px)">Why We <em>Started</em></h2>
+        <p>
+          Hi, I'm <strong>Shivani</strong>, a fashion designer and personal stylist from Pune. After styling hundreds
+          of people through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is
+          still difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
+          outfits, real occasions, and everyday life.
+        </p>
+        <p>For me, Adorn is a heartfelt effort to make luxury feel more personal, wearable, and accessible to everyone.</p>
+        <div class="founder-sign">— Shivani</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 6+7) OUR PHILOSOPHY -->
-  <section class="ab-section">
-    <div class="ab-container">
-      <div class="ab-grid-2">
+<!-- MANIFESTO / HONEST SPECS -->
+<section class="jbx-section honest-dark" id="manifesto">
+  <div class="container">
+    <div class="jbx-kicker">The Honest-Specs Manifesto</div>
+    <h2 class="jbx-h2">We Publish Our Specs. <em>Ask Any Other Brand to Do the Same.</em></h2>
+    <p class="jbx-lead">
+      Real gold is a locker purchase. Imitation fades in weeks. We build the first option: pieces on a
+      <strong>316L surgical-grade stainless steel</strong> base — the alloy used in medical implants and luxury
+      watches — sealed in <strong>18K gold plating</strong>. Steel doesn't oxidise in normal wear, so there's
+      nothing underneath to turn black. That's the whole secret, and we'd rather say it plainly than hide it
+      behind adjectives.
+    </p>
 
-        <div class="ab-philo-left">
-          <div data-animate>
-            <h2 class="ab-h2">OUR PHILOSOPHY</h2>
-            <div class="ab-text">
-              <p>
-                We believe jewelry should be more than an accessory. It should hold meaning, celebrate craft,
-                and move effortlessly through every chapter of your life.
-              </p>
-              <p>
-                Our pieces are sculptural forms - hand-finished in small batches using 100% recycled gold and silver.
-                From raw metal to refined finish, each design carries the story of skilled artisans shaping wearable art.
-              </p>
-            </div>
-          </div>
-
-          <div class="ab-philo-bw" data-animate="img">
-            <div class="ab-img">
-              <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Philosophy black and white">
-            </div>
-          </div>
-        </div>
-
-        <div class="ab-philo-right" data-animate="img">
-          <div class="ab-img">
-            <img src="{% static 'img/silver.avif' %}" alt="Philosophy right">
-          </div>
-        </div>
-
-      </div>
+    <div class="spec-numerals" style="margin-top:44px">
+      <div class="spec-num"><b>316L</b><span>Surgical-Grade Steel</span></div>
+      <div class="spec-num"><b>18K</b><span>Gold Plating</span></div>
+      <div class="spec-num"><b>6 MO</b><span>Anti-Tarnish Warranty</span></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 8) THREE STRIP -->
-  <section class="ab-section">
-    <div class="ab-container">
-      <div class="ab-triplet">
-        <div data-animate>
-          <p>Limited production ensures care in every detail and a lighter impact on the planet.</p>
-        </div>
-        <div data-animate>
-          <p>Made with 100% certified recycled gold and silver, hallmarked for authenticity.</p>
-        </div>
-        <div data-animate>
-          <p>Effortless to layer. Comfortable to live in. Timeless forms for every occasion.</p>
-        </div>
+<!-- PROMISES -->
+<section class="jbx-section">
+  <div class="container">
+    <div class="jbx-kicker">What We Stand Behind</div>
+    <dl class="spec-rows">
+      <div class="spec-row">
+        <dt>Waterproof</dt>
+        <dd>Shower, gym, rain — our jewellery is built to be worn, not stored. Avoid harsh chemicals and direct perfume sprays for the longest shine.</dd>
       </div>
-    </div>
-  </section>
-
-  <!-- 9) GUIDING PRINCIPLES -->
-  <section class="ab-section">
-    <div class="ab-container">
-      <h2 class="ab-gp-title" data-animate>OUR GUIDING PRINCIPLES</h2>
-
-      <div class="ab-gp-grid">
-
-        <div class="ab-gp-card" data-animate>
-          <div class="ab-img" data-animate="img">
-            <img src="{% static 'img/about_p.jpg' %}" alt="Small-batch craftsmanship">
-          </div>
-          <h3>SMALL-BATCH CRAFTSMANSHIP</h3>
-          <p>
-            Every piece is handmade in limited runs to ensure attention to detail and eliminate waste.
-            Nothing sits unused - any leftover material is melted down and repurposed.
-          </p>
-        </div>
-
-        <div class="ab-gp-card" data-animate>
-          <div class="ab-img" data-animate="img">
-            <img src="{% static 'img/about_b.jpg' %}" alt="Materials that matter">
-          </div>
-          <h3>MATERIALS THAT MATTER</h3>
-          <p>
-            We use only certified recycled gold and silver, chosen for their beauty and their ability to endure
-            daily wear. Each piece is hallmarked for authenticity.
-          </p>
-        </div>
-
-        <div class="ab-gp-card" data-animate>
-          <div class="ab-img" data-animate="img">
-            <img src="{% static 'img/about_c.jpg' %}" alt="Designed to live with you">
-          </div>
-          <h3>DESIGNED TO LIVE WITH YOU</h3>
-          <p>
-            Timeless, sculptural forms that move effortlessly from day to night. Created for wearing, layering,
-            and loving for years to come.
-          </p>
-        </div>
-
+      <div class="spec-row">
+        <dt>Skin-Safe</dt>
+        <dd>Lab-tested nickel-free and hypoallergenic. No copper layer against your skin, so it never turns it green.</dd>
       </div>
-    </div>
-  </section>
-
-  <!-- 10) QUOTE SECTION -->
-  <section class="ab-section">
-    <div class="ab-container">
-      <div class="ab-quote-grid">
-
-        <div class="ab-quote-left" data-animate="img">
-          <div class="ab-img">
-            <img src="{% static 'img/gold.jpg' %}" alt="Quote image">
-          </div>
-        </div>
-
-        <div class="ab-quote" data-animate>
-          <blockquote>
-            "I see beauty in quiet forms shaped with care<br>
-            and designed to endure both daily wear and<br>
-            timeless memories."
-          </blockquote>
-
-          <div class="ab-sign">Adorn by SOC</div>
-          <div class="ab-role">FOUNDER &amp; CREATIVE DIRECTOR</div>
-        </div>
-
+      <div class="spec-row">
+        <dt>Warranty</dt>
+        <dd>If any piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace it free — WhatsApp us a photo and your order ID. <a href="{% url 'page' 'warranty' %}">Read the warranty terms</a>.</dd>
       </div>
+      <div class="spec-row">
+        <dt>Fair Prices</dt>
+        <dd>₹499–5,499. Real gold looks, everyday prices, free shipping and COD across India.</dd>
+      </div>
+    </dl>
+
+    <div style="margin-top:44px; display:flex; gap:14px; flex-wrap:wrap">
+      <a class="btn-metal" href="{% url 'catalog:collection_list' %}">Shop the Collection</a>
+      <a class="btn-ghost" href="{% url 'catalog:contact' %}">Talk to Us</a>
     </div>
-  </section>
+  </div>
+</section>
 
-</div>
-
-<script>
-  (function () {
-    var items = document.querySelectorAll("[data-animate]");
-    if (!items || !items.length) return;
-
-    // Fallback if IntersectionObserver is not supported
-    if (!("IntersectionObserver" in window)) {
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.add("is-inview");
-        // also enable image zoom settle on .ab-img
-        if (items[i].classList && items[i].classList.contains("ab-img")) {
-          items[i].classList.add("is-inview");
-        }
-      }
-      return;
-    }
-
-    var io = new IntersectionObserver(function (entries) {
-      for (var i = 0; i < entries.length; i++) {
-        var e = entries[i];
-        if (e.isIntersecting) {
-          e.target.classList.add("is-inview");
-
-          // If the animated element is an image wrapper, also set image settle
-          if (e.target.classList && e.target.classList.contains("ab-img")) {
-            e.target.classList.add("is-inview");
-          }
-
-          io.unobserve(e.target);
-        }
-      }
-    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-
-    for (var j = 0; j < items.length; j++) {
-      io.observe(items[j]);
-    }
-
-    // Make sure .ab-img elements also get the settle class when they animate
-    var imgWrappers = document.querySelectorAll(".ab-img[data-animate], .ab-img");
-    for (var k = 0; k < imgWrappers.length; k++) {
-      // only observe if it has data-animate or is inside an animated block
-      if (imgWrappers[k].getAttribute("data-animate") || imgWrappers[k].closest("[data-animate]")) {
-        io.observe(imgWrappers[k]);
-      }
-    }
-  })();
-</script>
 {% endblock %}

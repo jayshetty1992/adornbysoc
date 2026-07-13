@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}The Journal — Anti-Tarnish Jewellery Guides | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Guides and honest answers on anti-tarnish, waterproof gold plated jewellery — care, styling, and what actually lasts. From Adorn by SOC, Pune.">
+<link rel="canonical" href="https://www.adornbysoc.com/journal/">
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">The Journal</div>
+    <h1 class="jbx-h2">Honest Answers, <em>Written Down</em></h1>
+    <p class="lede">Care guides, styling notes, and straight talk about what jewellery actually survives daily Indian life.</p>
+  </div>
+</section>
+
+<section class="jbx-section" style="padding-top:56px">
+  <div class="container">
+    {% if posts %}
+    <div class="jr-grid">
+      {% for post in posts %}
+      <a class="jr-card jb" href="{% url 'journal_detail' slug=post.slug %}">
+        <div class="jr-media">
+          {% if post.hero_image %}<img src="{{ post.hero_image.url }}" alt="{{ post.title }}">
+          {% else %}<img src="{% static 'img/hero.jpg' %}" alt="{{ post.title }}">{% endif %}
+        </div>
+        <div class="jr-body">
+          {% if post.published_at %}<div class="jr-date">{{ post.published_at|date:"M j, Y" }}</div>{% endif %}
+          <h3>{{ post.title }}</h3>
+          {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="prose">
+      <h2>Stories are on their <em>way</em></h2>
+      <p>We're writing guides on anti-tarnish care, styling, and the honest truth about gold plating. Meanwhile, explore
+        <a href="{% url 'catalog:collection_list' %}">the collection</a> or read our
+        <a href="{% url 'catalog:faq' %}">FAQ</a>.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

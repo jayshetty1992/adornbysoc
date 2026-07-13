@@ -522,3 +522,26 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"Wish: {self.product.title}"
+
+
+class JournalPost(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
+    excerpt = models.CharField(max_length=300, blank=True)
+    hero_image = models.ImageField(upload_to="journal/", blank=True, null=True)
+    body = models.TextField(blank=True)
+    author = models.CharField(max_length=100, default="Adorn by SOC")
+    is_published = models.BooleanField(default=False, db_index=True)
+    published_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-published_at", "-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

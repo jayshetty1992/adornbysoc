@@ -1,8 +1,58 @@
 {% extends "base.html" %}
-{% block title %}Shipping â€¢ {{ BRAND_NAME }}{% endblock %}
+{% load static %}
+
+{% block title %}Shipping — Free Across India + COD | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Free shipping across India on all Adorn by SOC orders, with Cash on Delivery available. Track your order on WhatsApp.">
+<link rel="canonical" href="https://www.adornbysoc.com/page/shipping/">
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="wrap" style="padding:28px 18px; max-width:900px">
-  <h1 style="font-family:var(--font2); letter-spacing:.06em; margin:0 0 12px 0;">Shipping</h1>
-  <p class="muted">Edit this page in <code>templates/pages/shipping.html</code>.</p>
-</div>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">Delivery</div>
+    <h1 class="jbx-h2">Free Shipping <em>Across India</em></h1>
+    <p class="lede">Every order ships free, anywhere in India — with Cash on Delivery available.</p>
+  </div>
+</section>
+
+<section class="jbx-section" style="padding-top:56px">
+  <div class="container">
+    <dl class="spec-rows">
+      <div class="spec-row">
+        <dt>Shipping Cost</dt>
+        <dd><strong>Free on every order</strong>, across India. No minimums, no surprises at checkout.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Cash on Delivery</dt>
+        <dd>COD is available India-wide. Pay when your piece arrives.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Tracking</dt>
+        <dd>Once your order ships, you'll receive tracking updates on WhatsApp.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Packaging</dt>
+        <dd>Every piece arrives gift-ready in our jewel-box packaging.</dd>
+      </div>
+      <div class="spec-row">
+        <dt>Issues?</dt>
+        <dd>Wrong address, delayed parcel, or anything else — <a href="{% url 'catalog:contact' %}">contact us</a> and we'll sort it out.</dd>
+      </div>
+    </dl>
+
+    <div style="margin-top:40px">
+      <a class="btn-ghost" href="{% url 'page' 'returns' %}">Returns &amp; Exchanges →</a>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

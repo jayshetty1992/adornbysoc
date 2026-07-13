@@ -51,7 +51,7 @@
 
     html,
     body {
-      height: 100%;
+      min-height: 100%;
     }
 
     body {
@@ -1111,10 +1111,10 @@
             </div> -->
           </div>
 
-          <!-- Necklaces -->
+          <!-- Necklaces & Chains -->
           <div class="nav-item-dd align-right">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='necklace' %}">
-              Necklaces
+              Necklaces &amp; Chains
               <!-- <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 9l6 6 6-6" />
               </svg> -->
@@ -1147,6 +1147,11 @@
                 </div>
               </div>
             </div> -->
+          </div>
+
+          <!-- Anklets -->
+          <div class="nav-item-dd">
+            <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='anklets' %}">Anklets</a>
           </div>
 
           <!-- Lookbook (simple underline only, no dropdown) -->
@@ -1200,11 +1205,13 @@
       <div class="container px-0">
         <a class="nav-link-custom" href="{% url 'catalog:collection_list' %}">Collections</a>
           <a href="{% url 'catalog:collection_products' slug='earrings' %}">Earrings</a>
-          <a href="{% url 'catalog:collection_products' slug='necklace' %}">Necklaces</a>
+          <a href="{% url 'catalog:collection_products' slug='necklace' %}">Necklaces &amp; Chains</a>
           <a href="{% url 'catalog:collection_products' slug='bracelets' %}">Bracelets</a>
           <a href="{% url 'catalog:collection_products' slug='rings' %}">Rings</a>
           <a href="{% url 'catalog:collection_products' slug='bangles' %}">Bangles</a>
+          <a href="{% url 'catalog:collection_products' slug='anklets' %}">Anklets</a>
         <a href="{% url 'catalog:lookbook' %}">Lookbook</a>
+        <a href="{% url 'journal_list' %}">Journal</a>
       </div>
     </div>
   </header>
@@ -1241,16 +1248,18 @@
         <div class="footer-col">
           <div class="footer-head">COLLECTIONS</div>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='earrings' %}">Earrings</a>
-          <a class="footer-link" href="{% url 'catalog:collection_products' slug='necklace' %}">Necklaces</a>
+          <a class="footer-link" href="{% url 'catalog:collection_products' slug='necklace' %}">Necklaces &amp; Chains</a>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='bracelets' %}">Bracelets</a>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='rings' %}">Rings</a>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='bangles' %}">Bangles</a>
+          <a class="footer-link" href="{% url 'catalog:collection_products' slug='anklets' %}">Anklets</a>
         </div>
 
         <!-- EXPLORE -->
         <div class="footer-col">
           <div class="footer-head">EXPLORE</div>
           <a class="footer-link" href="{% url 'catalog:lookbook' %}">Lookbook</a>
+          <a class="footer-link" href="{% url 'journal_list' %}">Journal</a>
         </div>
 
         <!-- COMPANY -->
@@ -1258,7 +1267,10 @@
           <div class="footer-head">COMPANY</div>
           <a class="footer-link" href="{% url 'catalog:about_page' %}">About</a>
           <a class="footer-link" href="{% url 'catalog:faq' %}">FAQ</a>
-          <a class="footer-link" href="{% url 'page' 'returns' %}">Shipping &amp; Returns</a>
+          <a class="footer-link" href="{% url 'page' 'shipping' %}">Shipping</a>
+          <a class="footer-link" href="{% url 'page' 'returns' %}">Returns</a>
+          <a class="footer-link" href="{% url 'page' 'warranty' %}">Warranty</a>
+          <a class="footer-link" href="{% url 'page' 'terms' %}">Terms</a>
           <a class="footer-link" href="{% url 'catalog:contact' %}">Contact</a>
         </div>
 

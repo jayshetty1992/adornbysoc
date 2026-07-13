@@ -1,0 +1,71 @@
+/* ============================================================
+   ADORN BY SOC — dark jewel-box CHROME (topbar/header/footer)
+   Safe to load on ANY storefront page: does not restyle page
+   content, only the global chrome + gold nav hover.
+   ============================================================ */
+
+:root {
+  --jb-bg: #14100C;
+  --jb-surface: #201A14;
+  --jb-surface-2: #2A2219;
+  --jb-gold: #D4A64A;
+  --jb-gold-light: #EFD9A7;
+  --jb-gold-deep: #9A7422;
+  --jb-ivory: #F5EFE4;
+  --jb-muted: #A89A84;
+  --jb-hairline: rgba(212, 166, 74, .28);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Jost", Inter, system-ui, sans-serif;
+}
+
+/* ---------- darken global chrome (site chrome) ---------- */
+.topbar {
+  background: #0E0B08;
+  color: var(--jb-gold-light);
+  border-bottom: 1px solid rgba(212, 166, 74, .15);
+}
+.topbar .arrow-btn { border-color: rgba(212, 166, 74, .25); color: var(--jb-gold-light); }
+.topbar .arrow-btn:hover { background: rgba(212, 166, 74, .12); }
+
+.site-header {
+  background: rgba(20, 16, 12, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--jb-hairline);
+}
+.site-header .brand { color: var(--jb-ivory); }
+.site-header .nav-link-custom { color: var(--jb-muted); transition: color .25s ease; }
+.site-header .nav-link-custom:hover {
+  background: linear-gradient(105deg, var(--jb-gold-deep) 0%, var(--jb-gold) 35%, var(--jb-gold-light) 50%, var(--jb-gold) 65%, var(--jb-gold-deep) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--jb-gold);
+  animation: goldSheen 1.6s linear infinite;
+}
+@keyframes goldSheen {
+  from { background-position: 0% 0; }
+  to { background-position: 220% 0; }
+}
+.site-header .nav-link-custom::after { background: var(--jb-gold); }
+.site-header .icon-btn { border-color: rgba(245, 239, 228, .18); color: var(--jb-ivory); transition: all .3s ease; }
+.site-header .icon-btn:hover {
+  border-color: var(--jb-gold);
+  background: rgba(212, 166, 74, .12);
+  box-shadow: 0 0 14px rgba(212, 166, 74, .25);
+}
+.site-header .svg-ico { stroke: var(--jb-ivory); opacity: .85; }
+.site-header .icon-btn:hover .svg-ico { stroke: var(--jb-gold-light); opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .site-header .nav-link-custom:hover { animation: none; }
+}
+.site-header .cart-badge { border-color: var(--jb-bg); }
+.mobile-drawer { background: var(--jb-surface); border-top-color: var(--jb-hairline); }
+.mobile-drawer a { color: var(--jb-ivory); border-bottom-color: rgba(245, 239, 228, .08); }
+.mobile-drawer a:hover { background: rgba(212, 166, 74, .08); }
+
+.site-footer {
+  background: radial-gradient(1200px 500px at 50% 0%, rgba(212, 166, 74, .05), transparent 60%),
+    linear-gradient(180deg, #0E0B08 0%, #0A0806 100%);
+}
+

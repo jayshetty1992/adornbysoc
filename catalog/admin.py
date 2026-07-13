@@ -373,3 +373,13 @@ class WishlistAdmin(admin.ModelAdmin):
     search_fields = ("product__title",)
     readonly_fields = ("added_at",)
     ordering = ("-added_at",)
+
+
+from .models import JournalPost
+
+@admin.register(JournalPost)
+class JournalPostAdmin(admin.ModelAdmin):
+    list_display = ("title", "is_published", "published_at", "created_at")
+    list_filter = ("is_published",)
+    search_fields = ("title", "body")
+    prepopulated_fields = {"slug": ("title",)}

@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}ADORN - Home{% endblock %}
+{% block title %}Anti-Tarnish Gold Plated Jewellery India | Adorn by SOC{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Waterproof, anti-tarnish 18K gold plated jewellery on surgical-grade stainless steel. Necklaces, rings, bracelets & chains from ₹499. 6-month warranty.">
+<link rel="canonical" href="https://www.adornbysoc.com/">
+<meta property="og:title" content="Adorn by SOC — Anti-Tarnish Gold Plated Jewellery India">
+<meta property="og:description" content="Waterproof 18K gold plated jewellery that doesn't fade. Lab-tested, nickel-free, made for everyday wear. Free shipping across India.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.adornbysoc.com/">
+<meta property="og:image" content="https://www.adornbysoc.com/static/img/hero.jpg">
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -17,17 +27,17 @@
   <div class="container hero-inner">
     <div>
       <!-- one-by-one reveal (delay via --d) -->
-      <div class="hero-kicker hero-reveal" style="--d: 120ms;">Modern Hairlooms</div>
-      <h1 class="hero-title hero-reveal" style="--d: 340ms;">Statement Gold</h1>
+      <div class="hero-kicker hero-reveal" style="--d: 120ms;">Adorn by SOC</div>
+      <h1 class="hero-title hero-reveal" style="--d: 340ms;">Gold-Plated Jewellery That Doesn't Fade. Ever-Wear, Every Day.</h1>
+      <p class="hero-sub hero-reveal" style="--d: 480ms;">18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
 
       <div class="hero-actions hero-reveal" style="--d: 620ms;">
-        <a class="btn btn-hero btn-hero-light"
-          href="{% if hero_primary_slug %}{% url 'catalog:collection_products' slug=hero_primary_slug %}{% else %}{% url 'catalog:collection_products' slug='earrings' %}{% endif %}">
-          Shop Earrings
+        <a class="btn btn-hero btn-hero-light" href="{% url 'catalog:collection_list' %}">
+          Shop Bestsellers
         </a>
 
-        <a class="btn btn-hero btn-hero-outline" href="{% url 'catalog:collection_products' slug='gold' %}">
-          Gold Pieces
+        <a class="btn btn-hero btn-hero-outline" href="#why-no-tarnish">
+          Why We Don't Tarnish →
         </a>
       </div>
     </div>
@@ -38,27 +48,17 @@
 <section class="mini-marquee">
   <div class="container-fluid px-0">
     <div class="marquee-track" id="miniMarqueeTrack">
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="">Sustainably Designed
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="">Handmade by Artisans
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-09-10-15-25.png' %}" alt="">Made in Athens, GC
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-15-12-37-20.png' %}" alt="">Sustainably Designed
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/gifs/GIF-2025-11-14-10-09-50.gif' %}" alt="">Handmade by
-        Artisans</div>
+      <div class="marquee-item"><span class="mi-ico">💧</span>Waterproof &amp; Sweat-Proof — shower, gym, swim</div>
+      <div class="marquee-item"><span class="mi-ico">🛡️</span>6-Month Anti-Tarnish Warranty — fades? We replace it free</div>
+      <div class="marquee-item"><span class="mi-ico">🧪</span>Lab-Tested, Nickel-Free — hypoallergenic &amp; skin-safe</div>
+      <div class="marquee-item"><span class="mi-ico">🚚</span>Free Shipping + COD — across India</div>
+      <div class="marquee-item"><span class="mi-ico">↩️</span>7-Day Easy Returns — no questions asked</div>
 
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="">Sustainably Designed
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-11-12-13-47-47.png' %}" alt="">Handmade by Artisans
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-09-10-15-25.png' %}" alt="">Made in Athens, GC
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/PHOTO-2025-12-15-12-37-20.png' %}" alt="">Sustainably Designed
-      </div>
-      <div class="marquee-item"><img src="{% static 'img/gifs/GIF-2025-11-14-10-09-50.gif' %}" alt="">Handmade by
-        Artisans</div>
+      <div class="marquee-item"><span class="mi-ico">💧</span>Waterproof &amp; Sweat-Proof — shower, gym, swim</div>
+      <div class="marquee-item"><span class="mi-ico">🛡️</span>6-Month Anti-Tarnish Warranty — fades? We replace it free</div>
+      <div class="marquee-item"><span class="mi-ico">🧪</span>Lab-Tested, Nickel-Free — hypoallergenic &amp; skin-safe</div>
+      <div class="marquee-item"><span class="mi-ico">🚚</span>Free Shipping + COD — across India</div>
+      <div class="marquee-item"><span class="mi-ico">↩️</span>7-Day Easy Returns — no questions asked</div>
     </div>
   </div>
 </section>
@@ -67,7 +67,7 @@
 <section class="shop-collections">
   <div class="container">
     <div class="shop-head">
-      <h2 class="shop-title">Shop Collections</h2>
+      <h2 class="shop-title">Shop by Category</h2>
 
       <div class="arrivals-arrows">
         <button class="arrivals-btn" type="button" id="colPrev" aria-label="Previous">
@@ -116,6 +116,67 @@
       </a>
       {% endif %}
     </div>
+  </div>
+</section>
+
+<!-- BRAND POSITIONING (answer-first, AEO) -->
+<section class="honest">
+  <div class="container">
+    <h2 class="honest-title">Real Gold Is a Locker Purchase. Imitation Fades in Weeks. We're the First Option.</h2>
+
+    <p class="honest-lead">
+      <strong>Adorn by SOC is an Indian anti-tarnish jewellery brand that makes waterproof, 18K gold-plated
+      jewellery on 316L surgical-grade stainless steel.</strong> Unlike brass-based imitation jewellery that
+      tarnishes, blackens, or turns skin green within weeks, our pieces are built on a steel base that doesn't
+      corrode — so the shine lasts for years of daily wear, at prices between ₹499 and ₹5,499.
+    </p>
+
+    <div class="honest-table-wrap">
+      <table class="honest-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Real Gold</th>
+            <th>Imitation Jewellery</th>
+            <th class="ht-us">Adorn by SOC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Price</td><td>₹50,000+</td><td>₹100–500</td><td class="ht-us"><strong>₹499–5,499</strong></td></tr>
+          <tr><td>Tarnishes?</td><td>Never</td><td>In weeks</td><td class="ht-us"><strong>No — anti-tarnish steel base</strong></td></tr>
+          <tr><td>Waterproof?</td><td>Yes</td><td>No</td><td class="ht-us"><strong>Yes — shower &amp; gym safe</strong></td></tr>
+          <tr><td>Daily wear?</td><td>Too risky to wear out</td><td>Fades fast</td><td class="ht-us"><strong>Made for it</strong></td></tr>
+          <tr><td>Skin-safe?</td><td>Yes</td><td>Often nickel-heavy</td><td class="ht-us"><strong>Lab-tested nickel-free</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SPEC TRANSPARENCY -->
+<section class="specs" id="why-no-tarnish">
+  <div class="container">
+    <h2 class="honest-title">We Publish Our Specs. Ask Any Other Brand to Do the Same.</h2>
+    <ul class="specs-list">
+      <li><strong>Base metal:</strong> 316L surgical-grade stainless steel (the same grade used in medical implants and luxury watches)</li>
+      <li><strong>Plating:</strong> 18K gold, thick plating</li>
+      <li><strong>Stones:</strong> Finished with finely set sparkling stones for a refined and luxurious look</li>
+      <li><strong>Quality:</strong> Skin-friendly jewellery</li>
+      <li><strong>Why it doesn't tarnish:</strong> Tarnish happens when base metals like brass or copper oxidise. Stainless steel doesn't oxidise in normal wear — so there's nothing underneath to turn black.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6-MONTH WARRANTY -->
+<section class="warranty">
+  <div class="container">
+    <h2 class="honest-title">The 6-Month Anti-Tarnish Warranty</h2>
+    <p class="honest-lead">
+      If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
+      it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
+      within 48 hours.
+    </p>
+    <a class="warranty-btn" href="{% url 'page' 'returns' %}">Read Warranty Terms</a>
   </div>
 </section>
 
@@ -267,15 +328,15 @@
 <section class="bazaar-strip">
   <div class="container-fluid px-0">
     <div class="bazaar-track">
-      <div class="bazaar-item">"A masterclass in minimalism and craftsmanship."</div>
+      <div class="bazaar-item">Waterproof. Sweat-proof. Anti-tarnish.</div>
       <div class="bazaar-logo">ADORN</div>
-      <div class="bazaar-item">Certified recycled metals</div>
-      <div class="bazaar-item">Every piece hallmarked for authenticity</div>
+      <div class="bazaar-item">18K gold plating on 316L surgical steel</div>
+      <div class="bazaar-item">Made for everyday Indian life</div>
 
-      <div class="bazaar-item">"A masterclass in minimalism and craftsmanship."</div>
+      <div class="bazaar-item">Waterproof. Sweat-proof. Anti-tarnish.</div>
       <div class="bazaar-logo">ADORN</div>
-      <div class="bazaar-item">Certified recycled metals</div>
-      <div class="bazaar-item">Every piece hallmarked for authenticity</div>
+      <div class="bazaar-item">18K gold plating on 316L surgical steel</div>
+      <div class="bazaar-item">Made for everyday Indian life</div>
     </div>
   </div>
 </section>
@@ -374,13 +435,13 @@
 ======================= -->
 <section class="gold-strip">
   <div class="gold-track">
-    <span class="gold-item">HAND-CRAFTED JEWELLERY</span><span class="gold-dot">|</span>
-    <span class="gold-item">ATHENS, GR</span><span class="gold-dot">|</span>
-    <span class="gold-item">ADORN</span><span class="gold-dot">|</span>
+    <span class="gold-item">ANTI-TARNISH JEWELLERY</span><span class="gold-dot">|</span>
+    <span class="gold-item">PUNE, IN</span><span class="gold-dot">|</span>
+    <span class="gold-item">ADORN BY SOC</span><span class="gold-dot">|</span>
 
-    <span class="gold-item">HAND-CRAFTED JEWELLERY</span><span class="gold-dot">|</span>
-    <span class="gold-item">ATHENS, GR</span><span class="gold-dot">|</span>
-    <span class="gold-item">ADORN</span><span class="gold-dot"></span>
+    <span class="gold-item">ANTI-TARNISH JEWELLERY</span><span class="gold-dot">|</span>
+    <span class="gold-item">PUNE, IN</span><span class="gold-dot">|</span>
+    <span class="gold-item">ADORN BY SOC</span><span class="gold-dot"></span>
   </div>
 </section>
 
@@ -406,19 +467,6 @@
       <img src="{% static 'img/5.png' %}" alt="London Store">
     </div>
   </div>
-</section>
-
-<section class="brand-note">
-  <div class="note-inner">
-    <div class="note-mini">ADORN JEWELRY</div>
-
-    <p class="note-text">
-      This store is a demonstration of a jewellery brand using the<br>
-      Stiletto Shopify theme. Products and imagery for this demo<br>
-      graciously provided by <a href="#" class="note-link">Adorn</a>
-    </p>
-  </div>
-  <div class="note-rule"></div>
 </section>
 
 <!-- Shop the Look Section -->
@@ -532,11 +580,13 @@
     <div class="story-overlay"></div>
 
     <div class="story-content">
-      <h2>OUR STORY</h2>
+      <h2>WHY WE STARTED ADORN BY SOC</h2>
       <p>
-        From the hands of skilled artisans to the touch of your own, each piece begins as raw metal
-        and becomes a timeless companion. Learn more about our philosophy of slow craft, sustainable materials,
-        and designs created to endure.
+        Hi, I'm Shivani, a fashion designer and personal stylist from Pune. After styling hundreds of people
+        through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is still
+        difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
+        outfits, real occasions, and everyday life. For me, Adorn is a heartfelt effort to make luxury feel
+        more personal, wearable, and accessible to everyone.
       </p>
       <a href="{% url 'catalog:about_page' %}" class="story-btn">DISCOVER OUR STORY</a>
     </div>
@@ -544,21 +594,180 @@
 
   <div class="story-features">
     <div class="story-feat">
-      <h4>SMALL-BATCH</h4>
-      <p>Each piece is part of a small, deliberate production cycle</p>
+      <h4>316L STEEL BASE</h4>
+      <p>Surgical-grade stainless steel that doesn't oxidise — nothing underneath to turn black.</p>
     </div>
 
     <div class="story-feat">
-      <h4>SUSTAINABLY MADE</h4>
-      <p>Designed with care. Made entirely from 100% certified recycled gold and silver.</p>
+      <h4>18K GOLD PLATING</h4>
+      <p>Thick 18K gold plating, built for the shower, the gym, and the monsoon.</p>
     </div>
 
     <div class="story-feat">
-      <h4>QUALITY THAT LASTS</h4>
-      <p>Designed for daily wear. Crafted to endure seasons and stories.</p>
+      <h4>6-MONTH WARRANTY</h4>
+      <p>If it fades or tarnishes within 6 months of normal wear, we replace it free.</p>
     </div>
   </div>
 </section>
+
+<!-- FAQ (AEO core) -->
+<section class="faq-home">
+  <div class="container">
+    <h2 class="honest-title">Frequently Asked Questions</h2>
+
+    <div class="accordion accordion-flush faq-acc" id="homeFaq">
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            Does gold-plated jewellery tarnish?
+          </button>
+        </h3>
+        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">Traditional gold-plated jewellery on brass or copper tarnishes because the
+            base metal oxidises. Adorn by SOC jewellery is plated on 316L stainless steel, which doesn't oxidise —
+            so it stays gold for years of daily wear, not weeks.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+            Can I wear Adorn by SOC jewellery in the shower or gym?
+          </button>
+        </h3>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">Yes. Our jewellery is waterproof and sweat-proof. You can shower, work out,
+            and get caught in the rain without removing it. We only recommend avoiding harsh chemicals like
+            chlorine bleach and perfume sprayed directly on the piece.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Will it turn my skin green?
+          </button>
+        </h3>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">No. Green skin is caused by copper oxidation in cheap imitation jewellery.
+            Our stainless steel base contains no copper layer against your skin and is lab-tested nickel-free,
+            making it safe for sensitive skin.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+            Is this real gold?
+          </button>
+        </h3>
+        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">Our jewellery is 18K gold plated on surgical-grade stainless steel — not
+            solid gold. That's exactly why a necklace costs ₹699 instead of ₹70,000, while looking and lasting
+            like the real thing in daily wear.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+            Do you offer Cash on Delivery?
+          </button>
+        </h3>
+        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">Yes, COD is available across India.</div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+            What is your return policy?
+          </button>
+        </h3>
+        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#homeFaq">
+          <div class="accordion-body">7-day easy returns and exchanges, no questions asked. Plus every piece is
+            covered by our 6-month anti-tarnish warranty.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SEO CONTENT BLOCK (collapsible) -->
+<section class="seo-block">
+  <div class="container">
+    <details class="seo-details">
+      <summary>
+        <h2>Buy Anti-Tarnish Gold Plated Jewellery Online in India</h2>
+        <span class="seo-more">Read more</span>
+      </summary>
+
+      <p>
+        Adorn by SOC brings you <strong>anti-tarnish jewellery</strong> designed for real, everyday Indian life —
+        office days, gym sessions, monsoon commutes, and festive evenings. Every piece is crafted from
+        <strong>surgical-grade stainless steel with 18K gold plating</strong>, making it
+        <strong>waterproof, hypoallergenic, and fade-resistant</strong> without the price tag of real gold.
+      </p>
+
+      <p>
+        Explore <a href="{% url 'catalog:collection_products' slug='necklace' %}"><strong>gold plated necklaces for
+        women</strong></a>, <a href="{% url 'catalog:collection_products' slug='earrings' %}"><strong>anti-tarnish
+        earrings</strong></a>, <a href="{% url 'catalog:collection_products' slug='bracelets' %}"><strong>waterproof
+        bracelets</strong></a>, <a href="{% url 'catalog:collection_products' slug='rings' %}"><strong>stackable
+        rings</strong></a>, and <strong>anti-tarnish chains for men</strong> — all starting at ₹499 with free
+        shipping, COD, and a 6-month anti-tarnish warranty.
+      </p>
+
+      <p class="seo-popular">
+        <strong>Popular searches:</strong> anti tarnish jewellery · waterproof gold plated necklace · stainless
+        steel jewellery for women · anti tarnish earrings under 999 · gold plated chain for men · demi-fine
+        jewellery India · office wear jewellery
+      </p>
+    </details>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does gold-plated jewellery tarnish?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Traditional gold-plated jewellery on brass or copper tarnishes because the base metal oxidises. Adorn by SOC jewellery is plated on 316L stainless steel, which doesn't oxidise — so it stays gold for years of daily wear, not weeks." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I wear Adorn by SOC jewellery in the shower or gym?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our jewellery is waterproof and sweat-proof. You can shower, work out, and get caught in the rain without removing it. We only recommend avoiding harsh chemicals like chlorine bleach and perfume sprayed directly on the piece." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will it turn my skin green?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Green skin is caused by copper oxidation in cheap imitation jewellery. Our stainless steel base contains no copper layer against your skin and is lab-tested nickel-free, making it safe for sensitive skin." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this real gold?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Our jewellery is 18K gold plated on surgical-grade stainless steel — not solid gold. That's exactly why a necklace costs ₹699 instead of ₹70,000, while looking and lasting like the real thing in daily wear." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer Cash on Delivery?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, COD is available across India." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is your return policy?",
+      "acceptedAnswer": { "@type": "Answer", "text": "7-day easy returns and exchanges, no questions asked. Plus every piece is covered by our 6-month anti-tarnish warranty." }
+    }
+  ]
+}
+</script>
 
 {% endblock %}
 

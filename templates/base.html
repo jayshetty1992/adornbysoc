@@ -912,6 +912,43 @@
       text-align: center;
       opacity: .75;
     }
+    /* ===== Search overlay ===== */
+    .search-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(12, 10, 7, .5);
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
+    }
+    .search-overlay.open { opacity: 1; pointer-events: auto; }
+    .search-panel {
+      background: #F7F3EC;
+      padding: 34px 20px 40px;
+      transform: translateY(-16px); transition: transform .3s ease;
+      border-bottom: 1px solid rgba(27, 22, 15, .12);
+    }
+    .search-overlay.open .search-panel { transform: none; }
+    .search-form {
+      max-width: 760px; margin: 0 auto;
+      display: flex; gap: 0; align-items: stretch;
+    }
+    .search-form input {
+      flex: 1; background: #fff;
+      border: 1px solid rgba(27, 22, 15, .25); border-right: 0;
+      border-radius: 32px 0 0 32px;
+      padding: 15px 24px; font-size: 15px; color: #1B160F; outline: none;
+    }
+    .search-form input:focus { border-color: #B7862B; }
+    .search-form button {
+      border: 0; border-radius: 0 32px 32px 0;
+      background: #1B160F; color: #F7F3EC;
+      padding: 0 28px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600;
+    }
+    .search-form button:hover { background: #8A6420; }
+    .search-hint {
+      max-width: 760px; margin: 14px auto 0; font-size: 12px;
+      letter-spacing: .08em; color: rgba(27, 22, 15, .55);
+    }
+    .search-hint a { color: #8A6420; text-decoration: none; margin-right: 14px; }
+    .search-hint a:hover { text-decoration: underline; }
   </style>
   {% block extra_css %}{% endblock %}
 </head>
@@ -1165,7 +1202,7 @@
         <!-- Right: Icons + Mobile toggle -->
         <div class="d-flex align-items-center gap-2">
 
-          <button class="icon-btn" type="button" aria-label="Search">
+          <button class="icon-btn" type="button" aria-label="Search" id="searchBtn">
             <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="7"></circle>
               <path d="M20 20l-3.5-3.5"></path>
@@ -1215,6 +1252,23 @@
       </div>
     </div>
   </header>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true">
+    <div class="search-panel">
+      <form class="search-form" method="get" action="{% url 'catalog:product_list' %}" role="search">
+        <input type="search" name="q" id="searchInput" placeholder="Search rings, necklaces, bracelets…" autocomplete="off" required>
+        <button type="submit">Search</button>
+      </form>
+      <div class="search-hint">
+        Popular:
+        <a href="{% url 'catalog:collection_products' slug='rings' %}">Rings</a>
+        <a href="{% url 'catalog:collection_products' slug='necklace' %}">Necklaces &amp; Chains</a>
+        <a href="{% url 'catalog:collection_products' slug='earrings' %}">Earrings</a>
+        <a href="{% url 'catalog:product_list' %}?max_price=999">Under ₹999</a>
+      </div>
+    </div>
+  </div>
 
   <!-- PAGE CONTENT -->
   {% block content %}{% endblock %}
@@ -1512,6 +1566,27 @@
       prev.addEventListener("click", () => { i = (i - 1 + messages.length) % messages.length; render(); });
       next.addEventListener("click", () => { i = (i + 1) % messages.length; render(); });
       render();
+    })();
+
+    // ===== Search overlay =====
+    (function () {
+      const btn = document.getElementById("searchBtn");
+      const overlay = document.getElementById("searchOverlay");
+      const input = document.getElementById("searchInput");
+      if (!btn || !overlay) return;
+
+      function open() {
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+        setTimeout(() => input && input.focus(), 120);
+      }
+      function close() {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+      btn.addEventListener("click", open);
+      overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     })();
 
     // ===== Mobile menu toggle =====

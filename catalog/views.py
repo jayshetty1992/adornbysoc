@@ -79,6 +79,11 @@ def collection_products(request, slug=None):
         .prefetch_related("images", "ring_sizes")
     )
 
+    # Free-text search (header search box): ?q=
+    qsearch = (request.GET.get("q") or "").strip()
+    if qsearch:
+        qs = qs.filter(Q(title__icontains=qsearch) | Q(description__icontains=qsearch))
+
     col = None
     if slug and slug not in ["all", "all-jewelry", "all-jwelery", "all-products"]:
         col = get_object_or_404(Collection, slug=slug, is_active=True)

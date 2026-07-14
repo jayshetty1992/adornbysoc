@@ -532,3 +532,20 @@ body {
   .jbx-section { padding: 64px 0; }
   .jsx .ringhero { height: 190vh; }
 }
+
+/* ============================================================
+   SHOP BY PRICE — quiet bands (BlueStone pattern, atelier skin)
+   ============================================================ */
+.price-bands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 767px) { .price-bands { grid-template-columns: 1fr; } }
+.price-band {
+  display: flex; flex-direction: column; gap: 6px;
+  background: var(--jb-surface);
+  border: 1px solid var(--jb-hairline);
+  border-radius: var(--radius-card);
+  padding: 26px 28px;
+  transition: border-color .3s ease, transform .4s ease;
+}
+.price-band:hover { border-color: rgba(183, 134, 43, .5); transform: translateY(-3px); }
+.pb-amount { font-family: var(--font-display); font-weight: 480; font-size: 24px; color: var(--jb-ivory); }
+.pb-note { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--jb-gold-deep); }

@@ -482,6 +482,95 @@
   }
 
 
+
+  /* ---- value bar ---- */
+  .value-bar {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    margin: 0 0 16px; font-size: 12px; letter-spacing: .08em;
+    color: rgba(0, 0, 0, .7);
+  }
+  .value-bar span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* ---- specs table ---- */
+  .spec-table { width: 100%; border-collapse: collapse; margin: 4px 0 18px; font-size: 13px; }
+  .spec-table th, .spec-table td { padding: 10px 2px; border-bottom: 1px solid rgba(0,0,0,.1); text-align: left; vertical-align: top; }
+  .spec-table th { width: 42%; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A6420; font-weight: 600; }
+  .spec-table td { color: rgba(0, 0, 0, .72); line-height: 1.6; }
+
+  /* ---- wishlist heart (PDP) ---- */
+  .pd-wish {
+    width: 42px; height: 42px; border-radius: 999px; flex: 0 0 auto;
+    border: 1px solid rgba(27, 22, 15, .2); background: #fff;
+    display: grid; place-items: center; cursor: pointer; transition: all .3s ease;
+  }
+  .pd-wish svg { width: 18px; height: 18px; stroke: #1B160F; fill: none; transition: all .25s ease; }
+  .pd-wish:hover { border-color: #B7862B; }
+  .pd-wish.wished svg { fill: #B7862B; stroke: #B7862B; }
+  .pd-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+
+  /* ---- reviews ---- */
+  .pd-reviews { border-top: 1px solid rgba(0,0,0,.14); padding: 44px 0 60px; background: #fff; }
+  .rv-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+  .rv-head h2 { font-family: "Fraunces", Georgia, serif; font-weight: 480; font-size: 26px; margin: 0; color: #1B160F; }
+  .rv-avg { color: #8A6420; font-size: 14px; letter-spacing: .06em; }
+  .rv-stars { color: #B7862B; letter-spacing: .18em; }
+  .rv-stars .dim { color: rgba(183, 134, 43, .25); }
+  .rv-item { border-bottom: 1px solid rgba(0,0,0,.08); padding: 18px 0; max-width: 720px; }
+  .rv-item .rv-t { font-weight: 600; font-size: 14px; color: #1B160F; margin: 6px 0 4px; }
+  .rv-item p { font-size: 13.5px; line-height: 1.8; color: rgba(0,0,0,.66); margin: 0 0 6px; }
+  .rv-item .rv-by { font-size: 12px; color: rgba(0,0,0,.5); letter-spacing: .06em; }
+  .rv-empty { color: rgba(0,0,0,.55); font-size: 14px; max-width: 640px; line-height: 1.8; }
+
+  .rv-form-wrap { margin-top: 28px; max-width: 640px; }
+  .rv-form-wrap summary {
+    cursor: pointer; list-style: none; display: inline-block;
+    padding: 13px 28px; border-radius: 32px; border: 1px solid rgba(27,22,15,.35);
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: #1B160F;
+  }
+  .rv-form-wrap summary::-webkit-details-marker { display: none; }
+  .rv-form-wrap[open] summary { border-color: #B7862B; color: #8A6420; }
+  .rv-form { margin-top: 18px; display: grid; gap: 12px; }
+  .rv-form input, .rv-form textarea, .rv-form select {
+    width: 100%; border: 1px solid rgba(0,0,0,.2); border-radius: 10px;
+    padding: 12px 14px; font-size: 14px; color: #1B160F; background: #fff; outline: none;
+  }
+  .rv-form input:focus, .rv-form textarea:focus { border-color: #B7862B; }
+  .rv-form textarea { min-height: 110px; resize: vertical; }
+  .rv-form .rv-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .rv-form .rv-row { grid-template-columns: 1fr; } }
+  .rv-form button {
+    justify-self: start; border: 0; border-radius: 32px; padding: 13px 30px;
+    background: #1B160F; color: #F7F3EC; font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; font-weight: 600; cursor: pointer;
+  }
+  .rv-form button:hover { background: #8A6420; }
+  .rv-note { font-size: 12px; color: rgba(0,0,0,.5); }
+  .rv-banner {
+    max-width: 720px; margin: 0 0 18px; padding: 12px 16px; border-radius: 10px;
+    background: rgba(183, 134, 43, .1); border: 1px solid rgba(183, 134, 43, .35);
+    font-size: 13px; color: #6b5116;
+  }
+
+  /* ---- sticky mobile add-to-bag ---- */
+  .pd-stickybar { display: none; }
+  @media (max-width: 768px) {
+    .pd-stickybar {
+      display: flex; align-items: center; gap: 12px;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 1500;
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(0, 0, 0, .12);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    }
+    .pd-stickybar .sb-price { font-weight: 800; font-size: 16px; color: #1B160F; white-space: nowrap; }
+    .pd-stickybar .sb-price del { font-weight: 400; color: rgba(0,0,0,.4); font-size: 13px; margin-right: 6px; }
+    .pd-stickybar button {
+      flex: 1; border: 0; border-radius: 28px; padding: 14px;
+      background: #1B160F; color: #F7F3EC; font-size: 12px; letter-spacing: .16em;
+      text-transform: uppercase; font-weight: 700;
+    }
+    body { padding-bottom: 72px; }
+  }
 </style>
 {% endblock %}
 
@@ -531,7 +620,12 @@
           {% endif %}
         </div>
 
-        <h1 class="pd-title reveal-up">{{ product.title }}</h1>
+        <div class="pd-title-row reveal-up">
+          <h1 class="pd-title" style="margin-bottom:0">{{ product.title }}</h1>
+          <button class="pd-wish" type="button" data-wish="{{ product.slug }}" aria-label="Save to wishlist">
+            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"/></svg>
+          </button>
+        </div>
 
         <div class="pd-price reveal-up">
           {% if product.old_price_inr %}
@@ -542,9 +636,11 @@
           {% endif %}
         </div>
 
-        <div class="pd-note reveal-up">
-          All product imagery has been kindly provided by
-          <span style="color:var(--gold); text-decoration:underline;">ADORN</span>.
+        <div class="value-bar reveal-up">
+          <span>💧 Waterproof</span>
+          <span>🛡️ 6-Month Warranty</span>
+          <span>🚚 Free Shipping</span>
+          <span>💵 COD Available</span>
         </div>
 
         <!-- Description from backend -->
@@ -556,6 +652,18 @@
             inspired by muses, and designed for comfort and all-day wear.
           </div>
         {% endif %}
+
+        <table class="spec-table reveal-up">
+          <tr><th>Base Metal</th><td>316L surgical-grade stainless steel</td></tr>
+          <tr><th>Plating</th><td>18K gold{% if product.metal_purity %} · {{ product.metal_purity }}{% endif %}</td></tr>
+          {% if product.get_stone_display and product.stone and product.stone != "none" %}<tr><th>Stone</th><td>{{ product.get_stone_display }}</td></tr>{% endif %}
+          {% if product.color %}<tr><th>Colour</th><td>{{ product.color }}</td></tr>{% endif %}
+          {% if product.style %}<tr><th>Style</th><td>{{ product.style }}</td></tr>{% endif %}
+          {% if product.weight_grams %}<tr><th>Weight</th><td>{{ product.weight_grams }} g</td></tr>{% endif %}
+          <tr><th>Skin Safety</th><td>Nickel-free, hypoallergenic, lab-tested</td></tr>
+          <tr><th>Water Resistance</th><td>Shower, sweat and rain safe</td></tr>
+          <tr><th>Warranty</th><td>6-month anti-tarnish replacement warranty</td></tr>
+        </table>
 
         <div class="pd-actions reveal-up">
           <a class="btn-outline" href="{% url 'cart:add_to_cart' product.slug %}"
@@ -577,8 +685,8 @@
             <path d="M4 20h16" />
           </svg>
           <div>
-            <div class="ship-head">Free shipping over Rs.1999</div>
-            <div class="ship-sub">We cover all import duties and taxes</div>
+            <div class="ship-head">Free shipping across India</div>
+            <div class="ship-sub">Cash on Delivery available · tracking updates on WhatsApp</div>
           </div>
         </div>
 
@@ -587,20 +695,20 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" />
             </svg>
-            Handmade in Greece
+            Waterproof &amp; sweat-proof — shower, gym, monsoon
           </div>
           <div class="perk">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M7 20V8l5-5 5 5v12" />
               <path d="M9 12h6" />
             </svg>
-            Crafted by Artisans
+            Lab-tested nickel-free, safe for sensitive skin
           </div>
           <div class="perk">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z" />
             </svg>
-            Sustainably sourced precious metals
+            7-day easy returns · 6-month anti-tarnish warranty
           </div>
         </div>
 
@@ -697,8 +805,9 @@
                 <div class="acc-plus">+</div>
               </button>
               <div class="acc-panel">
-                To preserve the sculptural finish of your jewelry, store pieces in their pouch when not in use and avoid
-                exposure to harsh chemicals, perfumes, or water. Gently clean with a soft cloth as needed.
+                Built for daily wear — shower, gym and rain are all fine. For the longest shine, avoid harsh
+                chemicals like chlorine bleach and perfume sprayed directly on the piece. Wipe with a soft cloth
+                after heavy sweat sessions.
               </div>
             </div>
 
@@ -708,8 +817,8 @@
                 <div class="acc-plus">+</div>
               </button>
               <div class="acc-panel">
-                Orders typically ship within 1-3 business days. Returns accepted within the return window in unused
-                condition. (Replace this later with your exact policy.)
+                Free shipping across India with Cash on Delivery available. 7-day easy returns and exchanges,
+                no questions asked — every piece is covered by our 6-month anti-tarnish warranty.
               </div>
             </div>
 
@@ -719,8 +828,8 @@
                 <div class="acc-plus">+</div>
               </button>
               <div class="acc-panel">
-                Each piece arrives ready to gift. Add a note at checkout and we will include it in the package.
-                (Replace with your gifting details anytime.)
+                Each piece arrives gift-ready in our jewel-box packaging. Add a note at checkout and we will
+                include it with the order.
               </div>
             </div>
           {% endif %}
@@ -730,6 +839,112 @@
     </div>
   </div>
 </div>
+
+<!-- ============ REVIEWS ============ -->
+<section class="pd-reviews" id="reviews">
+  <div class="container">
+    {% if request.GET.review == "thanks" %}
+    <div class="rv-banner">Thank you! Your review has been submitted and will appear once it's approved.</div>
+    {% elif request.GET.review == "missing" %}
+    <div class="rv-banner">Please fill your name, email and review before submitting.</div>
+    {% endif %}
+
+    <div class="rv-head">
+      <h2>Reviews</h2>
+      {% if review_count %}
+      <span class="rv-stars" aria-label="{{ review_avg|floatformat:1 }} out of 5">
+        {% for _ in "12345"|make_list %}{% if forloop.counter <= review_avg %}★{% else %}<span class="dim">★</span>{% endif %}{% endfor %}
+      </span>
+      <span class="rv-avg">{{ review_avg|floatformat:1 }} · {{ review_count }} review{{ review_count|pluralize }}</span>
+      {% endif %}
+    </div>
+
+    {% for r in reviews %}
+    <div class="rv-item">
+      <span class="rv-stars" aria-label="{{ r.rating }} out of 5">{% for _ in "12345"|make_list %}{% if forloop.counter <= r.rating %}★{% else %}<span class="dim">★</span>{% endif %}{% endfor %}</span>
+      {% if r.title %}<div class="rv-t">{{ r.title }}</div>{% endif %}
+      <p>{{ r.body }}</p>
+      <div class="rv-by">{{ r.name }} · {{ r.created_at|date:"M j, Y" }}</div>
+    </div>
+    {% empty %}
+    <p class="rv-empty">No reviews yet — be the first to share how this piece held up in real life. Every review is
+      moderated before it appears.</p>
+    {% endfor %}
+
+    <div class="rv-form-wrap">
+      <details>
+        <summary>Write a Review</summary>
+        <form class="rv-form" method="post" action="{% url 'catalog:review_submit' slug=product.slug %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <div class="rv-row">
+            <input type="text" name="name" placeholder="Your name" required maxlength="100">
+            <input type="email" name="email" placeholder="Email (not published)" required>
+          </div>
+          <div class="rv-row">
+            <select name="rating" aria-label="Rating">
+              <option value="5">★★★★★ — Loved it</option>
+              <option value="4">★★★★ — Really good</option>
+              <option value="3">★★★ — Okay</option>
+              <option value="2">★★ — Not great</option>
+              <option value="1">★ — Disappointed</option>
+            </select>
+            <input type="text" name="title" placeholder="Review title (optional)" maxlength="200">
+          </div>
+          <textarea name="body" placeholder="How did it hold up — shower, gym, daily wear?" required></textarea>
+          <button type="submit">Submit Review</button>
+          <div class="rv-note">Reviews are moderated and appear after approval. Your email is never published.</div>
+        </form>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STICKY MOBILE ADD-TO-BAG ============ -->
+<div class="pd-stickybar">
+  <div class="sb-price">
+    {% if product.old_price_inr %}<del>₹{{ product.old_price_inr }}</del>{% endif %}
+    ₹{{ product.price_inr }}
+  </div>
+  <button type="button" data-cart-add="{{ product.slug }}">Add to Bag</button>
+</div>
+
+<!-- ============ PRODUCT SCHEMA ============ -->
+{% with img=product.images.all.0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title|escapejs }}",
+  {% if img %}"image": ["https://www.adornbysoc.com{{ img.image.url }}"],{% endif %}
+  "description": "{{ product.description|default:product.title|truncatechars:300|escapejs }}",
+  "sku": "{{ product.slug }}",
+  "brand": { "@type": "Brand", "name": "Adorn by SOC" },
+  "material": "18K gold plated 316L stainless steel",
+  {% if review_count %}"aggregateRating": { "@type": "AggregateRating", "ratingValue": "{{ review_avg|floatformat:1 }}", "reviewCount": {{ review_count }} },{% endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.adornbysoc.com{{ request.path }}",
+    "priceCurrency": "INR",
+    "price": "{{ product.price_inr }}",
+    "availability": "https://schema.org/{% if product.in_stock %}InStock{% else %}OutOfStock{% endif %}",
+    "shippingDetails": {
+      "@type": "OfferShippingDetails",
+      "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "INR" },
+      "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "IN" }
+    },
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 7,
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "returnFees": "https://schema.org/FreeReturn"
+    }
+  }
+}
+</script>
+{% endwith %}
+
 {% endblock %}
 
 {% block extra_js %}

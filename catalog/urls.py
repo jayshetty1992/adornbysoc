@@ -20,4 +20,8 @@ urlpatterns = [
     path("contact/", views.contact_page, name="contact"),
     path("about/", views.about_page, name="about_page"),
     path("faq/", views.faq_page, name="faq"),
+    path("wishlist/", views.wishlist_page, name="wishlist"),
+    path("wishlist/state/", views.wishlist_state, name="wishlist_state"),
+    path("wishlist/toggle/<slug:slug>/", views.wishlist_toggle, name="wishlist_toggle"),
+    path("review/<slug:slug>/", views.review_submit, name="review_submit"),
 ]

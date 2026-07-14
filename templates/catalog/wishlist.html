@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Wishlist | Adorn by SOC{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,450;0,530;1,400;1,450&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <div class="jbx-kicker">Saved for Later</div>
+    <h1 class="jbx-h2">Your wishlist</h1>
+    <p class="lede">Pieces you've hearted, kept safe on this device.</p>
+  </div>
+</section>
+
+<section class="jbx-section" style="padding-top:48px">
+  <div class="container">
+    {% if items %}
+    <div class="wish-grid">
+      {% for it in items %}
+      <div class="bs-card">
+        <div class="bs-media">
+          {% with img=it.product.images.all.0 %}
+          <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ it.product.title }}">
+          {% endwith %}
+          <button class="quick-add" type="button" data-cart-add="{{ it.product.slug }}" aria-label="Add {{ it.product.title }} to bag">Add to Bag</button>
+        </div>
+        <button class="wish-heart wished" type="button" data-wish="{{ it.product.slug }}" aria-label="Remove {{ it.product.title }} from wishlist">
+          <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"/></svg>
+        </button>
+        <a class="bs-meta stretched-link" href="{% url 'catalog:product_detail' slug=it.product.slug %}" style="text-decoration:none">
+          <span class="bs-name">{{ it.product.title }}</span>
+          <span class="bs-price">₹{{ it.product.price_inr }}</span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="prose">
+      <h2>Nothing saved <em>yet</em></h2>
+      <p>Tap the ♡ on any piece and it will wait for you here. Start with
+        <a href="{% url 'catalog:collection_list' %}">the collection</a> or see
+        <a href="{% url 'catalog:product_list' %}?tag=new">what's new</a>.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

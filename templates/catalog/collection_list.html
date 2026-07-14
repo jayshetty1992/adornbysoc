@@ -709,6 +709,34 @@
     }
   }
 
+
+  /* quick add + wishlist on cards (Ivory Atelier) */
+  .p-card { position: relative; }
+  .p-media { position: relative; }
+  .card-quick-add {
+    position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 3;
+    padding: 12px; border: 0; border-radius: 24px;
+    background: rgba(27, 22, 15, .92); color: #F7F3EC;
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .35s ease, transform .35s ease, background .3s ease;
+    cursor: pointer;
+  }
+  .p-card:hover .card-quick-add { opacity: 1; transform: none; }
+  .card-quick-add:hover { background: #8A6420; }
+  @media (hover: none) { .card-quick-add { opacity: 1; transform: none; } }
+
+  .wish-heart {
+    position: absolute; top: 10px; right: 10px; z-index: 3;
+    width: 38px; height: 38px; border-radius: 999px;
+    border: 1px solid rgba(27, 22, 15, .18);
+    background: rgba(255, 255, 255, .92);
+    display: grid; place-items: center; cursor: pointer;
+    transition: all .3s ease;
+  }
+  .wish-heart svg { width: 17px; height: 17px; stroke: #1B160F; fill: none; transition: all .25s ease; }
+  .wish-heart:hover { border-color: #B7862B; }
+  .wish-heart.wished svg { fill: #B7862B; stroke: #B7862B; }
 </style>
 {% endblock %}
 
@@ -1002,7 +1030,7 @@
         <div class="pl-grid">
 
           {% for p in products %}
-          <a class="p-card" href="{% url 'catalog:product_detail' slug=p.slug %}">
+          <div class="p-card">
 
             <div class="p-badges">
               <span class="badge-mini">NEW</span>
@@ -1020,8 +1048,14 @@
               {% endif %}
               {% endwith %}
 
-              <div class="quick-view">QUICK VIEW</div>
+              <button class="card-quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
             </div>
+
+            <button class="wish-heart" type="button" data-wish="{{ p.slug }}" aria-label="Save {{ p.title }} to wishlist">
+              <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"/></svg>
+            </button>
+
+            <a class="stretched-link" href="{% url 'catalog:product_detail' slug=p.slug %}" aria-label="{{ p.title }}" style="position:absolute;inset:0;z-index:1;"></a>
 
             <div class="p-title">{{ p.title }}</div>
 
@@ -1037,7 +1071,7 @@
               {% endif %}
             </div>
 
-          </a>
+          </div>
           {% empty %}
           <div style="grid-column: 1 / -1; padding: 60px 0; text-align:center; color: rgba(0,0,0,.6);">
             No products found.

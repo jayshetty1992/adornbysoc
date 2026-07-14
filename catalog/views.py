@@ -4,9 +4,11 @@ from decimal import Decimal, InvalidOperation
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.templatetags.static import static
-from django.db.models import Prefetch, Q, Count
+from django.db.models import Prefetch, Q, Count, Avg
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
-from .models import Collection, Product, Lookbook, LookbookSection, RingSize, ProductFAQ, ProductImage
+from .models import Collection, Product, Lookbook, LookbookSection, RingSize, ProductFAQ, ProductImage, ProductReview, Wishlist
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from .models import ContactMessage, ContactFAQ, StoreLocation
@@ -288,9 +290,15 @@ def product_detail(request, slug):
     # product.faqs.all() is already prefetched and filtered
     faqs = list(product.faqs.all())
 
+    reviews = product.reviews.filter(is_approved=True)
+    agg = reviews.aggregate(avg=Avg("rating"), n=Count("id"))
+
     return render(request, "catalog/product_detail.html", {
         "product": product,
         "faqs": faqs,
+        "reviews": reviews,
+        "review_avg": agg["avg"],
+        "review_count": agg["n"],
     })
 
 
@@ -367,3 +375,69 @@ def about_page(request):
 
 def faq_page(request):
     return render(request, "pages/faq.html")
+
+
+# ---------- Reviews (public submit, moderated via dashboard) ----------
+
+@require_POST
+def review_submit(request, slug):
+    product = get_object_or_404(Product, slug=slug, is_active=True)
+    name = (request.POST.get("name") or "").strip()[:100]
+    email = (request.POST.get("email") or "").strip()[:254]
+    body = (request.POST.get("body") or "").strip()
+    title = (request.POST.get("title") or "").strip()[:200]
+    try:
+        rating = max(1, min(5, int(request.POST.get("rating", 5))))
+    except (TypeError, ValueError):
+        rating = 5
+    if name and email and body:
+        ProductReview.objects.create(
+            product=product, name=name, email=email,
+            rating=rating, title=title, body=body, is_approved=False,
+        )
+        return redirect(f"{request.POST.get('next') or product_url(product)}?review=thanks#reviews")
+    return redirect(f"{product_url(product)}?review=missing#reviews")
+
+
+def product_url(product):
+    from django.urls import reverse
+    return reverse("catalog:product_detail", kwargs={"slug": product.slug})
+
+
+# ---------- Wishlist (session-based, no login needed) ----------
+
+def _wish_key(request):
+    if not request.session.session_key:
+        request.session.save()
+    return request.session.session_key
+
+
+@require_POST
+def wishlist_toggle(request, slug):
+    product = get_object_or_404(Product, slug=slug, is_active=True)
+    key = _wish_key(request)
+    row, created = Wishlist.objects.get_or_create(session_key=key, product=product)
+    if not created:
+        row.delete()
+    count = Wishlist.objects.filter(session_key=key).count()
+    return JsonResponse({"ok": True, "wished": created, "count": count})
+
+
+def wishlist_state(request):
+    key = request.session.session_key
+    slugs = (
+        list(Wishlist.objects.filter(session_key=key).values_list("product__slug", flat=True))
+        if key else []
+    )
+    return JsonResponse({"ok": True, "slugs": slugs, "count": len(slugs)})
+
+
+def wishlist_page(request):
+    key = request.session.session_key
+    items = (
+        Wishlist.objects.filter(session_key=key)
+        .select_related("product", "product__collection")
+        .prefetch_related("product__images")
+        if key else Wishlist.objects.none()
+    )
+    return render(request, "catalog/wishlist.html", {"items": items})

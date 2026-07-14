@@ -549,3 +549,19 @@ body {
 .price-band:hover { border-color: rgba(183, 134, 43, .5); transform: translateY(-3px); }
 .pb-amount { font-family: var(--font-display); font-weight: 480; font-size: 24px; color: var(--jb-ivory); }
 .pb-note { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--jb-gold-deep); }
+
+/* wishlist heart on product cards */
+.wish-heart {
+  position: absolute; top: 16px; right: 16px; z-index: 3;
+  width: 38px; height: 38px; border-radius: 999px;
+  border: 1px solid var(--jb-hairline);
+  background: rgba(255, 255, 255, .92);
+  display: grid; place-items: center; cursor: pointer;
+  transition: all .3s ease;
+}
+.wish-heart svg { width: 17px; height: 17px; stroke: var(--jb-ivory); fill: none; transition: all .25s ease; }
+.wish-heart:hover { border-color: var(--jb-gold); }
+.wish-heart.wished svg { fill: var(--jb-gold); stroke: var(--jb-gold); }
+
+/* wishlist page grid reuses .bs-card sizing in a wrap grid */
+.wish-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }

@@ -1216,6 +1216,13 @@
             </svg>
           </button> -->
 
+          <a class="icon-btn position-relative" href="{% url 'catalog:wishlist' %}" aria-label="Wishlist" id="wishBtn">
+            <span class="cart-badge" id="wishCount" style="display:none;">0</span>
+            <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"></path>
+            </svg>
+          </a>
+
           <button class="icon-btn position-relative" type="button" aria-label="Cart" id="cartBtn">
             <span class="cart-badge" id="cartCount" style="display:none;">0</span>
             <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1360,12 +1367,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="footer-mid">
-        <div class="footer-note">
-          All product content for this demo was kindly provided by <a href="https://adornbysoc.com/" class="footer-underline">ADORN</a>
-        </div>
-      </div> -->
 
       <div class="footer-bottom">
         <!-- <div class="footer-country">
@@ -1666,6 +1667,74 @@
     })();
   </script>
 
+
+  <script>
+  /* ===== Quick add-to-bag anywhere: <button data-cart-add="slug"> ===== */
+  (function () {
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest("[data-cart-add]");
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (window.LUSTER_CART) {
+        const t = btn.textContent;
+        btn.textContent = "Adding…";
+        LUSTER_CART.addAndOpen(btn.dataset.cartAdd);
+        setTimeout(() => { btn.textContent = t; }, 1500);
+      }
+    });
+  })();
+
+  /* ===== Wishlist (session-based). Hearts anywhere: <button data-wish="slug"> ===== */
+  (function () {
+    function getCookie(name) {
+      const v = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)");
+      return v ? v.pop() : "";
+    }
+    const badge = document.getElementById("wishCount");
+
+    function setCount(n) {
+      if (!badge) return;
+      badge.style.display = n > 0 ? "grid" : "none";
+      badge.textContent = n;
+    }
+
+    function paint(slugs) {
+      document.querySelectorAll("[data-wish]").forEach(btn => {
+        btn.classList.toggle("wished", slugs.includes(btn.dataset.wish));
+      });
+    }
+
+    async function syncState() {
+      try {
+        const r = await fetch("{% url 'catalog:wishlist_state' %}", { headers: { "X-Requested-With": "XMLHttpRequest" } });
+        const data = await r.json();
+        if (data.ok) { paint(data.slugs); setCount(data.count); }
+      } catch (e) {}
+    }
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest("[data-wish]");
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        const url = "{% url 'catalog:wishlist_toggle' 'SLUG' %}".replace("SLUG", btn.dataset.wish);
+        const r = await fetch(url, {
+          method: "POST",
+          headers: { "X-CSRFToken": getCookie("csrftoken"), "X-Requested-With": "XMLHttpRequest" },
+        });
+        const data = await r.json();
+        if (data.ok) {
+          btn.classList.toggle("wished", data.wished);
+          setCount(data.count);
+        }
+      } catch (err) {}
+    });
+
+    syncState();
+  })();
+  </script>
 
   {% block extra_js %}{% endblock %}
 </body>

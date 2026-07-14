@@ -35,7 +35,7 @@ API_VERSION = "2024-10"
 
 PRODUCTS_QUERY = """
 query($cursor: String) {
-  products(first: 100, after: $cursor) {
+  products(first: 100, after: $cursor, query: "status:active") {
     pageInfo { hasNextPage endCursor }
     nodes {
       handle

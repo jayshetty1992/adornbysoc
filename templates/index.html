@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,450;0,530;1,400;1,450&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
@@ -22,63 +22,37 @@
 {% block content %}
 
 <script>
-  /* progressive enhancement flag: animations only run when JS is live
-     and the user hasn't asked for reduced motion. Without this class
-     every section renders fully visible (SEO / no-JS / LCP safe). */
+  /* progressive enhancement flag: animations only when JS is live and
+     motion is welcome. Without it, everything renders fully visible. */
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.documentElement.classList.add("jsx");
   }
 </script>
 
 <!-- ============================================================
-     1. SCROLL-STORY — "The Anatomy of Forever"
+     1. RING HERO — the piece approaches as you scroll
      ============================================================ -->
-<section class="story" id="anatomy" aria-label="The Anatomy of Forever">
-  <div class="story-stage">
+<section class="ringhero" id="hero" aria-label="Adorn by SOC — anti-tarnish jewellery">
+  <div class="ring-stage">
+    <div class="ring-halo" aria-hidden="true"></div>
 
-    <!-- Scene 1 — The Core -->
-    <div class="scene" data-scene="0">
-      <div class="scene-media"><img src="{% static 'img/silver.jpg' %}" alt="Rings on a hand against the sky — the steel core"></div>
-      <div class="scene-shade"></div>
-      <div class="scene-copy">
-        <div>
-          <div class="scene-step">The Anatomy of Forever — 01 · The Core</div>
-          <div class="scene-line">It starts with <em>316L surgical steel.</em></div>
-        </div>
+    <div class="ring-zoom" aria-hidden="true">
+      <div class="ring-spin">
+        <img src="{% static 'img/nwc.png' %}" alt="">
       </div>
     </div>
 
-    <!-- Scene 2 — The Plating -->
-    <div class="scene" data-scene="1">
-      <div class="scene-media"><img src="{% static 'img/PHOTO-2025-11-06-10-59-15.png' %}" alt="18K gold plated bracelet on a wrist"></div>
-      <div class="scene-shade"></div>
-      <div class="scene-copy">
-        <div>
-          <div class="scene-step">02 · The Plating</div>
-          <div class="scene-line">Sealed in <em>18K gold.</em></div>
-        </div>
+    <div class="ring-copy">
+      <div class="ring-eyebrow">Adorn by SOC · Pune</div>
+      <h1>Gold-Plated Jewellery That <em>Doesn't Fade.</em> Ever-Wear, Every Day.</h1>
+      <p>18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
+      <div class="ring-ctas">
+        <a class="btn-metal" href="{% url 'catalog:collection_list' %}">Shop Bestsellers</a>
+        <a class="btn-ghost" href="#why-no-tarnish">Why We Don't Tarnish</a>
       </div>
     </div>
 
-    <!-- Scene 3 — The Test → The Reveal -->
-    <div class="scene scene-final" data-scene="2">
-      <div class="scene-media"><img src="{% static 'img/hero.jpg' %}" alt="Gold earring worn by a model in low light"></div>
-      <div class="scene-shade"></div>
-      <div class="scene-copy">
-        <div class="reveal-ui">
-          <div class="jbx-kicker">Shower · Gym · Monsoon</div>
-          <h1>Gold-Plated Jewellery That <em>Doesn't Fade.</em> Ever-Wear, Every Day.</h1>
-          <p>18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
-          <div class="cta-row">
-            <a class="btn-metal" href="{% url 'catalog:collection_list' %}">Shop Bestsellers</a>
-            <a class="btn-ghost" href="#why-no-tarnish">Why We Don't Tarnish →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="story-progress" aria-hidden="true"><i></i></div>
-    <div class="story-cue" aria-hidden="true">Scroll</div>
+    <div class="ring-cue" aria-hidden="true">Scroll</div>
   </div>
 </section>
 
@@ -87,46 +61,48 @@
      ============================================================ -->
 <section class="trust-strip" aria-label="Why shop with us">
   <div class="trust-track">
-    <div class="trust-item"><b>Waterproof &amp; Sweat-Proof</b> — shower, gym, swim</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>6-Month Anti-Tarnish Warranty</b> — fades? We replace it free</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>Lab-Tested, Nickel-Free</b> — hypoallergenic &amp; skin-safe</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>Free Shipping + COD</b> — across India</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>7-Day Easy Returns</b> — no questions asked</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Waterproof &amp; sweat-proof</b>&nbsp;— shower, gym, swim</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>6-month anti-tarnish warranty</b>&nbsp;— fades? We replace it free</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Lab-tested, nickel-free</b>&nbsp;— skin-safe</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Free shipping + COD</b>&nbsp;— across India</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>7-day easy returns</b>&nbsp;— no questions asked</div><span class="trust-dot">◆</span>
 
-    <div class="trust-item"><b>Waterproof &amp; Sweat-Proof</b> — shower, gym, swim</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>6-Month Anti-Tarnish Warranty</b> — fades? We replace it free</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>Lab-Tested, Nickel-Free</b> — hypoallergenic &amp; skin-safe</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>Free Shipping + COD</b> — across India</div><span class="trust-dot">◆</span>
-    <div class="trust-item"><b>7-Day Easy Returns</b> — no questions asked</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Waterproof &amp; sweat-proof</b>&nbsp;— shower, gym, swim</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>6-month anti-tarnish warranty</b>&nbsp;— fades? We replace it free</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Lab-tested, nickel-free</b>&nbsp;— skin-safe</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>Free shipping + COD</b>&nbsp;— across India</div><span class="trust-dot">◆</span>
+    <div class="trust-item"><b>7-day easy returns</b>&nbsp;— no questions asked</div><span class="trust-dot">◆</span>
   </div>
 </section>
 
 <!-- ============================================================
-     3. SHOP BY CATEGORY — editorial grid
+     3. CATEGORIES
      ============================================================ -->
 <section class="jbx-section" id="categories">
   <div class="container">
     <div class="cats-head">
       <div class="rv">
-        <div class="jbx-kicker">The Collection</div>
-        <h2 class="jbx-h2">Shop by <em>Category</em></h2>
+        <div class="jbx-kicker">Shop</div>
+        <h2 class="jbx-h2">What are you looking for?</h2>
       </div>
-      <a class="btn-ghost rv" style="--rd:120ms" href="{% url 'catalog:collection_list' %}">View All</a>
+      <a class="btn-ghost rv" style="--rd:120ms" href="{% url 'catalog:collection_list' %}">View Everything</a>
     </div>
 
     <div class="cats-grid">
       {% if home_collections %}
       {% for c in home_collections %}
-      <a class="cat-tile jb rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:collection_products' slug=c.slug %}">
+      <a class="cat-tile rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:collection_products' slug=c.slug %}">
         <img src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}" alt="{{ c.name }} — anti-tarnish gold plated jewellery">
+        <span class="cat-scrim" aria-hidden="true"></span>
         <i class="sweep"></i>
         <span class="cat-label">{{ c.name }}</span>
         <span class="cat-count">Explore →</span>
       </a>
       {% endfor %}
       {% else %}
-      <a class="cat-tile jb rv" href="{% url 'catalog:collection_list' %}">
+      <a class="cat-tile rv" href="{% url 'catalog:collection_list' %}">
         <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adorn by SOC collections">
+        <span class="cat-scrim" aria-hidden="true"></span>
         <i class="sweep"></i>
         <span class="cat-label">View Collections</span>
         <span class="cat-count">Explore →</span>
@@ -137,14 +113,14 @@
 </section>
 
 <!-- ============================================================
-     4. NEW ARRIVALS — carousel
+     4. NEW ARRIVALS — quick add to bag
      ============================================================ -->
-<section class="jbx-section" id="bestsellers" style="padding-top:40px">
+<section class="jbx-section" id="new-arrivals" style="padding-top:32px">
   <div class="container">
     <div class="cats-head">
       <div class="rv">
-        <div class="jbx-kicker">Fresh from the Jewel Box</div>
-        <h2 class="jbx-h2">New <em>Arrivals</em></h2>
+        <div class="jbx-kicker">Just In</div>
+        <h2 class="jbx-h2">New arrivals</h2>
       </div>
       <div class="car-arrows rv" style="--rd:120ms">
         <button class="car-btn" type="button" id="bsPrev" aria-label="Previous products">
@@ -158,7 +134,7 @@
 
     <div class="bs-row" id="bsRow">
       {% for p in new_arrivals %}
-      <a class="bs-card jb rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:product_detail' slug=p.slug %}">
+      <div class="bs-card rv" style="--rd:{{ forloop.counter0 }}00ms">
         <div class="bs-media">
           <span class="bs-tag">New</span>
           {% with img=p.primary_image_obj %}
@@ -167,22 +143,22 @@
           {% with h=p.hover_image_obj %}
           {% if h %}<img class="alt" src="{{ h.image.url }}" alt="{{ p.title }} — alternate view">{% endif %}
           {% endwith %}
-          <i class="sweep"></i>
+          <button class="quick-add" type="button" data-slug="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
         </div>
-        <div class="bs-meta">
+        <a class="bs-meta stretched-link" href="{% url 'catalog:product_detail' slug=p.slug %}" style="text-decoration:none">
           <span class="bs-name">{{ p.title }}</span>
           <span class="bs-price">₹{{ p.price_inr }}</span>
-        </div>
-      </a>
+        </a>
+      </div>
       {% empty %}
-      <div class="bs-empty">New pieces are being added — explore the <a href="{% url 'catalog:collection_list' %}" style="color:var(--jb-gold)">full collection</a>.</div>
+      <div class="bs-empty">New pieces are on their way — meanwhile, explore the <a href="{% url 'catalog:collection_list' %}" style="color:var(--jb-gold-deep)">full collection</a>.</div>
       {% endfor %}
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     5. HONEST MIDDLE — positioning + comparison
+     5. THE HONEST MIDDLE
      ============================================================ -->
 <section class="jbx-section honest-dark">
   <div class="container">
@@ -198,7 +174,7 @@
         </p>
       </div>
 
-      <div class="cmp-wrap jb rv" style="--rd:150ms">
+      <div class="cmp-wrap rv" style="--rd:150ms">
         <table class="cmp-table">
           <thead>
             <tr><th></th><th>Real Gold</th><th>Imitation</th><th class="us">Adorn by SOC</th></tr>
@@ -217,13 +193,13 @@
 </section>
 
 <!-- ============================================================
-     6. SPEC TRANSPARENCY — oversized numerals
+     6. SPEC TRANSPARENCY
      ============================================================ -->
-<section class="jbx-section specs-dark" id="why-no-tarnish">
+<section class="jbx-section" id="why-no-tarnish">
   <div class="container">
     <div class="rv">
       <div class="jbx-kicker">Published Specs</div>
-      <h2 class="jbx-h2">We Publish Our Specs. <em>Ask Any Other Brand to Do the Same.</em></h2>
+      <h2 class="jbx-h2">We publish our specs. Ask any other brand to do the same.</h2>
     </div>
 
     <div class="spec-numerals">
@@ -261,17 +237,17 @@
 <!-- ============================================================
      7. WARRANTY
      ============================================================ -->
-<section class="jbx-section" style="padding-top:30px">
+<section class="jbx-section" style="padding-top:20px">
   <div class="container">
     <div class="warranty-card jb rv">
       <div class="jbx-kicker">Our Promise</div>
-      <h2 class="jbx-h2">The 6-Month <em>Anti-Tarnish Warranty</em></h2>
+      <h2 class="jbx-h2">The 6-Month Anti-Tarnish Warranty</h2>
       <p class="jbx-lead">
         If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
         it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
         within 48 hours.
       </p>
-      <a class="btn-metal" href="{% url 'page' 'returns' %}">Read Warranty Terms</a>
+      <a class="btn-metal" href="{% url 'page' 'warranty' %}">Read Warranty Terms</a>
     </div>
   </div>
 </section>
@@ -279,18 +255,20 @@
 <!-- ============================================================
      8. EDITORIAL SPLIT — Adapt / Poise
      ============================================================ -->
-<section class="jbx-section" style="padding-top:30px">
+<section class="jbx-section" style="padding-top:20px">
   <div class="container">
     <div class="ed-split">
-      <a class="ed-panel jb rv" href="{% url 'catalog:collection_products' slug='adapt' %}">
+      <a class="ed-panel rv" href="{% url 'catalog:collection_products' slug='adapt' %}">
         <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adapt collection — anti-tarnish jewellery">
+        <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
           <h3>Adapt</h3>
           <span>Fluid silhouettes, adjustable fits →</span>
         </div>
       </a>
-      <a class="ed-panel jb rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='poise' %}">
+      <a class="ed-panel rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='poise' %}">
         <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Poise collection — minimal anti-tarnish jewellery">
+        <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
           <h3>Poise</h3>
           <span>Minimal lines, bold intent →</span>
@@ -303,11 +281,11 @@
 <!-- ============================================================
      9. SHOP THE LOOK
      ============================================================ -->
-<section class="jbx-section look-dark" id="shop-look">
+<section class="jbx-section look-dark honest-dark" id="shop-look">
   <div class="container">
     <div class="rv" style="margin-bottom:36px">
       <div class="jbx-kicker">Styled by SOC</div>
-      <h2 class="jbx-h2">{% if shop_look %}{{ shop_look.title }}{% else %}Shop the <em>Look</em>{% endif %}</h2>
+      <h2 class="jbx-h2">{% if shop_look %}{{ shop_look.title }}{% else %}Shop the look{% endif %}</h2>
     </div>
 
     <div class="look-grid">
@@ -321,7 +299,7 @@
       </div>
 
       <div class="look-panel rv" style="--rd:150ms">
-        <div class="look-card-box jb">
+        <div class="look-card-box">
           <div class="look-frame">
             <img id="lookProdImg" src="{% static 'img/hero.jpg' %}" alt="Product">
           </div>
@@ -348,46 +326,20 @@
   </div>
 </section>
 
-<!-- ============================================================
-     10. FOUNDER STORY — editorial offset
-     ============================================================ -->
-<section class="jbx-section honest-dark" id="founder">
-  <div class="container">
-    <div class="founder-grid">
-      <div class="rv">
-        <div class="jbx-kicker">Why We Started</div>
-        <div class="founder-pull">"Luxury should feel personal, wearable, and accessible to everyone."</div>
-      </div>
-      <div class="founder-body rv" style="--rd:150ms">
-        <h2 class="jbx-h2" style="font-size:clamp(24px,2.6vw,34px)">Why We Started <em>Adorn by SOC</em></h2>
-        <p>
-          Hi, I'm <strong>Shivani</strong>, a fashion designer and personal stylist from Pune. After styling hundreds
-          of people through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is
-          still difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
-          outfits, real occasions, and everyday life.
-        </p>
-        <p>For me, Adorn is a heartfelt effort to make luxury feel more personal, wearable, and accessible to everyone.</p>
-        <div class="founder-sign">— Shivani</div>
-        <a class="btn-ghost" style="margin-top:26px" href="{% url 'catalog:about_page' %}">Discover Our Story</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 {% if reviews %}
 <!-- ============================================================
-     10b. REVIEWS — real customer words (approved via dashboard)
+     10. REVIEWS — real customer words (approved via dashboard)
      ============================================================ -->
-<section class="jbx-section reviews-dark" id="reviews">
+<section class="jbx-section" id="reviews">
   <div class="container">
     <div class="rv" style="margin-bottom:36px">
       <div class="jbx-kicker">Customer Words</div>
-      <h2 class="jbx-h2">Worn Daily Across <em>India</em></h2>
+      <h2 class="jbx-h2">In their words</h2>
     </div>
 
     <div class="rev-row">
       {% for r in reviews %}
-      <figure class="rev-card jb rv" style="--rd:{{ forloop.counter0 }}00ms">
+      <figure class="rev-card rv" style="--rd:{{ forloop.counter0 }}00ms">
         <div class="rev-stars" aria-label="{{ r.rating }} out of 5 stars">
           {% for _ in "12345"|make_list %}{% if forloop.counter <= r.rating %}★{% else %}<span class="dim">★</span>{% endif %}{% endfor %}
         </div>
@@ -405,13 +357,39 @@
 {% endif %}
 
 <!-- ============================================================
-     11. FAQ
+     11. FOUNDER
+     ============================================================ -->
+<section class="jbx-section honest-dark" id="founder">
+  <div class="container">
+    <div class="founder-grid">
+      <div class="rv">
+        <div class="jbx-kicker">From the Studio</div>
+        <div class="founder-pull">"Luxury should feel personal, wearable, and accessible to everyone."</div>
+      </div>
+      <div class="founder-body rv" style="--rd:150ms">
+        <h2 class="jbx-h2" style="font-size:clamp(24px,2.6vw,32px)">A note from Shivani</h2>
+        <p>
+          Hi, I'm <strong>Shivani</strong>, a fashion designer and personal stylist from Pune. After styling hundreds
+          of people through SOC, I realised that finding jewellery that feels elegant, versatile, and affordable is
+          still difficult — so I created Adorn by SOC, where every piece is personally handpicked to complement real
+          outfits, real occasions, and everyday life.
+        </p>
+        <p>For me, Adorn is a heartfelt effort to make luxury feel more personal, wearable, and accessible to everyone.</p>
+        <div class="founder-sign">— Shivani</div>
+        <a class="btn-ghost" style="margin-top:26px" href="{% url 'catalog:about_page' %}">Our Story</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     12. FAQ
      ============================================================ -->
 <section class="jbx-section faq-dark" id="faq">
   <div class="container">
     <div class="rv" style="margin-bottom:30px">
-      <div class="jbx-kicker">Answers, Upfront</div>
-      <h2 class="jbx-h2">Frequently Asked <em>Questions</em></h2>
+      <div class="jbx-kicker">Good to Know</div>
+      <h2 class="jbx-h2">Questions, answered honestly</h2>
     </div>
 
     <div class="accordion accordion-flush rv" id="homeFaq" style="max-width:880px">
@@ -496,7 +474,7 @@
 </section>
 
 <!-- ============================================================
-     12. SEO CONTENT BLOCK
+     13. SEO CONTENT BLOCK
      ============================================================ -->
 <section class="seo-dark" style="padding:52px 0">
   <div class="container">
@@ -591,32 +569,20 @@
 </script>
 
 <script>
-  /* ============ Scroll-story scrub (vanilla, no deps) ============ */
+  /* ============ Ring hero scrub (vanilla, no deps) ============ */
   (function () {
-    var story = document.getElementById("anatomy");
-    if (!story) return;
-    /* static layout (no .jsx): reduced motion or JS-off — nothing to scrub */
+    var hero = document.getElementById("hero");
+    if (!hero) return;
     if (!document.documentElement.classList.contains("jsx")) return;
-    var scenes = Array.prototype.slice.call(story.querySelectorAll(".scene"));
 
     var ticking = false;
     function update() {
       ticking = false;
-      var r = story.getBoundingClientRect();
+      var r = hero.getBoundingClientRect();
       var total = r.height - window.innerHeight;
       if (total <= 0) return;
       var p = Math.min(1, Math.max(0, -r.top / total));
-      story.style.setProperty("--p", p);
-
-      var n = scenes.length;
-      for (var i = 0; i < n; i++) {
-        var start = i / n, end = (i + 1) / n;
-        var active = (p >= start && p < end) || (i === n - 1 && p >= 1);
-        scenes[i].classList.toggle("on", active);
-        var lp = Math.min(1, Math.max(0, (p - start) / (end - start)));
-        scenes[i].style.setProperty("--lp", lp);
-      }
-      story.classList.toggle("reveal", p > 0.72);
+      hero.style.setProperty("--p", p);
     }
     function onScroll() {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
@@ -624,6 +590,21 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     update();
+  })();
+
+  /* ============ Quick add to bag (uses existing cart AJAX) ============ */
+  (function () {
+    document.querySelectorAll(".quick-add").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.LUSTER_CART) {
+          btn.textContent = "Adding…";
+          LUSTER_CART.addAndOpen(btn.dataset.slug);
+          setTimeout(function () { btn.textContent = "Add to Bag"; }, 1500);
+        }
+      });
+    });
   })();
 
   /* ============ Carousel arrows ============ */
@@ -634,7 +615,7 @@
     if (!row || !prev || !next) return;
     function step() {
       var card = row.querySelector(".bs-card");
-      return card ? Math.floor(card.getBoundingClientRect().width + 18) : 320;
+      return card ? Math.floor(card.getBoundingClientRect().width + 16) : 320;
     }
     prev.addEventListener("click", function () { row.scrollBy({ left: -step(), behavior: "smooth" }); });
     next.addEventListener("click", function () { row.scrollBy({ left: step(), behavior: "smooth" }); });
@@ -691,7 +672,7 @@
     items.forEach(function (el) { io.observe(el); });
   })();
 
-  /* ============ Magnetic metal buttons (desktop only, subtle) ============ */
+  /* ============ Magnetic primary buttons (desktop, subtle) ============ */
   (function () {
     if (!window.matchMedia("(pointer: fine)").matches) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

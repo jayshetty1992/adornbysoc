@@ -1,46 +1,49 @@
 /* ============================================================
-   ADORN BY SOC — dark jewel-box CHROME (topbar/header/footer)
-   Safe to load on ANY storefront page: does not restyle page
-   content, only the global chrome + gold nav hover.
+   ADORN BY SOC — Ivory Atelier CHROME (topbar/header/drawer)
+   Light luxury: ink announcement strip, frosted ivory header,
+   gold sheen on hover. Safe on ANY storefront page — touches
+   only the global chrome, never page content.
+   (Filename kept from the earlier dark theme to avoid link churn.)
    ============================================================ */
 
 :root {
-  --jb-bg: #14100C;
-  --jb-surface: #201A14;
-  --jb-surface-2: #2A2219;
-  --jb-gold: #D4A64A;
-  --jb-gold-light: #EFD9A7;
-  --jb-gold-deep: #9A7422;
-  --jb-ivory: #F5EFE4;
-  --jb-muted: #A89A84;
-  --jb-hairline: rgba(212, 166, 74, .28);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Jost", Inter, system-ui, sans-serif;
+  --jb-bg: #F7F3EC;
+  --jb-surface: #FFFFFF;
+  --jb-surface-2: #EFE9DE;
+  --jb-gold: #B7862B;
+  --jb-gold-light: #D9B25F;
+  --jb-gold-deep: #8A6420;
+  --jb-ivory: #1B160F;   /* ink text */
+  --jb-muted: #6E6353;
+  --jb-hairline: rgba(27, 22, 15, .12);
 }
 
-/* ---------- darken global chrome (site chrome) ---------- */
+/* ---- announcement strip: ink ribbon (Tiffany-style contrast) ---- */
 .topbar {
-  background: #0E0B08;
-  color: var(--jb-gold-light);
-  border-bottom: 1px solid rgba(212, 166, 74, .15);
+  background: #1B160F;
+  color: rgba(247, 243, 236, .92);
+  border-bottom: 0;
 }
-.topbar .arrow-btn { border-color: rgba(212, 166, 74, .25); color: var(--jb-gold-light); }
-.topbar .arrow-btn:hover { background: rgba(212, 166, 74, .12); }
+.topbar .arrow-btn { border-color: rgba(247, 243, 236, .25); color: rgba(247, 243, 236, .9); }
+.topbar .arrow-btn:hover { background: rgba(247, 243, 236, .1); }
 
+/* ---- header: frosted ivory ---- */
 .site-header {
-  background: rgba(20, 16, 12, .92);
-  backdrop-filter: blur(10px);
+  background: rgba(247, 243, 236, .88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--jb-hairline);
 }
-.site-header .brand { color: var(--jb-ivory); }
-.site-header .nav-link-custom { color: var(--jb-muted); transition: color .25s ease; }
+.site-header .brand { color: var(--jb-ivory); letter-spacing: .18em; }
+
+.site-header .nav-link-custom { color: rgba(27, 22, 15, .66); transition: color .25s ease; }
 .site-header .nav-link-custom:hover {
   background: linear-gradient(105deg, var(--jb-gold-deep) 0%, var(--jb-gold) 35%, var(--jb-gold-light) 50%, var(--jb-gold) 65%, var(--jb-gold-deep) 100%);
   background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: var(--jb-gold);
+  color: var(--jb-gold-deep);
   animation: goldSheen 1.6s linear infinite;
 }
 @keyframes goldSheen {
@@ -48,24 +51,24 @@
   to { background-position: 220% 0; }
 }
 .site-header .nav-link-custom::after { background: var(--jb-gold); }
-.site-header .icon-btn { border-color: rgba(245, 239, 228, .18); color: var(--jb-ivory); transition: all .3s ease; }
+
+.site-header .icon-btn { border-color: rgba(27, 22, 15, .2); transition: all .3s ease; }
 .site-header .icon-btn:hover {
   border-color: var(--jb-gold);
-  background: rgba(212, 166, 74, .12);
-  box-shadow: 0 0 14px rgba(212, 166, 74, .25);
+  background: rgba(183, 134, 43, .08);
+  box-shadow: 0 0 14px rgba(183, 134, 43, .18);
 }
-.site-header .svg-ico { stroke: var(--jb-ivory); opacity: .85; }
-.site-header .icon-btn:hover .svg-ico { stroke: var(--jb-gold-light); opacity: 1; }
+.site-header .svg-ico { stroke: var(--jb-ivory); opacity: .8; }
+.site-header .icon-btn:hover .svg-ico { stroke: var(--jb-gold-deep); opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .site-header .nav-link-custom:hover { animation: none; }
 }
-.site-header .cart-badge { border-color: var(--jb-bg); }
-.mobile-drawer { background: var(--jb-surface); border-top-color: var(--jb-hairline); }
-.mobile-drawer a { color: var(--jb-ivory); border-bottom-color: rgba(245, 239, 228, .08); }
-.mobile-drawer a:hover { background: rgba(212, 166, 74, .08); }
+.site-header .cart-badge { border-color: #F7F3EC; }
 
-.site-footer {
-  background: radial-gradient(1200px 500px at 50% 0%, rgba(212, 166, 74, .05), transparent 60%),
-    linear-gradient(180deg, #0E0B08 0%, #0A0806 100%);
-}
+/* ---- mobile drawer ---- */
+.mobile-drawer { background: #FBF8F2; border-top-color: var(--jb-hairline); }
+.mobile-drawer a { color: rgba(27, 22, 15, .8); border-bottom-color: rgba(27, 22, 15, .06); }
+.mobile-drawer a:hover { background: rgba(183, 134, 43, .07); }
 
+/* footer stays the deep espresso from base — a dark anchor under a
+   light page is the classic luxury close (Tiffany, VRAI do the same) */

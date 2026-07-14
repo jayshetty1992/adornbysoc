@@ -48,7 +48,7 @@
       <p>18K gold plating on surgical-grade stainless steel. Waterproof, sweat-proof, anti-tarnish — wear it in the shower, the gym, the monsoon. From ₹499.</p>
       <div class="ring-ctas">
         <a class="btn-metal" href="{% url 'catalog:collection_list' %}">Shop Bestsellers</a>
-        <a class="btn-ghost" href="#why-no-tarnish">Why We Don't Tarnish</a>
+        <a class="btn-ghost" href="{% url 'catalog:about_page' %}#why-no-tarnish">Why We Don't Tarnish</a>
       </div>
     </div>
 
@@ -187,120 +187,25 @@
 </section>
 
 <!-- ============================================================
-     5. THE HONEST MIDDLE
-     ============================================================ -->
-<section class="jbx-section honest-dark">
-  <div class="container">
-    <div class="honest-grid">
-      <div class="rv">
-        <div class="jbx-kicker">The Honest Middle</div>
-        <h2 class="jbx-h2">Real Gold Is a Locker Purchase. Imitation Fades in Weeks. <em>We're the First Option.</em></h2>
-        <p class="jbx-lead">
-          <strong>Adorn by SOC is an Indian anti-tarnish jewellery brand that makes waterproof, 18K gold-plated
-          jewellery on 316L surgical-grade stainless steel.</strong> Unlike brass-based imitation jewellery that
-          tarnishes, blackens, or turns skin green within weeks, our pieces are built on a steel base that doesn't
-          corrode — so the shine lasts for years of daily wear, at prices between ₹499 and ₹5,499.
-        </p>
-      </div>
-
-      <div class="cmp-wrap rv" style="--rd:150ms">
-        <table class="cmp-table">
-          <thead>
-            <tr><th></th><th>Real Gold</th><th>Imitation</th><th class="us">Adorn by SOC</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Price</td><td>₹50,000+</td><td>₹100–500</td><td class="us"><strong>₹499–5,499</strong></td></tr>
-            <tr><td>Tarnishes?</td><td>Never</td><td>In weeks</td><td class="us"><strong>No — steel base</strong></td></tr>
-            <tr><td>Waterproof?</td><td>Yes</td><td>No</td><td class="us"><strong>Shower &amp; gym safe</strong></td></tr>
-            <tr><td>Daily wear?</td><td>Too risky</td><td>Fades fast</td><td class="us"><strong>Made for it</strong></td></tr>
-            <tr><td>Skin-safe?</td><td>Yes</td><td>Often nickel-heavy</td><td class="us"><strong>Lab-tested nickel-free</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     6. SPEC TRANSPARENCY
-     ============================================================ -->
-<section class="jbx-section" id="why-no-tarnish">
-  <div class="container">
-    <div class="rv">
-      <div class="jbx-kicker">Published Specs</div>
-      <h2 class="jbx-h2">We publish our specs. Ask any other brand to do the same.</h2>
-    </div>
-
-    <div class="spec-numerals">
-      <div class="spec-num rv"><b>316L</b><span>Surgical-Grade Steel</span></div>
-      <div class="spec-num rv" style="--rd:120ms"><b>18K</b><span>Gold Plating</span></div>
-      <div class="spec-num rv" style="--rd:240ms"><b>6 MO</b><span>Anti-Tarnish Warranty</span></div>
-    </div>
-
-    <dl class="spec-rows rv">
-      <div class="spec-row">
-        <dt>Base Metal</dt>
-        <dd><strong>316L surgical-grade stainless steel</strong> — the same grade used in medical implants and luxury watches.</dd>
-      </div>
-      <div class="spec-row">
-        <dt>Plating</dt>
-        <dd><strong>18K gold, thick plating</strong> over the steel core.</dd>
-      </div>
-      <div class="spec-row">
-        <dt>Stones</dt>
-        <dd>Finished with finely set sparkling stones for a refined and luxurious look.</dd>
-      </div>
-      <div class="spec-row">
-        <dt>Quality</dt>
-        <dd>Skin-friendly jewellery.</dd>
-      </div>
-      <div class="spec-row">
-        <dt>Why It Doesn't Tarnish</dt>
-        <dd>Tarnish happens when base metals like brass or copper oxidise. <strong>Stainless steel doesn't oxidise in
-        normal wear — so there's nothing underneath to turn black.</strong></dd>
-      </div>
-    </dl>
-  </div>
-</section>
-
-<!-- ============================================================
-     7. WARRANTY
-     ============================================================ -->
-<section class="jbx-section" style="padding-top:20px">
-  <div class="container">
-    <div class="warranty-card jb rv">
-      <div class="jbx-kicker">Our Promise</div>
-      <h2 class="jbx-h2">The 6-Month Anti-Tarnish Warranty</h2>
-      <p class="jbx-lead">
-        If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
-        it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
-        within 48 hours.
-      </p>
-      <a class="btn-metal" href="{% url 'page' 'warranty' %}">Read Warranty Terms</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      8. EDITORIAL SPLIT — Adapt / Poise
      ============================================================ -->
 <section class="jbx-section" style="padding-top:20px">
   <div class="container">
     <div class="ed-split">
-      <a class="ed-panel rv" href="{% url 'catalog:collection_products' slug='adapt' %}">
-        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Adapt collection — anti-tarnish jewellery">
+      <a class="ed-panel rv" href="{% url 'catalog:collection_products' slug='rings' %}">
+        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Rings — anti-tarnish gold plated">
         <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
-          <h3>Adapt</h3>
-          <span>Fluid silhouettes, adjustable fits →</span>
+          <h3>Rings</h3>
+          <span>Stack them, shower in them →</span>
         </div>
       </a>
-      <a class="ed-panel rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='poise' %}">
-        <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Poise collection — minimal anti-tarnish jewellery">
+      <a class="ed-panel rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='necklace' %}">
+        <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Necklaces and chains — anti-tarnish gold plated">
         <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
-          <h3>Poise</h3>
-          <span>Minimal lines, bold intent →</span>
+          <h3>Necklaces &amp; Chains</h3>
+          <span>Layer-ready pendants &amp; chains →</span>
         </div>
       </a>
     </div>
@@ -384,6 +289,24 @@
   </div>
 </section>
 {% endif %}
+
+<!-- ============================================================
+     7. WARRANTY
+     ============================================================ -->
+<section class="jbx-section" style="padding-top:20px">
+  <div class="container">
+    <div class="warranty-card jb rv">
+      <div class="jbx-kicker">Our Promise</div>
+      <h2 class="jbx-h2">The 6-Month Anti-Tarnish Warranty</h2>
+      <p class="jbx-lead">
+        If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
+        it free. No receipts hunt, no interrogation — WhatsApp us a photo and your order ID, and a new piece ships
+        within 48 hours.
+      </p>
+      <a class="btn-metal" href="{% url 'page' 'warranty' %}">Read Warranty Terms</a>
+    </div>
+  </div>
+</section>
 
 <!-- ============================================================
      11. FOUNDER

@@ -69,6 +69,12 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Shopify checkout mapping (set by manage.py sync_shopify)
+    shopify_variant_gid = models.CharField(
+        max_length=120, blank=True, default="",
+        help_text="Shopify ProductVariant GID used for hosted checkout",
+    )
+
     # ---- Material & Metal ----
     MATERIAL_CHOICES = [
         ("gold", "Gold"),

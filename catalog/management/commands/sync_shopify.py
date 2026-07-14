@@ -44,7 +44,7 @@ query($cursor: String) {
       status
       productType
       featuredImage { url }
-      variants(first: 1) { nodes { price compareAtPrice } }
+      variants(first: 1) { nodes { id price compareAtPrice } }
     }
   }
 }
@@ -126,6 +126,7 @@ class Command(BaseCommand):
 
         ptype = (node.get("productType") or "").strip() or "New Arrivals"
         fields = {
+            "shopify_variant_gid": variant.get("id") or "",
             "title": node["title"][:180],
             "description": strip_html(node.get("descriptionHtml")),
             "price_inr": price,

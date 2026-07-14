@@ -121,3 +121,35 @@ def success(request, order_id):
 def failed(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, "checkout/failed.html", {"order": order})
+
+
+def checkout_start(request):
+    """
+    Single checkout entry point (the cart drawer links here).
+
+    Shopify hosted checkout when it's fully configured AND every cart
+    line is mapped to a Shopify variant; otherwise the legacy Stripe
+    checkout. Misconfiguration can never take the store down.
+    """
+    from payments import shopify
+
+    cart = get_cart(request)
+    items = list(cart_items_qs(cart))
+    if not items:
+        return redirect("index")
+
+    if shopify.enabled():
+        lines = [(it.product.shopify_variant_gid, it.qty) for it in items]
+        if all(gid for gid, _ in lines):
+            try:
+                return redirect(shopify.cart_checkout_url(lines, note=cart.order_note))
+            except shopify.ShopifyError as e:
+                import logging
+                logging.getLogger(__name__).warning("Shopify checkout failed, using legacy: %s", e)
+        else:
+            import logging
+            logging.getLogger(__name__).warning(
+                "Shopify checkout skipped: cart has unmapped products (run sync_shopify)."
+            )
+
+    return redirect("orders:checkout_view")

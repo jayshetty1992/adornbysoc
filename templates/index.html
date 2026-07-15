@@ -112,6 +112,36 @@
   </div>
 </section>
 
+
+<!-- ============================================================
+     3a. BESTSELLERS
+     ============================================================ -->
+{% if bestsellers %}
+<section class="jbx-section" id="bestsellers" style="padding-top:0">
+  <div class="container">
+    <div class="cats-head">
+      <div class="rv">
+        <div class="jbx-kicker">Most Loved</div>
+        <h2 class="jbx-h2">Bestsellers</h2>
+      </div>
+      <div class="car-arrows rv" style="--rd:120ms">
+        <button class="car-btn" type="button" data-car="-1" data-row="#bestRow" aria-label="Previous products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="car-btn" type="button" data-car="1" data-row="#bestRow" aria-label="Next products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="bs-row" id="bestRow">
+      {% for p in bestsellers %}
+      {% include "catalog/_product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- ============================================================
      3b. SHOP BY PRICE
      ============================================================ -->
@@ -149,10 +179,10 @@
         <h2 class="jbx-h2">New arrivals</h2>
       </div>
       <div class="car-arrows rv" style="--rd:120ms">
-        <button class="car-btn" type="button" id="bsPrev" aria-label="Previous products">
+        <button class="car-btn" type="button" data-car="-1" data-row="#bsRow" aria-label="Previous products">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <button class="car-btn" type="button" id="bsNext" aria-label="Next products">
+        <button class="car-btn" type="button" data-car="1" data-row="#bsRow" aria-label="Next products">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg>
         </button>
       </div>
@@ -160,31 +190,43 @@
 
     <div class="bs-row" id="bsRow">
       {% for p in new_arrivals %}
-      <div class="bs-card rv" style="--rd:{{ forloop.counter0 }}00ms">
-        <div class="bs-media">
-          <span class="bs-tag">New</span>
-          {% with img=p.primary_image_obj %}
-          <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ p.title }}">
-          {% endwith %}
-          {% with h=p.hover_image_obj %}
-          {% if h %}<img class="alt" src="{{ h.image.url }}" alt="{{ p.title }} — alternate view">{% endif %}
-          {% endwith %}
-          <button class="quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
-          <button class="wish-heart" type="button" data-wish="{{ p.slug }}" aria-label="Save {{ p.title }} to wishlist">
-            <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"/></svg>
-          </button>
-        </div>
-        <a class="bs-meta stretched-link" href="{% url 'catalog:product_detail' slug=p.slug %}" style="text-decoration:none">
-          <span class="bs-name">{{ p.title }}</span>
-          <span class="bs-price">₹{{ p.price_inr }}</span>
-        </a>
-      </div>
+      {% include "catalog/_product_card.html" %}
       {% empty %}
-      <div class="bs-empty">New pieces are on their way — meanwhile, explore the <a href="{% url 'catalog:collection_list' %}" style="color:var(--jb-gold-deep)">full collection</a>.</div>
+      <div class="bs-empty">New pieces are on their way — explore the <a href="{% url 'catalog:collection_list' %}" style="color:var(--jb-gold-deep)">full collection</a>.</div>
       {% endfor %}
     </div>
   </div>
 </section>
+
+
+<!-- ============================================================
+     4b. ON SALE
+     ============================================================ -->
+{% if on_sale %}
+<section class="jbx-section" id="on-sale" style="padding-top:0">
+  <div class="container">
+    <div class="cats-head">
+      <div class="rv">
+        <div class="jbx-kicker">Limited-Time Prices</div>
+        <h2 class="jbx-h2">On sale</h2>
+      </div>
+      <div class="car-arrows rv" style="--rd:120ms">
+        <button class="car-btn" type="button" data-car="-1" data-row="#saleRow" aria-label="Previous products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="car-btn" type="button" data-car="1" data-row="#saleRow" aria-label="Next products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="bs-row" id="saleRow">
+      {% for p in on_sale %}
+      {% include "catalog/_product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <!-- ============================================================
      8. EDITORIAL SPLIT — Adapt / Poise
@@ -544,18 +586,17 @@
     update();
   })();
 
-  /* ============ Carousel arrows ============ */
+  /* ============ Carousel arrows (any [data-car] button) ============ */
   (function () {
-    var row = document.getElementById("bsRow");
-    var prev = document.getElementById("bsPrev");
-    var next = document.getElementById("bsNext");
-    if (!row || !prev || !next) return;
-    function step() {
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-car]");
+      if (!btn) return;
+      var row = document.querySelector(btn.dataset.row);
+      if (!row) return;
       var card = row.querySelector(".bs-card");
-      return card ? Math.floor(card.getBoundingClientRect().width + 16) : 320;
-    }
-    prev.addEventListener("click", function () { row.scrollBy({ left: -step(), behavior: "smooth" }); });
-    next.addEventListener("click", function () { row.scrollBy({ left: step(), behavior: "smooth" }); });
+      var step = card ? Math.floor(card.getBoundingClientRect().width + 16) : 320;
+      row.scrollBy({ left: step * Number(btn.dataset.car), behavior: "smooth" });
+    });
   })();
 
   /* ============ Shop the Look ============ */

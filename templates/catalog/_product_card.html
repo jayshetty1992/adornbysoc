@@ -1,0 +1,23 @@
+{% load static %}
+{# Reusable shop card: expects `p` (Product). Used by homepage rows + wishlist. #}
+<div class="bs-card rv" style="--rd:{{ forloop.counter0 }}00ms">
+  <div class="bs-media">
+    {% if p.old_price_inr %}<span class="bs-tag">Sale</span>{% else %}<span class="bs-tag">New</span>{% endif %}
+    {% with img=p.primary_image_obj %}
+    <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ p.title }}">
+    {% endwith %}
+    {% with h=p.hover_image_obj %}
+    {% if h %}<img class="alt" src="{{ h.image.url }}" alt="{{ p.title }} — alternate view">{% endif %}
+    {% endwith %}
+    <button class="quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
+  </div>
+  <button class="wish-heart" type="button" data-wish="{{ p.slug }}" aria-label="Save {{ p.title }} to wishlist">
+    <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z"/></svg>
+  </button>
+  <a class="bs-meta stretched-link" href="{% url 'catalog:product_detail' slug=p.slug %}" style="text-decoration:none">
+    <span class="bs-name">{{ p.title }}</span>
+    <span class="bs-price">
+      {% if p.old_price_inr %}<del>₹{{ p.old_price_inr|floatformat:0 }}</del> {% endif %}₹{{ p.price_inr|floatformat:0 }}
+    </span>
+  </a>
+</div>

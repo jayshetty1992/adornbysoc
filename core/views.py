@@ -42,6 +42,12 @@ def home(request):
     except Exception:
         shop_look = None
 
+    base = Product.objects.filter(is_active=True).prefetch_related(
+        Prefetch("images", queryset=ProductImage.objects.order_by("sort_order", "id"))
+    )
+    bestsellers = base.filter(in_stock=True, old_price_inr__isnull=True).order_by("price_inr")[:10]
+    on_sale = base.filter(old_price_inr__isnull=False).order_by("-created_at")[:10]
+
     reviews = (
         ProductReview.objects.filter(is_approved=True)
         .select_related("product")
@@ -56,6 +62,8 @@ def home(request):
             "home_collections": home_collections,
             "shop_look": shop_look,
             "reviews": reviews,
+            "bestsellers": bestsellers,
+            "on_sale": on_sale,
         },
     )
 

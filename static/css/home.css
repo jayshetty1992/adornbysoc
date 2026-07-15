@@ -534,21 +534,58 @@ body {
 }
 
 /* ============================================================
-   SHOP BY PRICE — quiet bands (BlueStone pattern, atelier skin)
+   SHOP BY PRICE — atelier bands with the header's gold sheen
    ============================================================ */
 .price-bands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 767px) { .price-bands { grid-template-columns: 1fr; } }
 .price-band {
-  display: flex; flex-direction: column; gap: 6px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 8px;
   background: var(--jb-surface);
   border: 1px solid var(--jb-hairline);
   border-radius: var(--radius-card);
-  padding: 26px 28px;
-  transition: border-color .3s ease, transform .4s ease;
+  padding: 34px 32px 28px;
+  transition: border-color .35s ease, transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;
 }
-.price-band:hover { border-color: rgba(183, 134, 43, .5); transform: translateY(-3px); }
-.pb-amount { font-family: var(--font-display); font-weight: 480; font-size: 24px; color: var(--jb-ivory); }
-.pb-note { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--jb-gold-deep); }
+/* the same gold shine that lives in the header, sweeping the card */
+.price-band::after {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(217, 178, 95, .16) 50%, transparent 58%);
+  transform: translateX(-130%);
+}
+.price-band:hover::after { transition: transform .9s ease; transform: translateX(130%); }
+.price-band:hover {
+  border-color: rgba(183, 134, 43, .55);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(27, 22, 15, .08);
+}
+.pb-amount {
+  font-family: var(--font-display);
+  font-weight: 530;
+  font-size: clamp(26px, 2.6vw, 34px);
+  line-height: 1.1;
+  background: linear-gradient(105deg, var(--jb-gold-deep) 0%, var(--jb-gold) 35%, var(--jb-gold-light) 50%, var(--jb-gold) 65%, var(--jb-gold-deep) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--jb-gold-deep);
+  animation: goldSheen 2.8s linear infinite;
+}
+@keyframes goldSheen {
+  from { background-position: 0% 0; }
+  to { background-position: 220% 0; }
+}
+.pb-note {
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--jb-muted);
+  margin-top: 8px; padding-top: 16px;
+  border-top: 1px solid var(--jb-hairline);
+  transition: color .3s ease;
+}
+.price-band:hover .pb-note { color: var(--jb-gold-deep); }
+@media (prefers-reduced-motion: reduce) { .pb-amount { animation: none; } .price-band::after { display: none; } }
 
 /* wishlist heart on product cards */
 .wish-heart {

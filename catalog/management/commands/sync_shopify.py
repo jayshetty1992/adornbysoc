@@ -43,6 +43,8 @@ query($cursor: String) {
       descriptionHtml
       status
       productType
+      tracksInventory
+      totalInventory
       featuredImage { url }
       variants(first: 1) { nodes { id price compareAtPrice } }
     }
@@ -69,7 +71,7 @@ class Command(BaseCommand):
                 "Shopify credentials missing. Add SHOPIFY_STORE_DOMAIN and "
                 "SHOPIFY_ADMIN_ACCESS_TOKEN to your .env (see .env.example). "
                 "Create the token in Shopify admin: Settings > Apps > Develop apps "
-                "> create app > Admin API scopes: read_products."
+                "> create app > Admin API scopes: read_products, read_inventory."
             )
 
         dry = opts["dry_run"]
@@ -132,6 +134,8 @@ class Command(BaseCommand):
             "price_inr": price,
             "old_price_inr": variant.get("compareAtPrice") or None,
             "is_active": node["status"] == "ACTIVE",
+            # inventory: if Shopify tracks it, mirror availability
+            "in_stock": (node.get("totalInventory") or 0) > 0 if node.get("tracksInventory") else True,
         }
 
         if dry:

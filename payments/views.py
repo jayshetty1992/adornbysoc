@@ -41,3 +41,46 @@ def stripe_webhook(request):
             Order.objects.filter(id=order_id).update(status="failed")
 
     return HttpResponse(status=200)
+
+
+# ---------- Shopify webhooks: auto-sync catalog when products change ----------
+
+import base64
+import hashlib
+import hmac as hmac_mod
+import logging
+import os
+import threading
+
+
+def _run_shopify_sync():
+    try:
+        from django.core.management import call_command
+        call_command("sync_shopify")
+    except Exception:
+        logging.getLogger(__name__).exception("shopify webhook sync failed")
+
+
+@csrf_exempt
+def shopify_webhook(request):
+    """
+    Shopify -> site auto-sync. Registered via `manage.py register_shopify_webhooks`
+    for products/create, products/update and inventory_levels/update.
+    Any such event re-syncs the catalog in the background, so product edits,
+    archives and stock changes in Shopify admin reflect on the site within
+    seconds — no manual sync needed.
+    """
+    secret = os.getenv("SHOPIFY_WEBHOOK_SECRET", "")
+    if not secret:
+        return HttpResponse(status=503)
+
+    digest = hmac_mod.new(secret.encode(), request.body, hashlib.sha256).digest()
+    expected = base64.b64encode(digest).decode()
+    given = request.META.get("HTTP_X_SHOPIFY_HMAC_SHA256", "")
+    if not hmac_mod.compare_digest(expected, given):
+        return HttpResponse(status=401)
+
+    topic = request.META.get("HTTP_X_SHOPIFY_TOPIC", "")
+    if topic.startswith("products/") or topic.startswith("inventory_levels/"):
+        threading.Thread(target=_run_shopify_sync, daemon=True).start()
+    return HttpResponse(status=200)

@@ -41,6 +41,7 @@ query($cursor: String) {
   products(first: 100, after: $cursor) {
     pageInfo { hasNextPage endCursor }
     nodes {
+      id
       handle
       title
       description
@@ -138,6 +139,7 @@ class Command(BaseCommand):
         compare_at = (variant.get("compareAtPrice") or {}).get("amount")
         ptype = (node.get("productType") or "").strip() or "New Arrivals"
         fields = {
+            "shopify_product_gid": node["id"],
             "shopify_variant_gid": variant["id"],
             "title": node["title"][:180],
             "description": (node.get("description") or "").strip(),

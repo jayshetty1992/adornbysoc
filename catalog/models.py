@@ -69,7 +69,11 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # Shopify checkout mapping (set by manage.py sync_shopify)
+    # Inventory (Django dashboard is the source of truth; pushed to Shopify)
+    stock_qty = models.PositiveIntegerField(default=0, help_text="Available stock; pushed to Shopify on save")
+
+    # Shopify mapping (set automatically when the product is pushed/synced)
+    shopify_product_gid = models.CharField(max_length=120, blank=True, default="")
     shopify_variant_gid = models.CharField(
         max_length=120, blank=True, default="",
         help_text="Shopify ProductVariant GID used for hosted checkout",

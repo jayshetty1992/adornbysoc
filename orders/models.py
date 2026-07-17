@@ -32,6 +32,10 @@ class Order(models.Model):
 
     status = models.CharField(max_length=20, choices=STATUS, default="created")
 
+    # Shopify (orders imported from hosted checkout)
+    shopify_order_id = models.CharField(max_length=120, blank=True, default="", db_index=True)
+    shopify_order_name = models.CharField(max_length=40, blank=True, default="")
+
     # Stripe
     stripe_payment_intent_id = models.CharField(max_length=120, blank=True, default="")
     stripe_client_secret = models.CharField(max_length=255, blank=True, default="")

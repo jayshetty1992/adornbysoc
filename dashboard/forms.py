@@ -49,7 +49,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = [
             "title", "slug", "collection", "description",
-            "price_inr", "old_price_inr", "in_stock", "is_active",
+            "price_inr", "old_price_inr", "stock_qty", "in_stock", "is_active",
             "material", "metal_purity", "weight_grams",
             "stone_type", "stone_weight_ct",
             "occasion", "gender", "sku", "certificate",
@@ -64,6 +64,7 @@ class ProductForm(forms.ModelForm):
             "description": forms.Textarea({**_w(), "rows": 4}),
             "price_inr": forms.NumberInput(_w()),
             "old_price_inr": forms.NumberInput(_w()),
+            "stock_qty": forms.NumberInput(_w()),
             "material": forms.Select(_sel()),
             "metal_purity": forms.TextInput(_w()),
             "weight_grams": forms.NumberInput(_w()),

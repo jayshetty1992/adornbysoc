@@ -16,7 +16,7 @@ import urllib.request
 from django.core.management.base import BaseCommand, CommandError
 
 API_VERSION = "2024-10"
-TOPICS = ["PRODUCTS_CREATE", "PRODUCTS_UPDATE", "INVENTORY_LEVELS_UPDATE"]
+TOPICS = ["ORDERS_CREATE", "ORDERS_UPDATED"]
 DEFAULT_URL = "https://www.adornbysoc.com/payments/shopify/webhook/"
 
 LIST_QUERY = """

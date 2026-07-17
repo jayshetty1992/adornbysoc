@@ -53,22 +53,21 @@ import os
 import threading
 
 
-def _run_shopify_sync():
+def _run_shopify_order_sync():
     try:
-        from django.core.management import call_command
-        call_command("sync_shopify")
+        from payments import shopify_admin
+        shopify_admin.sync_orders()
     except Exception:
-        logging.getLogger(__name__).exception("shopify webhook sync failed")
+        logging.getLogger(__name__).exception("shopify order sync failed")
 
 
 @csrf_exempt
 def shopify_webhook(request):
     """
-    Shopify -> site auto-sync. Registered via `manage.py register_shopify_webhooks`
-    for products/create, products/update and inventory_levels/update.
-    Any such event re-syncs the catalog in the background, so product edits,
-    archives and stock changes in Shopify admin reflect on the site within
-    seconds — no manual sync needed.
+    Shopify -> Django order sync. Registered via `manage.py
+    register_shopify_webhooks` for orders/create + orders/updated: website
+    orders (hosted checkout) appear in the Django dashboard within seconds
+    and decrement local stock.
     """
     secret = os.getenv("SHOPIFY_WEBHOOK_SECRET", "")
     if not secret:
@@ -81,6 +80,6 @@ def shopify_webhook(request):
         return HttpResponse(status=401)
 
     topic = request.META.get("HTTP_X_SHOPIFY_TOPIC", "")
-    if topic.startswith("products/") or topic.startswith("inventory_levels/"):
-        threading.Thread(target=_run_shopify_sync, daemon=True).start()
+    if topic.startswith("orders/"):
+        threading.Thread(target=_run_shopify_order_sync, daemon=True).start()
     return HttpResponse(status=200)

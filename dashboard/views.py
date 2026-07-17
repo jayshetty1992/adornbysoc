@@ -122,7 +122,14 @@ def product_form(request, pk=None):
             if img_fs.is_valid() and faq_fs.is_valid():
                 img_fs.save()
                 faq_fs.save()
-                messages.success(request, "Product saved successfully.")
+                from payments import shopify_admin
+                if shopify_admin.enabled():
+                    if shopify_admin.push_product(saved):
+                        messages.success(request, "Product saved and pushed to Shopify.")
+                    else:
+                        messages.warning(request, "Product saved, but the Shopify push failed - check logs and save again.")
+                else:
+                    messages.success(request, "Product saved successfully.")
                 return redirect("dashboard:products_list")
             else:
                 img_fs_err = img_fs
@@ -152,7 +159,10 @@ def product_form(request, pk=None):
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     name = product.title
+    gid = product.shopify_product_gid
     product.delete()
+    from payments import shopify_admin
+    shopify_admin.archive_product(gid)
     messages.success(request, f'Product "{name}" deleted.')
     return redirect("dashboard:products_list")
 
@@ -163,6 +173,9 @@ def product_toggle_active(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.is_active = not product.is_active
     product.save(update_fields=["is_active"])
+    from payments import shopify_admin
+    if shopify_admin.enabled():
+        shopify_admin.push_product(product)
     return redirect("dashboard:products_list")
 
 

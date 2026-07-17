@@ -1,0 +1,423 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>{{ product.title }} — Virtual Try-On | Adorn by SOC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14100c; --surface:#201a14; --surface-2:#2a2219;
+    --gold:#d4a64a; --gold-light:#efd9a7; --gold-deep:#9a7422;
+    --ivory:#f5efe4; --muted:#a89a84; --line:rgba(212,166,74,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ivory);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;flex-direction:column;overflow:hidden;height:100dvh}
+  header{padding:12px 18px 9px;text-align:center;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#1a1510,var(--bg));flex:0 0 auto;position:relative}
+  .brand{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold-light)}
+  .tagline{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+  .back{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold-light);text-decoration:none;font-size:12px;letter-spacing:.14em;border:1px solid var(--line);border-radius:20px;padding:7px 13px}
+  .stage-wrap{flex:1 1 auto;position:relative;padding:12px;min-height:0;display:flex}
+  .stage{position:relative;flex:1;border-radius:14px;overflow:hidden;background:#0b0906;border:1px solid var(--line);box-shadow:inset 0 0 60px rgba(0,0,0,.55)}
+  video{display:none}
+  canvas#view{position:absolute;inset:0;width:100%;height:100%}
+  .corner{position:absolute;width:24px;height:24px;z-index:6;pointer-events:none}
+  .corner::before,.corner::after{content:"";position:absolute;background:var(--gold)}
+  .corner::before{width:100%;height:1.5px}.corner::after{width:1.5px;height:100%}
+  .c-tl{top:8px;left:8px}.c-tr{top:8px;right:8px;transform:scaleX(-1)}
+  .c-bl{bottom:8px;left:8px;transform:scaleY(-1)}.c-br{bottom:8px;right:8px;transform:scale(-1)}
+  .status{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:5;font-size:11.5px;letter-spacing:.1em;color:var(--ivory);background:rgba(20,16,12,.72);border:1px solid var(--line);border-radius:20px;padding:7px 15px;white-space:nowrap;transition:opacity .3s;backdrop-filter:blur(6px)}
+  .flip{position:absolute;right:12px;bottom:12px;z-index:6;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(32,26,20,.8);color:var(--gold-light);font-size:19px;cursor:pointer;backdrop-filter:blur(6px)}
+  #startScreen{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;background:radial-gradient(ellipse at 50% 35%,#241d14,#0b0906)}
+  #startScreen h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:25px}
+  #startScreen p{font-size:13px;color:var(--muted);max-width:300px;line-height:1.6}
+  #startScreen .piece{width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 8px 22px rgba(212,166,74,.25))}
+  .btn-gold{font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:#1c1508;background:linear-gradient(135deg,var(--gold-light),var(--gold) 55%,var(--gold-deep));border:0;border-radius:26px;padding:14px 34px;cursor:pointer;box-shadow:0 6px 22px rgba(212,166,74,.28)}
+  .btn-ghost{background:none;border:1px solid var(--line);color:var(--gold-light);font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 24px;border-radius:24px;cursor:pointer}
+  .tray{flex:0 0 auto;padding:10px 14px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(0deg,#1a1510,var(--bg));border-top:1px solid var(--line)}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ivory);border-radius:22px;padding:6px 14px 6px 6px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.04em;cursor:pointer;white-space:nowrap}
+  .chip img{width:26px;height:26px;object-fit:contain;border-radius:50%;background:var(--surface-2);padding:2px}
+  .chip.on{background:var(--surface-2);border-color:var(--gold);box-shadow:0 0 12px rgba(212,166,74,.18)}
+  .row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .row label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);width:52px;flex:0 0 auto}
+  input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-light));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-light),var(--gold) 60%,var(--gold-deep));border:1px solid #1c1508;cursor:pointer}
+  .bottom{display:flex;align-items:center;gap:14px}
+  select{flex:1;background:var(--surface);border:1px solid var(--line);color:var(--ivory);border-radius:10px;padding:9px 10px;font-family:'Jost',sans-serif;font-size:13px}
+  .shutter{width:56px;height:56px;border-radius:50%;flex:0 0 auto;cursor:pointer;border:2px solid var(--gold-light);background:transparent;position:relative}
+  .shutter::after{content:"";position:absolute;inset:5px;border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold) 55%,var(--gold-deep))}
+  .shutter:active::after{inset:8px}
+  #shotModal{position:fixed;inset:0;z-index:20;background:rgba(11,9,6,.93);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px}
+  #shotModal.open{display:flex}
+  #shotModal img{max-width:100%;max-height:62vh;border-radius:12px;border:1px solid var(--line)}
+  #shotModal .btns{display:flex;gap:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="{% url 'catalog:product_detail' slug=product.slug %}">&larr; Back</a>
+  <div class="brand">Adorn</div>
+  <div class="tagline">{{ product.get_tryon_type_display }} Try-On</div>
+</header>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+    <video id="cam" autoplay playsinline muted></video>
+    <canvas id="view"></canvas>
+    <span class="corner c-tl"></span><span class="corner c-tr"></span>
+    <span class="corner c-bl"></span><span class="corner c-br"></span>
+    <div class="status" id="status" style="opacity:0"></div>
+    <button class="flip" id="flipBtn" title="Switch camera">&#10226;</button>
+
+    <div id="startScreen">
+      <img class="piece" src="{{ product.tryon_image.url }}" alt="{{ product.title }}">
+      <h2>{{ product.title }}</h2>
+      <p id="startHint"></p>
+      <button class="btn-gold" id="startBtn">Open camera</button>
+      <p id="loadNote" style="font-size:11px;opacity:.7">Nothing is uploaded — the camera runs only on your device.</p>
+    </div>
+  </div>
+</div>
+
+<div class="tray">
+  <div class="chips" id="chips"></div>
+  <div class="row"><label for="size">Size</label><input type="range" id="size" min="40" max="200" value="100"></div>
+  <div class="row"><label for="rot">Rotate</label><input type="range" id="rot" min="-90" max="90" value="0"></div>
+  <div class="bottom">
+    <select id="finger">
+      <option value="ring" selected>Ring finger</option>
+      <option value="middle">Middle finger</option>
+      <option value="index">Index finger</option>
+      <option value="pinky">Pinky</option>
+    </select>
+    <button class="shutter" id="shutterBtn" aria-label="Capture photo"></button>
+  </div>
+</div>
+
+<div id="shotModal">
+  <img id="shotImg" alt="Your try-on photo">
+  <div class="btns">
+    <button class="btn-gold" id="saveBtn">Save photo</button>
+    <button class="btn-ghost" id="closeShot">Back</button>
+  </div>
+</div>
+
+{{ product.slug|json_script:"activeSlug" }}
+{{ pieces|json_script:"piecesData" }}
+
+<script type="module">
+/* ══════════ Product data from Django ══════════ */
+const TRYON_TYPE = "{{ product.tryon_type }}";   // "ring" | "necklace" | "bangle"
+const list = JSON.parse(document.getElementById('piecesData').textContent);
+const activeSlug = JSON.parse(document.getElementById('activeSlug').textContent);
+const PIECES = {};
+list.forEach(p => PIECES[p.slug] = p);
+if (!PIECES[activeSlug]) PIECES[activeSlug] = { slug: activeSlug, label: "{{ product.title|escapejs }}", src: "{{ product.tryon_image.url|escapejs }}" };
+
+const HINTS = {
+  ring:     { start: "Point the camera at the back of your hand, fingers gently spread. The ring follows your finger as you move.", lost: "Show the back of your hand to the camera", found: "Show the back of your hand" },
+  bangle:   { start: "Point the camera at your hand and wrist. The bangle sits on your wrist and follows as you move.", lost: "Show your hand and wrist to the camera", found: "Show your wrist" },
+  necklace: { start: "Face the camera so your face and neck are visible. The chain sits below your chin and follows you.", lost: "Face the camera", found: "Face the camera" },
+};
+document.getElementById('startHint').textContent = HINTS[TRYON_TYPE].start;
+
+/* finger selector only matters for rings */
+const fingerSel = document.getElementById('finger');
+if (TRYON_TYPE !== 'ring') fingerSel.style.display = 'none';
+
+/* ══════════ Landmark indices per finger (MCP knuckle → PIP joint) ══════════ */
+const FINGERS = { index:[5,6], middle:[9,10], ring:[13,14], pinky:[17,18] };
+
+const video = document.getElementById('cam');
+const canvas = document.getElementById('view');
+const ctx = canvas.getContext('2d');
+const statusEl = document.getElementById('status');
+const startScreen = document.getElementById('startScreen');
+
+let landmarker = null, running = false;
+let facing = TRYON_TYPE === 'necklace' ? 'user' : 'environment';
+let activePiece = activeSlug, fingerKey = 'ring';
+let userScale = 1.0, userRot = 0;
+let manualMode = false, manual = {x:0.5, y:0.55, w:140, a:0};
+const smooth = { x:null, y:null, s:null, cos:null, sin:null };
+const ALPHA = 0.35; // smoothing strength
+
+/* preload piece images + split each into back/front arcs for 3D occlusion (bands only) */
+const imgs = {}, halves = {};
+function makeHalves(img){
+  const w = img.naturalWidth, h = img.naturalHeight;
+  const mk = keepTop=>{
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d'); g.drawImage(img,0,0);
+    const grad = g.createLinearGradient(0,0,0,h);
+    if (keepTop){ grad.addColorStop(0,'rgba(0,0,0,1)'); grad.addColorStop(.46,'rgba(0,0,0,1)'); grad.addColorStop(.58,'rgba(0,0,0,0)'); grad.addColorStop(1,'rgba(0,0,0,0)'); }
+    else { grad.addColorStop(0,'rgba(0,0,0,0)'); grad.addColorStop(.46,'rgba(0,0,0,0)'); grad.addColorStop(.58,'rgba(0,0,0,1)'); grad.addColorStop(1,'rgba(0,0,0,1)'); }
+    g.globalCompositeOperation = 'destination-in';
+    g.fillStyle = grad; g.fillRect(0,0,w,h);
+    return c;
+  };
+  return { back: mk(true), front: mk(false) };
+}
+for (const [k, p] of Object.entries(PIECES)) {
+  imgs[k] = new Image();
+  if (TRYON_TYPE !== 'necklace') imgs[k].onload = ()=> halves[k] = makeHalves(imgs[k]);
+  imgs[k].src = p.src;
+}
+
+/* offscreen copy of each camera frame — needed to "re-paint" skin over the back arc */
+const frameCanvas = document.createElement('canvas');
+const fctx = frameCanvas.getContext('2d');
+
+/* build chips */
+const chipsEl = document.getElementById('chips');
+Object.values(PIECES).forEach(p=>{
+  const b = document.createElement('button');
+  b.className = 'chip'+(p.slug===activePiece?' on':'');
+  b.innerHTML = `<img src="${p.src}" alt="">${p.label}`;
+  b.addEventListener('click', ()=>{
+    chipsEl.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    b.classList.add('on'); activePiece = p.slug;
+  });
+  chipsEl.appendChild(b);
+});
+
+document.getElementById('size').addEventListener('input', e=> userScale = e.target.value/100);
+document.getElementById('rot').addEventListener('input', e=> userRot = e.target.value*Math.PI/180);
+fingerSel.addEventListener('change', e=>{ fingerKey = e.target.value; resetSmooth(); });
+function resetSmooth(){ smooth.x = smooth.y = smooth.s = smooth.cos = smooth.sin = null; }
+
+function setStatus(msg){ statusEl.textContent = msg; statusEl.style.opacity = msg?1:0; }
+
+/* ══════════ Start ══════════ */
+document.getElementById('startBtn').addEventListener('click', start);
+document.getElementById('flipBtn').addEventListener('click', ()=>{
+  facing = facing==='user' ? 'environment' : 'user';
+  if (running) openCamera();
+  resetSmooth();
+});
+
+async function start(){
+  document.getElementById('startBtn').textContent = 'Loading…';
+  try{
+    await openCamera();
+  }catch(e){
+    startScreen.querySelector('p').textContent = 'Camera access was blocked. Please allow it in your browser settings and reload.';
+    document.getElementById('startBtn').textContent = 'Open camera';
+    return;
+  }
+  startScreen.style.display = 'none';
+  running = true;
+  try{
+    const mp = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
+    const vision = await mp.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+    if (TRYON_TYPE === 'necklace'){
+      landmarker = await mp.FaceLandmarker.createFromOptions(vision, {
+        baseOptions:{
+          modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
+          delegate:'GPU'
+        },
+        runningMode:'VIDEO', numFaces:1,
+        minFaceDetectionConfidence:0.5, minTrackingConfidence:0.5
+      });
+    } else {
+      landmarker = await mp.HandLandmarker.createFromOptions(vision, {
+        baseOptions:{
+          modelAssetPath:'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+          delegate:'GPU'
+        },
+        runningMode:'VIDEO', numHands:1,
+        minHandDetectionConfidence:0.5, minTrackingConfidence:0.5
+      });
+    }
+    setStatus(HINTS[TRYON_TYPE].found);
+    setTimeout(()=> setStatus(''), 3500);
+  }catch(e){
+    console.warn('Tracking unavailable, falling back to manual mode', e);
+    manualMode = true;
+    setStatus('Tracking unavailable — drag the piece into place');
+    enableManualDrag();
+  }
+  requestAnimationFrame(loop);
+}
+
+async function openCamera(){
+  if (video.srcObject) video.srcObject.getTracks().forEach(t=>t.stop());
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video:{ facingMode: facing, width:{ideal:1280}, height:{ideal:1280} }, audio:false
+  });
+  video.srcObject = stream;
+  await new Promise(res=> video.onloadedmetadata = res);
+  await video.play();
+}
+
+/* ══════════ Render loop ══════════ */
+let lastVideoTime = -1, results = null, lostFrames = 0;
+
+function loop(){
+  if (!running) return;
+  const stage = document.getElementById('stage');
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  const W = stage.clientWidth*dpr, H = stage.clientHeight*dpr;
+  if (canvas.width!==W || canvas.height!==H){ canvas.width=W; canvas.height=H; }
+
+  const vw = video.videoWidth, vh = video.videoHeight;
+  if (vw){
+    const s = Math.max(W/vw, H/vh), dw = vw*s, dh = vh*s;
+    const ox = (W-dw)/2, oy = (H-dh)/2;
+    if (frameCanvas.width!==W || frameCanvas.height!==H){ frameCanvas.width=W; frameCanvas.height=H; }
+    fctx.save();
+    if (facing==='user'){ fctx.translate(W,0); fctx.scale(-1,1); }
+    fctx.drawImage(video, ox, oy, dw, dh);
+    fctx.restore();
+    ctx.drawImage(frameCanvas, 0, 0);
+
+    if (landmarker && video.currentTime !== lastVideoTime){
+      lastVideoTime = video.currentTime;
+      results = landmarker.detectForVideo(video, performance.now());
+    }
+
+    const map = p=>{
+      let x = p.x*vw*s+ox, y = p.y*vh*s+oy;
+      if (facing==='user') x = W-x;
+      return {x,y};
+    };
+
+    const lms = TRYON_TYPE === 'necklace' ? results?.faceLandmarks : results?.landmarks;
+    if (!manualMode && lms?.length){
+      lostFrames = 0;
+      const lm = lms[0];
+      let px, py, refLen, ang, bandW;
+
+      if (TRYON_TYPE === 'ring'){
+        const [a,b] = FINGERS[fingerKey];
+        const A = map(lm[a]), B = map(lm[b]);
+        px = A.x + (B.x-A.x)*0.34; py = A.y + (B.y-A.y)*0.34;
+        const fingerLen = Math.hypot(B.x-A.x, B.y-A.y);
+        refLen = fingerLen*0.62;
+        bandW = fingerLen*0.46;
+        ang = Math.atan2(B.y-A.y, B.x-A.x) + Math.PI/2;
+      } else if (TRYON_TYPE === 'bangle'){
+        /* wrist = lm[0], middle knuckle = lm[9]; bangle sits just below the wrist */
+        const K = map(lm[9]), Wr = map(lm[0]);
+        px = Wr.x + (Wr.x-K.x)*0.18; py = Wr.y + (Wr.y-K.y)*0.18;
+        const handW = Math.hypot(map(lm[17]).x-map(lm[5]).x, map(lm[17]).y-map(lm[5]).y);
+        refLen = handW*1.35;
+        bandW = handW*0.95;
+        ang = Math.atan2(Wr.y-K.y, Wr.x-K.x) + Math.PI/2;
+      } else {
+        /* necklace: chin = lm[152], face edges = lm[234]/lm[454]; chain hangs below the chin */
+        const L = map(lm[234]), R = map(lm[454]), C = map(lm[152]);
+        const faceW = Math.hypot(R.x-L.x, R.y-L.y);
+        const roll = Math.atan2(R.y-L.y, R.x-L.x);
+        px = C.x - Math.sin(roll)*faceW*0.42; py = C.y + Math.cos(roll)*faceW*0.42;
+        refLen = faceW*1.15;
+        bandW = 0;
+        ang = roll;
+      }
+
+      smooth.x = smooth.x==null ? px : smooth.x+(px-smooth.x)*ALPHA;
+      smooth.y = smooth.y==null ? py : smooth.y+(py-smooth.y)*ALPHA;
+      smooth.s = smooth.s==null ? refLen : smooth.s+(refLen-smooth.s)*ALPHA;
+      const c = Math.cos(ang), si = Math.sin(ang);
+      smooth.cos = smooth.cos==null ? c : smooth.cos+(c-smooth.cos)*ALPHA;
+      smooth.sin = smooth.sin==null ? si : smooth.sin+(si-smooth.sin)*ALPHA;
+
+      drawPiece(smooth.x, smooth.y, smooth.s, Math.atan2(smooth.sin, smooth.cos), bandW);
+      setStatus('');
+    } else if (!manualMode){
+      lostFrames++;
+      if (lostFrames>15) setStatus(HINTS[TRYON_TYPE].lost);
+    }
+
+    if (manualMode){
+      drawPiece(manual.x*W, manual.y*H, manual.w*dpr*userScale, manual.a, 0, true);
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+function drawPiece(x, y, refLen, ang, bandW, isManual=false){
+  const img = imgs[activePiece], hv = halves[activePiece];
+  if (!img || !img.complete || !img.naturalWidth) return;
+  const w = isManual ? refLen : refLen*userScale;
+  const h = w*img.naturalHeight/img.naturalWidth;
+  const rot = ang + userRot;
+  const bandDir = ang - Math.PI/2;   // finger / forearm direction
+
+  if (!isManual && bandW > 0 && hv){
+    /* PASS 1 — back arc of the band (slightly darkened for depth) */
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(rot);
+    ctx.globalAlpha = 0.96;
+    ctx.filter = 'brightness(0.82)';
+    ctx.drawImage(hv.back, -w/2, -h/2, w, h);
+    ctx.restore();
+
+    /* PASS 2 — re-paint the skin over the back arc (occlusion) */
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(bandDir);
+    ctx.beginPath();
+    const L = h*1.25;
+    if (ctx.roundRect) ctx.roundRect(-L/2, -bandW/2, L, bandW, bandW/2);
+    else ctx.rect(-L/2, -bandW/2, L, bandW);
+    ctx.clip();
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.drawImage(frameCanvas, 0, 0);
+    ctx.restore();
+
+    /* PASS 3 — front arc on top, with contact shadow */
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(rot);
+    ctx.shadowColor = 'rgba(0,0,0,.4)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+    ctx.drawImage(hv.front, -w/2, -h/2, w, h);
+    ctx.restore();
+  } else {
+    /* necklace + manual — flat draw with soft shadow */
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(rot);
+    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 8; ctx.shadowOffsetY = 3;
+    ctx.drawImage(img, -w/2, -h/2, w, h);
+    ctx.restore();
+  }
+}
+
+/* ══════════ Manual fallback (drag) ══════════ */
+function enableManualDrag(){
+  let dragging = false;
+  canvas.addEventListener('pointerdown', ()=>{ dragging = true; });
+  canvas.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const r = canvas.getBoundingClientRect();
+    manual.x = (e.clientX-r.left)/r.width;
+    manual.y = (e.clientY-r.top)/r.height;
+  });
+  addEventListener('pointerup', ()=> dragging=false);
+}
+
+/* ══════════ Capture ══════════ */
+const shotModal = document.getElementById('shotModal');
+let lastShot = null;
+document.getElementById('shutterBtn').addEventListener('click', ()=>{
+  ctx.save();
+  ctx.fillStyle = 'rgba(239,217,167,.9)';
+  ctx.font = `${13*(window.devicePixelRatio||1)}px Jost, sans-serif`;
+  ctx.textAlign = 'right';
+  ctx.fillText('A D O R N', canvas.width-18, canvas.height-18);
+  ctx.restore();
+  lastShot = canvas.toDataURL('image/png');
+  document.getElementById('shotImg').src = lastShot;
+  shotModal.classList.add('open');
+});
+document.getElementById('closeShot').addEventListener('click', ()=> shotModal.classList.remove('open'));
+document.getElementById('saveBtn').addEventListener('click', ()=>{
+  const a = document.createElement('a');
+  a.href = lastShot; a.download = 'adorn-tryon.png'; a.click();
+});
+</script>
+</body>
+</html>

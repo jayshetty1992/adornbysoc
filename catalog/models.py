@@ -135,6 +135,23 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False, db_index=True)
     is_new_arrival = models.BooleanField(default=False, db_index=True)
 
+    # ---- Virtual Try-On ----
+    TRYON_TYPE_CHOICES = [
+        ("ring", "Ring"),
+        ("necklace", "Chain / Necklace"),
+        ("bangle", "Bangle / Bracelet"),
+    ]
+    tryon_enabled = models.BooleanField(default=False, db_index=True)
+    tryon_type = models.CharField(max_length=20, blank=True, choices=TRYON_TYPE_CHOICES)
+    tryon_image = models.ImageField(
+        upload_to="tryon/", blank=True, null=True,
+        help_text="Transparent PNG of the jewellery piece (front view) used for AR try-on",
+    )
+
+    @property
+    def tryon_ready(self):
+        return self.tryon_enabled and self.tryon_type and self.tryon_image
+
     # ---- Content ----
     care_instructions = models.TextField(blank=True, help_text="How to clean and store this jewelry")
 

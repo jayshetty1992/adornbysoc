@@ -726,6 +726,20 @@
   .card-quick-add:hover { background: #8A6420; }
   @media (hover: none) { .card-quick-add { opacity: 1; transform: none; } }
 
+  /* virtual try-on pill above quick-add */
+  .card-tryon {
+    position: absolute; left: 10px; right: 10px; bottom: 56px; z-index: 3;
+    display: block; text-align: center; text-decoration: none;
+    padding: 10px; border: 1px solid rgba(183, 134, 43, .6); border-radius: 24px;
+    background: rgba(255, 255, 255, .92); color: #8A6420;
+    font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .35s ease, transform .35s ease, background .3s ease;
+  }
+  .p-card:hover .card-tryon { opacity: 1; transform: none; }
+  .card-tryon:hover { background: #8A6420; color: #F7F3EC; }
+  @media (hover: none) { .card-tryon { opacity: 1; transform: none; } }
+
   .wish-heart {
     position: absolute; top: 10px; right: 10px; z-index: 3;
     width: 38px; height: 38px; border-radius: 999px;
@@ -1049,6 +1063,9 @@
               {% endwith %}
 
               <button class="card-quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
+              {% if p.tryon_ready %}
+              <a class="card-tryon" href="{% url 'catalog:tryon' slug=p.slug %}" aria-label="Virtual try-on for {{ p.title }}">✨ Try On</a>
+              {% endif %}
             </div>
 
             <button class="wish-heart" type="button" data-wish="{{ p.slug }}" aria-label="Save {{ p.title }} to wishlist">

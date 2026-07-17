@@ -441,3 +441,19 @@ def wishlist_page(request):
         if key else Wishlist.objects.none()
     )
     return render(request, "catalog/wishlist.html", {"items": items})
+
+
+def tryon_page(request, slug):
+    product = get_object_or_404(
+        Product, slug=slug, is_active=True, tryon_enabled=True, tryon_type__gt="",
+    )
+    if not product.tryon_image:
+        return redirect("catalog:product_detail", slug=slug)
+    # sibling pieces of the same type so the user can switch inside the AR view
+    siblings = (
+        Product.objects.filter(is_active=True, tryon_enabled=True, tryon_type=product.tryon_type)
+        .exclude(tryon_image="").exclude(tryon_image=None)
+        .order_by("-is_featured", "title")[:12]
+    )
+    pieces = [{"slug": s.slug, "label": s.title, "src": s.tryon_image.url} for s in siblings]
+    return render(request, "catalog/tryon.html", {"product": product, "pieces": pieces})

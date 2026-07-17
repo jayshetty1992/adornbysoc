@@ -55,6 +55,7 @@ class ProductForm(forms.ModelForm):
             "occasion", "gender", "sku", "certificate",
             "style", "color", "ring_sizes", "tags",
             "is_featured", "is_new_arrival",
+            "tryon_enabled", "tryon_type", "tryon_image",
             "care_instructions", "meta_title", "meta_description",
         ]
         widgets = {
@@ -85,6 +86,8 @@ class ProductForm(forms.ModelForm):
             "is_active": forms.CheckboxInput(_check()),
             "is_featured": forms.CheckboxInput(_check()),
             "is_new_arrival": forms.CheckboxInput(_check()),
+            "tryon_enabled": forms.CheckboxInput(_check()),
+            "tryon_type": forms.Select(_sel()),
         }
 
 

@@ -171,6 +171,27 @@
       </div>
     </div>
 
+    <!-- Virtual Try-On -->
+    <div class="form-card mb-3">
+      <div class="form-section-title">Virtual Try-On (AR)</div>
+      <div class="form-check form-switch mb-2">
+        {{ form.tryon_enabled }}
+        <label class="form-check-label">Enable Virtual Try-On</label>
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Try-On Type</label>
+        {{ form.tryon_type }}
+      </div>
+      <div>
+        <label class="form-label">Try-On Image</label>
+        {% if form.instance.tryon_image %}
+        <div class="mb-1"><img src="{{ form.instance.tryon_image.url }}" style="width:60px;height:60px;object-fit:contain;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;" alt=""></div>
+        {% endif %}
+        {{ form.tryon_image }}
+        <small class="text-muted d-block mt-1" style="font-size:.7rem;">Transparent PNG, front view of the piece only (no hand/model)</small>
+      </div>
+    </div>
+
     <!-- Product Images -->
     <div class="form-card mb-3">
       <div class="form-section-title d-flex justify-content-between align-items-center">

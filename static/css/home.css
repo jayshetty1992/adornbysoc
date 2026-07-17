@@ -267,8 +267,12 @@ body {
    ============================================================ */
 .bs-row {
   display: flex; gap: 16px; overflow-x: auto;
-  scroll-snap-type: x mandatory; padding-bottom: 10px;
+  /* overflow-y hidden: vertical wheel/touch must scroll the PAGE, never the row */
+  overflow-y: hidden;
+  scroll-snap-type: x proximity; padding: 6px 0 10px;
+  margin-top: -6px;
   scrollbar-width: none;
+  touch-action: pan-x pan-y;
 }
 .bs-row::-webkit-scrollbar { display: none; }
 .bs-card {
@@ -309,6 +313,21 @@ body {
 .bs-card:hover .quick-add { opacity: 1; transform: none; }
 .quick-add:hover { background: var(--jb-gold-deep); }
 @media (hover: none) { .quick-add { opacity: 1; transform: none; } }
+
+/* virtual try-on pill — appears on hover above quick-add */
+.tryon-pill {
+  position: absolute; left: 10px; right: 10px; bottom: 56px; z-index: 3;
+  display: block; text-align: center;
+  padding: 10px; border: 1px solid rgba(212, 166, 74, .6); border-radius: 24px;
+  background: rgba(255, 255, 255, .92); color: var(--jb-gold-deep);
+  font-family: var(--font-body); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .35s ease, transform .35s ease, background .3s ease;
+}
+.bs-card:hover .tryon-pill { opacity: 1; transform: none; }
+.tryon-pill:hover { background: var(--jb-gold-deep); color: #F7F3EC; }
+@media (hover: none) { .tryon-pill { opacity: 1; transform: none; } }
 
 .car-arrows { display: flex; gap: 10px; }
 .car-btn {

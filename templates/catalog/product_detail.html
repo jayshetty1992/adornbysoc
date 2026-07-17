@@ -674,6 +674,14 @@
              onclick="event.preventDefault(); if(window.LUSTER_CART){ LUSTER_CART.addAndOpen('{{ product.slug }}'); }">BUY IT NOW</a>
         </div>
 
+        {% if product.tryon_ready %}
+        <div class="pd-actions reveal-up" style="margin-top:12px;">
+          <a class="btn-outline" style="width:100%; text-align:center;" href="{% url 'catalog:tryon' slug=product.slug %}">
+            ✨ VIRTUAL TRY-ON
+          </a>
+        </div>
+        {% endif %}
+
         <div class="pd-stock reveal-up">
           In stock, and ready to ship
           <div class="stock-line"></div>

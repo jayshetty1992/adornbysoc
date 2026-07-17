@@ -534,20 +534,24 @@ body {
 }
 
 /* ============================================================
-   SHOP BY PRICE — atelier bands with the header's gold sheen
+   SHOP BY PRICE — centered atelier bands, header's gold sheen
    ============================================================ */
 .price-bands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 767px) { .price-bands { grid-template-columns: 1fr; } }
+.price-band,
+.price-band:hover,
+.price-band * { text-decoration: none !important; }
 .price-band {
   position: relative; overflow: hidden;
-  display: flex; flex-direction: column; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  text-align: center;
   background: var(--jb-surface);
   border: 1px solid var(--jb-hairline);
   border-radius: var(--radius-card);
-  padding: 34px 32px 28px;
+  padding: 40px 28px 34px;
   transition: border-color .35s ease, transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;
 }
-/* the same gold shine that lives in the header, sweeping the card */
+/* header wala gold shine, card ke upar se guzarta hua */
 .price-band::after {
   content: "";
   position: absolute; inset: 0; pointer-events: none;
@@ -563,7 +567,7 @@ body {
 .pb-amount {
   font-family: var(--font-display);
   font-weight: 530;
-  font-size: clamp(26px, 2.6vw, 34px);
+  font-size: clamp(26px, 2.4vw, 32px);
   line-height: 1.1;
   background: linear-gradient(105deg, var(--jb-gold-deep) 0%, var(--jb-gold) 35%, var(--jb-gold-light) 50%, var(--jb-gold) 65%, var(--jb-gold-deep) 100%);
   background-size: 220% 100%;
@@ -577,15 +581,38 @@ body {
   from { background-position: 0% 0; }
   to { background-position: 220% 0; }
 }
+/* chhoti centered gold hairline — poori width wali line nahi */
+.pb-amount::after {
+  content: "";
+  display: block;
+  width: 44px; height: 1px;
+  margin: 16px auto 0;
+  background: linear-gradient(90deg, transparent, var(--jb-gold), transparent);
+}
 .pb-note {
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
   color: var(--jb-muted);
-  margin-top: 8px; padding-top: 16px;
-  border-top: 1px solid var(--jb-hairline);
   transition: color .3s ease;
 }
 .price-band:hover .pb-note { color: var(--jb-gold-deep); }
 @media (prefers-reduced-motion: reduce) { .pb-amount { animation: none; } .price-band::after { display: none; } }
+
+/* ============================================================
+   TWO-LINE CAROUSEL — BlueStone-style double row (desktop)
+   ============================================================ */
+.bs-row.two-line {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-columns: min(300px, 74vw);
+  gap: 16px;
+}
+.bs-row.two-line .bs-card { flex: none; width: auto; }
+@media (max-width: 767px) {
+  /* mobile pe single line hi behtar scroll karti hai */
+  .bs-row.two-line { display: flex; }
+  .bs-row.two-line .bs-card { flex: 0 0 min(300px, 74vw); }
+}
 
 /* wishlist heart on product cards */
 .wish-heart {

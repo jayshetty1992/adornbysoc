@@ -1,8 +1,10 @@
 {% load static %}
 {# Reusable shop card: expects `p` (Product). Used by homepage rows + wishlist. #}
 <div class="bs-card rv" style="--rd:{{ forloop.counter0 }}00ms">
+  <div class="bs-badges">
+    {% if p.is_on_sale %}<span class="bs-tag sale">Sale</span>{% else %}<span class="bs-tag">New</span>{% endif %}
+  </div>
   <div class="bs-media">
-    {% if p.old_price_inr %}<span class="bs-tag">Sale</span>{% else %}<span class="bs-tag">New</span>{% endif %}
     {% with img=p.primary_image_obj %}
     <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ p.title }}">
     {% endwith %}
@@ -20,7 +22,13 @@
   <a class="bs-meta stretched-link" href="{% url 'catalog:product_detail' slug=p.slug %}" style="text-decoration:none">
     <span class="bs-name">{{ p.title }}</span>
     <span class="bs-price">
-      {% if p.old_price_inr %}<del>₹{{ p.old_price_inr|floatformat:0 }}</del> {% endif %}₹{{ p.price_inr|floatformat:0 }}
+      {% if p.is_on_sale %}
+      <del>₹{{ p.old_price_inr|floatformat:0 }}</del>
+      <span class="now">₹{{ p.price_inr|floatformat:0 }}</span>
+      <span class="off">{{ p.discount_percent }}% off</span>
+      {% else %}
+      ₹{{ p.price_inr|floatformat:0 }}
+      {% endif %}
     </span>
   </a>
 </div>

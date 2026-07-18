@@ -324,11 +324,12 @@
     color: var(--ink);
     font-size: 14px;
     background: #fff;
-    transition: border-color .3s ease, color .3s ease;
+    transition: border-color .3s ease, color .3s ease, transform 160ms ease-out;
   }
 
   .pg.active { border-color: var(--gold); color: var(--gold-deep); font-weight: 600; }
   .pg:hover { border-color: var(--gold); color: var(--gold-deep); }
+  .pg:active { transform: scale(0.93); }
 
   .pager-note {
     color: var(--muted);
@@ -624,10 +625,11 @@
     text-transform: uppercase;
     font-size: 11px;
     cursor: pointer;
-    transition: background .3s ease;
+    transition: background .3s ease, transform 160ms ease-out;
   }
 
   .fw-apply:hover { background: #8A6420; }
+  .fw-apply:active { transform: scale(0.97); }
 
   /* Smooth hide/show filters row (instead of display none) */
 
@@ -758,6 +760,7 @@
   }
   .p-card:hover .card-quick-add { opacity: 1; transform: none; }
   .card-quick-add:hover { background: #8A6420; }
+  .p-card:hover .card-quick-add:active { transform: scale(0.97); }
   @media (hover: none) { .card-quick-add { opacity: 1; transform: none; } }
 
   /* virtual try-on pill above quick-add */
@@ -772,6 +775,7 @@
   }
   .p-card:hover .card-tryon { opacity: 1; transform: none; }
   .card-tryon:hover { background: #8A6420; color: #F7F3EC; }
+  .p-card:hover .card-tryon:active { transform: scale(0.97); }
   @media (hover: none) { .card-tryon { opacity: 1; transform: none; } }
 
   .wish-heart {
@@ -780,10 +784,11 @@
     border: 1px solid rgba(27, 22, 15, .18);
     background: rgba(255, 255, 255, .92);
     display: grid; place-items: center; cursor: pointer;
-    transition: all .3s ease;
+    transition: border-color .3s ease, transform 160ms ease-out;
   }
-  .wish-heart svg { width: 17px; height: 17px; stroke: #1B160F; fill: none; transition: all .25s ease; }
+  .wish-heart svg { width: 17px; height: 17px; stroke: #1B160F; fill: none; transition: fill .25s ease, stroke .25s ease; }
   .wish-heart:hover { border-color: #B7862B; }
+  .wish-heart:active { transform: scale(0.9); }
   .wish-heart.wished svg { fill: #B7862B; stroke: #B7862B; }
 </style>
 {% endblock %}
@@ -1142,7 +1147,7 @@
             {# Previous arrow #}
             {% if page_obj.has_previous %}
             <a class="pg"
-              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.previous_page_number }}">&lsaquo;</a>
+              href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ page_obj.previous_page_number }}">&lsaquo;</a>
             {% endif %}
 
             {# page numbers with ellipsis like screenshot #}
@@ -1151,17 +1156,17 @@
             <span class="pg active">{{ num }}</span>
 
             {% elif num <= 3 %} <a class="pg"
-              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">
+              href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ num }}">
               {{ num }}</a>
 
               {% elif num > page_obj.paginator.num_pages|add:"-2" %}
               <a class="pg"
-                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">{{
+                href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ num }}">{{
                 num }}</a>
 
               {% elif num == page_obj.number|add:"-1" or num == page_obj.number|add:"1" %}
               <a class="pg"
-                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ num }}">{{
+                href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ num }}">{{
                 num }}</a>
 
               {% elif num == 4 and page_obj.paginator.num_pages > 6 %}
@@ -1172,7 +1177,7 @@
               {# Next arrow #}
               {% if page_obj.has_next %}
               <a class="pg"
-                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.next_page_number }}">&rsaquo;</a>
+                href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ page_obj.next_page_number }}">&rsaquo;</a>
               {% endif %}
 
           </div>

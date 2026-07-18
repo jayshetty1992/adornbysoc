@@ -11,17 +11,17 @@
 <style>
 
   :root {
-    --cream: #f6f2ea;
-    --ink: #0c0c0d;
+    --cream: #F7F3EC;
+    --ink: #1B160F;
     --gold: #b7862b;
-    --line: rgba(0, 0, 0, .12);
-    --muted: rgba(0, 0, 0, .58);
+    --gold-deep: #8A6420;
+    --line: rgba(27, 22, 15, .12);
+    --muted: #6E6353;
   }
 
   /* HERO */
   .hero-wrap {
     padding: 44px 0 26px;
-    background: #fff;
   }
 
   .hero-grid {
@@ -31,17 +31,26 @@
     align-items: center;
   }
 
-  .hero-title {
-    font-weight: 900;
-    color: var(--ink);
-    font-size: clamp(30px, 3.3vw, 44px);
-    margin: 0 0 10px 0;
-    letter-spacing: .02em;
+  .hero-kicker {
+    font-size: 11px;
+    letter-spacing: .3em;
     text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 450;
+    color: var(--ink);
+    font-size: clamp(32px, 3.8vw, 52px);
+    line-height: 1.08;
+    margin: 0 0 14px 0;
+    letter-spacing: .005em;
   }
 
   .hero-sub {
-    color: rgba(0, 0, 0, .70);
+    color: var(--muted);
     max-width: 520px;
     line-height: 1.6;
     font-size: 14px;
@@ -57,8 +66,9 @@
   .hero-img {
     width: 100%;
     overflow: hidden;
-    background: #ddd;
+    background: #EFE9DE;
     border: 1px solid var(--line);
+    border-radius: 12px;
   }
 
   .hero-img img {
@@ -78,7 +88,7 @@
     .hero-img img { height: 320px; }
   }
 
-  .pl-wrap { background: #fff; }
+  .pl-wrap { background: var(--cream); }
 
   .pl-wrap .container {
     padding-left: clamp(14px, 4vw, 28px);
@@ -98,6 +108,8 @@
     border-bottom: 1px solid var(--line);
     background: #fff;
   }
+
+  .pl-top select, .pl-top button { cursor: pointer; }
 
   .pl-top-inner { padding: 18px 0 0; }
 
@@ -170,9 +182,10 @@
   }
 
   .filter-dd {
-    border: 1px solid rgba(0, 0, 0, .25);
+    border: 1px solid rgba(27, 22, 15, .25);
+    border-radius: 999px;
     background: transparent;
-    padding: 10px 16px;
+    padding: 10px 18px;
     font-size: 14px;
     letter-spacing: .08em;
     color: var(--ink);
@@ -208,29 +221,39 @@
   }
 
   .badge-mini {
-    border: 1px solid rgba(0, 0, 0, .55);
-    font-size: 10px;
-    letter-spacing: .12em;
-    padding: 2px 6px;
+    border: 1px solid rgba(27, 22, 15, .2);
+    border-radius: 20px;
+    font-size: 9px;
+    letter-spacing: .22em;
+    padding: 3px 10px;
     text-transform: uppercase;
     background: #fff;
+    color: var(--ink);
+  }
+
+  .badge-mini.sale {
+    border-color: rgba(183, 134, 43, .55);
+    color: var(--gold-deep);
   }
 
   .p-media {
     position: relative;
     background: #fff;
     overflow: hidden;
-    min-height: 360px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    aspect-ratio: 3 / 3.4;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    transition: border-color .35s ease;
   }
 
+  .p-card:hover .p-media { border-color: rgba(183, 134, 43, .45); }
+
   .p-media img {
-    max-height: 360px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform .22s ease;
+    transition: transform 1s cubic-bezier(.22, 1, .36, 1);
   }
 
   .quick-view {
@@ -254,22 +277,23 @@
   }
 
   .p-card:hover .quick-view { opacity: 1; transform: translateY(0); }
-  .p-card:hover .p-media img { transform: scale(1.02); }
+  .p-card:hover .p-media img { transform: scale(1.05); }
 
   .p-title {
-    margin: 14px 0 6px;
-    font-size: 11px;
-    letter-spacing: .18em;
+    margin: 14px 0 5px;
+    font-size: 12px;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, .78);
+    color: var(--ink);
     text-align: center;
   }
 
   .p-price {
     text-align: center;
-    font-size: 14px;
-    letter-spacing: .06em;
-    color: rgba(0, 0, 0, .9);
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 16px;
+    letter-spacing: .02em;
+    color: var(--ink);
   }
 
   /* Pagination */
@@ -294,27 +318,29 @@
     height: 44px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(0, 0, 0, .25);
+    border: 1px solid rgba(27, 22, 15, .25);
+    border-radius: 999px;
     text-decoration: none;
     color: var(--ink);
     font-size: 14px;
     background: #fff;
+    transition: border-color .3s ease, color .3s ease;
   }
 
-  .pg.active { border-color: rgba(0, 0, 0, .8); font-weight: 800; }
-  .pg:hover { background: rgba(0, 0, 0, .03); }
+  .pg.active { border-color: var(--gold); color: var(--gold-deep); font-weight: 600; }
+  .pg:hover { border-color: var(--gold); color: var(--gold-deep); }
 
   .pager-note {
-    color: rgba(0, 0, 0, .65);
+    color: var(--muted);
     font-size: 13px;
     letter-spacing: .06em;
   }
 
   /* Feature strip */
   .feature-strip {
-    background: #efeeec;
+    background: #fff;
     padding: 46px 0;
-    border-top: 1px solid rgba(0, 0, 0, .08);
+    border-top: 1px solid var(--line);
   }
 
   .feature-grid {
@@ -328,17 +354,19 @@
 
   .feat-head {
     font-size: 11px;
-    letter-spacing: .18em;
+    letter-spacing: .24em;
     text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 600;
     margin-bottom: 12px;
-    color: rgba(0, 0, 0, .78);
+    color: var(--ink);
   }
+
+  .feat-ico { color: var(--gold-deep); }
 
   .feat-text {
     max-width: 340px;
     margin: 0 auto;
-    color: rgba(0, 0, 0, .65);
+    color: var(--muted);
     line-height: 1.8;
     font-size: 13px;
     letter-spacing: .06em;
@@ -346,7 +374,7 @@
 
   /* Seasonal banner */
   .seasonal {
-    background: linear-gradient(90deg, #3a0707 0%, #5b0c0c 40%, #3a0707 100%);
+    background: linear-gradient(90deg, #1B110E 0%, #2A1A16 45%, #1B110E 100%);
     color: rgba(255, 255, 255, .92);
     padding: 22px 0;
   }
@@ -367,10 +395,11 @@
   }
 
   .seasonal-title {
-    font-weight: 900;
-    letter-spacing: .12em;
+    font-weight: 600;
+    letter-spacing: .18em;
     text-transform: uppercase;
-    font-size: 16px;
+    font-size: 14px;
+    color: #D9B25F;
   }
 
   .seasonal-sep {
@@ -388,13 +417,15 @@
   .seasonal a {
     color: #fff;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, .7);
+    border-bottom: 1px solid rgba(217, 178, 95, .7);
     padding-bottom: 2px;
-    letter-spacing: .12em;
+    letter-spacing: .18em;
     text-transform: uppercase;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 12px;
   }
+
+  .seasonal a:hover { color: #D9B25F; border-bottom-color: #D9B25F; }
 
   /* Responsive */
   @media (max-width: 1100px) {
@@ -528,12 +559,12 @@
     top: 46px;
     left: 0;
     background: #fff;
-    border: 1px solid rgba(0, 0, 0, .25);
-    padding: 12px;
+    border: 1px solid rgba(27, 22, 15, .15);
+    padding: 14px;
     z-index: 50;
-    box-shadow: 0 18px 55px rgba(0, 0, 0, .12);
+    box-shadow: 0 18px 55px rgba(27, 22, 15, .12);
 
-    border-radius: 0;
+    border-radius: 12px;
     transition: opacity 220ms ease, transform 240ms ease;
     transform-origin: top left;
 
@@ -584,16 +615,19 @@
     margin-top: 10px;
     width: 100%;
     height: 40px;
-    border: 1px solid rgba(0, 0, 0, .25);
-    background: #fff;
-    font-weight: 800;
-    letter-spacing: .12em;
+    border: 0;
+    border-radius: 24px;
+    background: #1B160F;
+    color: #F7F3EC;
+    font-weight: 600;
+    letter-spacing: .16em;
     text-transform: uppercase;
     font-size: 11px;
     cursor: pointer;
+    transition: background .3s ease;
   }
 
-  .fw-apply:hover { background: rgba(0, 0, 0, .03); }
+  .fw-apply:hover { background: #8A6420; }
 
   /* Smooth hide/show filters row (instead of display none) */
 
@@ -761,6 +795,7 @@
   <div class="container hero-wrap">
     <div class="hero-grid">
       <div>
+        <div class="hero-kicker">Adorn by SOC</div>
         <h1 class="hero-title">{{ hero_title }}</h1>
 
         <p class="hero-sub">
@@ -849,7 +884,7 @@
           {% if selected_min or selected_max %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=price" class="chip"
             style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
-            Rs.{{ selected_min|default:"0" }} - Rs.{{ selected_max|default:max_price_bound }}
+            ₹{{ selected_min|default:"0" }} – ₹{{ selected_max|default:max_price_bound }}
             <span style="opacity:.7;">&times;</span>
           </a>
           {% endif %}
@@ -946,7 +981,7 @@
             <div class="fw-panel" id="dd-price" style="min-width:320px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                 <div style="font-size:12px;letter-spacing:.06em;color:rgba(0,0,0,.7);">
-                  The highest price is Rs.{{ max_price_bound }}
+                  The highest price is ₹{{ max_price_bound }}
                 </div>
                 <a href="#" class="fw-clear" data-clear="price"
                   style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
@@ -954,13 +989,13 @@
 
               <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
                 <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
-                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="min_price" value="{{ selected_min }}" placeholder="0"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
                 </div>
                 <div style="opacity:.6;">—</div>
                 <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
-                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="max_price" value="{{ selected_max }}" placeholder="{{ max_price_bound }}"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
                 </div>
@@ -1047,9 +1082,10 @@
           <div class="p-card">
 
             <div class="p-badges">
-              <span class="badge-mini">NEW</span>
               {% if p.is_on_sale %}
-              <span class="badge-mini" style="border-color:#c40000;color:#c40000;">SALE</span>
+              <span class="badge-mini sale">Sale</span>
+              {% else %}
+              <span class="badge-mini">New</span>
               {% endif %}
             </div>
 
@@ -1064,7 +1100,7 @@
 
               <button class="card-quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
               {% if p.tryon_ready %}
-              <a class="card-tryon" href="{% url 'catalog:tryon' slug=p.slug %}" aria-label="Virtual try-on for {{ p.title }}">✨ Try On</a>
+              <a class="card-tryon" href="{% url 'catalog:tryon' slug=p.slug %}" aria-label="Virtual try-on for {{ p.title }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:12px;height:12px;vertical-align:-1px;margin-right:5px;" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/></svg>Try On</a>
               {% endif %}
             </div>
 
@@ -1079,12 +1115,12 @@
             <div class="p-price">
               {% if p.is_on_sale %}
               <div style="display:flex;gap:10px;justify-content:center;align-items:baseline;flex-wrap:wrap;">
-                <span style="text-decoration:line-through;opacity:.55;">Rs.{{ p.old_price_inr }}</span>
-                <span style="color:#c40000;font-weight:900;">Rs.{{ p.price_inr }}</span>
-                <span style="color:#c40000;font-size:12px;letter-spacing:.06em;">{{ p.discount_percent }}% off</span>
+                <span style="text-decoration:line-through;opacity:.5;">₹{{ p.old_price_inr|floatformat:0 }}</span>
+                <span style="color:#8A6420;font-weight:600;">₹{{ p.price_inr|floatformat:0 }}</span>
+                <span style="font-family:'Jost',sans-serif;color:#8A6420;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">{{ p.discount_percent }}% off</span>
               </div>
               {% else %}
-              Rs.{{ p.price_inr }}
+              ₹{{ p.price_inr|floatformat:0 }}
               {% endif %}
             </div>
 
@@ -1106,7 +1142,7 @@
             {# Previous arrow #}
             {% if page_obj.has_previous %}
             <a class="pg"
-              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.previous_page_number }}">â€¹</a>
+              href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.previous_page_number }}">&lsaquo;</a>
             {% endif %}
 
             {# page numbers with ellipsis like screenshot #}
@@ -1129,20 +1165,20 @@
                 num }}</a>
 
               {% elif num == 4 and page_obj.paginator.num_pages > 6 %}
-              <span style="padding:0 6px;">â€¦</span>
+              <span style="padding:0 6px;">&hellip;</span>
               {% endif %}
               {% endfor %}
 
               {# Next arrow #}
               {% if page_obj.has_next %}
               <a class="pg"
-                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.next_page_number }}">â€º</a>
+                href="?{% if request.GET.cat %}cat={{ request.GET.cat }}&{% endif %}{% if request.GET.tag %}tag={{ request.GET.tag }}&{% endif %}{% if current_sort %}sort={{ current_sort }}&{% endif %}page={{ page_obj.next_page_number }}">&rsaquo;</a>
               {% endif %}
 
           </div>
 
           <div class="pager-note">
-            Youâ€™re viewing {{ start_index }}-{{ end_index }} of {{ total_count }} products
+            You&rsquo;re viewing {{ start_index }}&ndash;{{ end_index }} of {{ total_count }} products
           </div>
         </div>
         {% endif %}
@@ -1158,17 +1194,17 @@
               <svg class="feat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2v20M7 6h10M6 10h12M7 14h10M6 18h12" />
               </svg>
-              <div class="feat-head">SMALL-BATCH</div>
-              <div class="feat-text">Each piece is part of a small, deliberate production cycle</div>
+              <div class="feat-head">Small-Batch</div>
+              <div class="feat-text">Each piece is handpicked as part of a small, deliberate collection</div>
             </div>
 
             <div>
               <svg class="feat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6.5-7 11-7 11z" />
               </svg>
-              <div class="feat-head">SUSTAINABLY MADE</div>
-              <div class="feat-text">Designed with care. Made entirely from 100% certified recycled gold and silver.
-              </div>
+              <div class="feat-head">Anti-Tarnish Promise</div>
+              <div class="feat-text">18K gold plating on 316L surgical-grade stainless steel — waterproof, nickel-free,
+                covered by a 6-month warranty.</div>
             </div>
 
             <div>
@@ -1176,7 +1212,7 @@
                 <circle cx="12" cy="12" r="9"></circle>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              <div class="feat-head">QUALITY THAT LASTS</div>
+              <div class="feat-head">Quality That Lasts</div>
               <div class="feat-text">Designed for daily wear. Crafted to endure seasons and stories.</div>
             </div>
           </div>
@@ -1188,9 +1224,9 @@
         <div class="container">
           <div class="seasonal-inner">
             <div class="seasonal-left">
-              <div class="seasonal-title">SEASONAL MARKDOWNS</div>
+              <div class="seasonal-title">Seasonal Markdowns</div>
               <div class="seasonal-sep"></div>
-              <div class="seasonal-msg">This week only. Receive a free polishing cloth with orders over Rs.499.</div>
+              <div class="seasonal-msg">This week only. Receive a free polishing cloth with orders over ₹499.</div>
             </div>
             <a href="{% url 'catalog:product_list' %}?tag=sale">Shop now</a>
           </div>

@@ -9,9 +9,9 @@
   .pay-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items:start; }
   .cardx{ background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px; box-shadow: 0 10px 30px rgba(0,0,0,.06); overflow:hidden; }
   .cardx .hd{ padding:18px 18px 12px; border-bottom:1px solid rgba(0,0,0,.08); display:flex; align-items:center; justify-content:space-between; }
-  .kicker{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:900; color: rgba(0,0,0,.70); }
+  .kicker{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; color: rgba(0,0,0,.70); }
   .big{ padding:18px; }
-  .title{ font-size:38px; font-weight:900; letter-spacing:.02em; margin:0 0 6px; }
+  .title{ font-size:38px; font-weight:600; letter-spacing:.02em; margin:0 0 6px; }
   .sub{ color: rgba(0,0,0,.65); letter-spacing:.06em; font-size:13px; margin-bottom:14px; }
   #card-element{
     border:1px solid rgba(0,0,0,.18);
@@ -29,7 +29,7 @@
     color:#fff;
     font-size:12px;
     letter-spacing:.18em;
-    font-weight:900;
+    font-weight:600;
     text-transform:uppercase;
   }
   .btnpay:disabled{ opacity:.6; cursor:not-allowed; }
@@ -40,7 +40,7 @@
   .bill-row:last-child{ border-bottom:none; }
   .lbl{ color: rgba(0,0,0,.70); font-weight:700; }
   .val{ color: rgba(0,0,0,.85); }
-  .total{ font-size:22px; font-weight:900; }
+  .total{ font-size:22px; font-weight:600; }
   @media(max-width: 992px){ .pay-grid{ grid-template-columns:1fr; } }
 </style>
 {% endblock %}
@@ -59,7 +59,7 @@
 
         <div class="big">
           <h1 class="title">PAY NOW</h1>
-          <div class="sub">Order #{{ order.id }} - Total payable: <b>Rs. {{ order.total_inr }}</b></div>
+          <div class="sub">Order #{{ order.id }} - Total payable: <b>₹{{ order.total_inr|floatformat:0 }}</b></div>
 
           <form id="payment-form">
             {% csrf_token %}
@@ -68,7 +68,7 @@
             <div id="card-element"></div>
 
             <button id="payBtn" class="btnpay" type="submit">
-              PAY Rs. {{ order.total_inr }}
+              PAY ₹{{ order.total_inr|floatformat:0 }}
             </button>
 
             <div class="note">By paying you agree to our terms. Card details are handled by Stripe.</div>
@@ -92,7 +92,7 @@
           </div>
           <div class="bill-row">
             <div class="lbl total">Total -</div>
-            <div class="val total">Rs. {{ order.total_inr }}</div>
+            <div class="val total">₹{{ order.total_inr|floatformat:0 }}</div>
           </div>
         </div>
       </div>
@@ -175,7 +175,7 @@
     } catch (err) {
       errorEl.textContent = err.message || "Payment failed.";
       payBtn.disabled = false;
-      payBtn.textContent = "PAY Rs. {{ order.total_inr }}";
+      payBtn.textContent = "PAY ₹{{ order.total_inr|floatformat:0 }}";
     }
   });
 })();

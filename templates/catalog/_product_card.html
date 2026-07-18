@@ -11,7 +11,7 @@
     {% endwith %}
     <button class="quick-add" type="button" data-cart-add="{{ p.slug }}" aria-label="Add {{ p.title }} to bag">Add to Bag</button>
     {% if p.tryon_ready %}
-    <a class="tryon-pill" href="{% url 'catalog:tryon' slug=p.slug %}" aria-label="Virtual try-on for {{ p.title }}">✨ Try On</a>
+    <a class="tryon-pill" href="{% url 'catalog:tryon' slug=p.slug %}" aria-label="Virtual try-on for {{ p.title }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="width:12px;height:12px;vertical-align:-1px;margin-right:5px;" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/></svg>Try On</a>
     {% endif %}
   </div>
   <button class="wish-heart" type="button" data-wish="{{ p.slug }}" aria-label="Save {{ p.title }} to wishlist">

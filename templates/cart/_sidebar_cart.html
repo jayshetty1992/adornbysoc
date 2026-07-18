@@ -26,7 +26,7 @@
 
         <div class="cs-mid">
           <div class="cs-name">{{ it.product.title }}</div>
-          <div class="cs-price">Rs.{{ it.product.price_inr }}</div>
+          <div class="cs-price">₹{{ it.product.price_inr|floatformat:0 }}</div>
 
           <div class="cs-qtyrow">
             <div class="cs-qty">
@@ -61,7 +61,7 @@
 <div class="cs-footer">
   <div class="cs-subrow">
     <div class="cs-subttl">Subtotal</div>
-    <div class="cs-subamt">Rs.{{ subtotal }}</div>
+    <div class="cs-subamt">₹{{ subtotal|floatformat:0 }}</div>
   </div>
   <div class="cs-subhint">Taxes and shipping calculated at checkout</div>
   <a class="cs-checkout" href="{% url 'orders:checkout_start' %}" role="button">CHECKOUT</a>

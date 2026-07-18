@@ -42,7 +42,7 @@
     color: rgba(255,255,255,.95);
   }
   .sale-hero-title{
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: .10em;
     text-transform: uppercase;
     font-size: clamp(26px, 3.2vw, 38px);
@@ -73,7 +73,7 @@
   }
   .cd-num{
     font-size: 46px;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 1;
     letter-spacing: .02em;
   }
@@ -194,7 +194,7 @@
     text-transform: uppercase;
     background:#fff;
   }
-  .badge-sale{ border-color:#ff3b30; color:#ff3b30; }
+  .badge-sale{ border-color:rgba(183,134,43,.55); color:#8A6420; }
 
   .p-media{
     position:relative;
@@ -227,7 +227,7 @@
     font-size: 11px;
     letter-spacing: .18em;
     text-transform: uppercase;
-    font-weight: 800;
+    font-weight: 600;
     opacity:0;
     transform: translateY(10px);
     transition: .2s ease;
@@ -250,8 +250,8 @@
     color: rgba(0,0,0,.9);
   }
   .p-price del{ color: rgba(0,0,0,.45); margin-right: 8px; }
-  .p-price .sale{ color:#ff3b30; font-weight: 700; }
-  .p-price .off{ color:#ff3b30; font-size: 12px; margin-left: 8px; }
+  .p-price .sale{ color:#8A6420; font-weight: 600; }
+  .p-price .off{ color:#8A6420; font-size: 12px; margin-left: 8px; }
 
   /* Pagination */
   .pager{
@@ -279,7 +279,7 @@
     font-size: 14px;
     background:#fff;
   }
-  .pg.active{ border-color: rgba(0,0,0,.8); font-weight: 800; }
+  .pg.active{ border-color: rgba(0,0,0,.8); font-weight: 600; }
   .pg:hover{ background: rgba(0,0,0,.03); }
   .pager-note{
     color: rgba(0,0,0,.65);
@@ -353,7 +353,7 @@
     height:40px;
     border:1px solid rgba(0,0,0,.25);
     background:#fff;
-    font-weight:800;
+    font-weight:600;
     letter-spacing:.12em;
     text-transform:uppercase;
     font-size:11px;
@@ -461,7 +461,7 @@
           {% if selected_min or selected_max %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=price" class="chip"
             style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
-            Rs.{{ selected_min|default:"0" }} - Rs.{{ selected_max|default:max_price_bound }}
+            ₹{{ selected_min|default:"0" }} - ₹{{ selected_max|default:max_price_bound }}
             <span style="opacity:.7;">&times;</span>
           </a>
           {% endif %}
@@ -558,7 +558,7 @@
             <div class="fw-panel" id="dd-price" style="min-width:320px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                 <div style="font-size:12px;letter-spacing:.06em;color:rgba(0,0,0,.7);">
-                  The highest price is Rs.{{ max_price_bound }}
+                  The highest price is ₹{{ max_price_bound|floatformat:0 }}
                 </div>
                 <a href="#" class="fw-clear" data-clear="price"
                   style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
@@ -566,13 +566,13 @@
 
               <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
                 <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
-                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="min_price" value="{{ selected_min }}" placeholder="0"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
                 </div>
                 <div style="opacity:.6;">—</div>
                 <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
-                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">Rs.</div>
+                  <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="max_price" value="{{ selected_max }}" placeholder="{{ max_price_bound }}"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
                 </div>
@@ -680,11 +680,11 @@
 
 <div class="p-price">
   {% if p.is_on_sale %}
-    <del>Rs.{{ p.old_price_inr }}</del>
-    <span class="sale">Rs.{{ p.price_inr }}</span>
+    <del>₹{{ p.old_price_inr|floatformat:0 }}</del>
+    <span class="sale">₹{{ p.price_inr|floatformat:0 }}</span>
     <span class="off">{{ p.discount_percent }}% off</span>
   {% else %}
-    Rs.{{ p.price_inr }}
+    ₹{{ p.price_inr|floatformat:0 }}
   {% endif %}
 </div>
 

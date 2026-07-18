@@ -121,6 +121,10 @@
       color: rgba(0, 0, 0, .92);
     }
 
+    .nav-item-dd.active .nav-link-custom {
+      color: rgba(0, 0, 0, .92);
+    }
+
     .icon-btn {
       width: 38px;
       height: 38px;
@@ -492,7 +496,8 @@
       opacity: .95;
     }
 
-    .nav-item-dd:hover .nav-link-custom::after {
+    .nav-item-dd:hover .nav-link-custom::after,
+    .nav-item-dd.active .nav-link-custom::after {
       transform: scaleX(1);
     }
 
@@ -981,10 +986,17 @@
 
         <!-- Center: Desktop Nav -->
         <!-- Center: Desktop Nav -->
+        {% url 'catalog:all_products' as nav_url_all %}
+        {% url 'catalog:collection_products' slug='earrings' as nav_url_earrings %}
+        {% url 'catalog:collection_products' slug='rings' as nav_url_rings %}
+        {% url 'catalog:collection_products' slug='bracelets' as nav_url_bracelets %}
+        {% url 'catalog:collection_products' slug='necklace' as nav_url_necklace %}
+        {% url 'catalog:collection_products' slug='anklets' as nav_url_anklets %}
+        {% url 'catalog:lookbook' as nav_url_lookbook %}
         <nav class="d-none d-lg-flex align-items-center gap-1 nav-wrap">
 
           <!-- Collections -->
-          <div class="nav-item-dd">
+          <div class="nav-item-dd{% if request.path == nav_url_all %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_list' %}">
               Collections
 
@@ -1034,7 +1046,7 @@
           </div>
 
           <!-- Earrings -->
-          <div class="nav-item-dd align-center">
+          <div class="nav-item-dd align-center{% if request.path == nav_url_earrings %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='earrings' %}">
               Earrings
               <!-- <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1074,7 +1086,7 @@
           </div>
 
           <!-- Rings -->
-          <div class="nav-item-dd align-center">
+          <div class="nav-item-dd align-center{% if request.path == nav_url_rings %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='rings' %}">
               Rings
               <!-- <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1112,7 +1124,7 @@
           </div>
 
           <!-- Bracelets -->
-          <div class="nav-item-dd align-center">
+          <div class="nav-item-dd align-center{% if request.path == nav_url_bracelets %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='bracelets' %}">
               Bracelets
               <!-- <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1150,7 +1162,7 @@
           </div>
 
           <!-- Necklaces & Chains -->
-          <div class="nav-item-dd align-right">
+          <div class="nav-item-dd align-right{% if request.path == nav_url_necklace %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='necklace' %}">
               Necklaces &amp; Chains
               <!-- <svg class="nav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1188,12 +1200,12 @@
           </div>
 
           <!-- Anklets -->
-          <div class="nav-item-dd">
+          <div class="nav-item-dd{% if request.path == nav_url_anklets %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:collection_products' slug='anklets' %}">Anklets</a>
           </div>
 
           <!-- Lookbook (simple underline only, no dropdown) -->
-          <div class="nav-item-dd">
+          <div class="nav-item-dd{% if request.path == nav_url_lookbook %} active{% endif %}">
             <a class="nav-link-custom" href="{% url 'catalog:lookbook' %}">Lookbook</a>
           </div>
 

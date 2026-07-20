@@ -112,6 +112,7 @@ body {
   letter-spacing: .005em;
   color: var(--jb-ivory);
   margin: 0 0 20px;
+  text-wrap: balance;
 }
 .jbx-h2 em { font-style: italic; color: var(--jb-gold-deep); }
 .jbx-lead { font-size: 16px; line-height: 1.8; color: var(--jb-muted); max-width: 760px; }
@@ -175,6 +176,7 @@ body {
   letter-spacing: .005em;
   color: var(--jb-ivory);
   margin: 0 0 16px;
+  text-wrap: balance;
 }
 .ring-copy h1 em { font-style: italic; color: var(--jb-gold-deep); }
 .ring-copy p {

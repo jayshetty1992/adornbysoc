@@ -92,7 +92,7 @@
       {% if home_collections %}
       {% for c in home_collections %}
       <a class="cat-tile rv" style="--rd:{{ forloop.counter0 }}00ms" href="{% url 'catalog:collection_products' slug=c.slug %}">
-        <img src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}" alt="{{ c.name }} — anti-tarnish gold plated jewellery">
+        <img src="{% if c.card_image %}{{ c.card_image.url }}{% else %}{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}{% endif %}" alt="{{ c.name }} — anti-tarnish gold plated jewellery" loading="lazy">
         <span class="cat-scrim" aria-hidden="true"></span>
         <i class="sweep"></i>
         <span class="cat-label">{{ c.name }}</span>
@@ -235,7 +235,7 @@
   <div class="container">
     <div class="ed-split">
       <a class="ed-panel rv" href="{% url 'catalog:collection_products' slug='rings' %}">
-        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Rings — anti-tarnish gold plated">
+        <img src="{% static 'img/PHOTO-2025-11-12-13-47-46.png' %}" alt="Rings — anti-tarnish gold plated" loading="lazy">
         <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
           <h3>Rings</h3>
@@ -243,7 +243,7 @@
         </div>
       </a>
       <a class="ed-panel rv" style="--rd:150ms" href="{% url 'catalog:collection_products' slug='necklace' %}">
-        <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Necklaces and chains — anti-tarnish gold plated">
+        <img src="{% static 'img/PHOTO-2025-11-06-10-59-11.png' %}" alt="Necklaces and chains — anti-tarnish gold plated" loading="lazy">
         <span class="cat-scrim" aria-hidden="true"></span>
         <div class="ed-copy">
           <h3>Necklaces &amp; Chains</h3>
@@ -260,13 +260,12 @@
 <section class="jbx-section look-dark honest-dark" id="shop-look">
   <div class="container">
     <div class="rv" style="margin-bottom:36px">
-      <div class="jbx-kicker">Styled by SOC</div>
       <h2 class="jbx-h2">{% if shop_look %}{{ shop_look.title }}{% else %}Shop the look{% endif %}</h2>
     </div>
 
     <div class="look-grid">
       <div class="look-stage jb rv" id="lookMedia">
-        <img src="{% if shop_look and shop_look.image %}{{ shop_look.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="Shop the look">
+        <img src="{% if shop_look and shop_look.image %}{{ shop_look.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="Shop the look" loading="lazy">
         {% if shop_look %}
         {% for it in shop_look.items.all %}
         <button class="hotspot" style="left:{{ it.x }}%; top:{{ it.y }}%;" data-index="{{ forloop.counter0 }}" aria-label="Show product {{ forloop.counter }}"></button>
@@ -277,7 +276,7 @@
       <div class="look-panel rv" style="--rd:150ms">
         <div class="look-card-box">
           <div class="look-frame">
-            <img id="lookProdImg" src="{% static 'img/hero.jpg' %}" alt="Product">
+            <img id="lookProdImg" src="{% static 'img/hero.jpg' %}" alt="Product" loading="lazy">
           </div>
           <div class="look-meta">
             <span class="look-name" id="lookProdName">{% if shop_look %}Select a piece{% else %}Adorn by SOC{% endif %}</span>
@@ -309,7 +308,6 @@
 <section class="jbx-section" id="reviews">
   <div class="container">
     <div class="rv" style="margin-bottom:36px">
-      <div class="jbx-kicker">Customer Words</div>
       <h2 class="jbx-h2">In their words</h2>
     </div>
 
@@ -338,7 +336,6 @@
 <section class="jbx-section" style="padding-top:20px">
   <div class="container">
     <div class="warranty-card jb rv">
-      <div class="jbx-kicker">Our Promise</div>
       <h2 class="jbx-h2">The 6-Month Anti-Tarnish Warranty</h2>
       <p class="jbx-lead">
         If any Adorn by SOC piece fades, tarnishes, or loses its plating within 6 months of normal wear, we replace
@@ -357,7 +354,6 @@
   <div class="container">
     <div class="founder-grid">
       <div class="rv">
-        <div class="jbx-kicker">From the Studio</div>
         <div class="founder-pull">"Luxury should feel personal, wearable, and accessible to everyone."</div>
       </div>
       <div class="founder-body rv" style="--rd:150ms">
@@ -382,7 +378,6 @@
 <section class="jbx-section faq-dark" id="faq">
   <div class="container">
     <div class="rv" style="margin-bottom:30px">
-      <div class="jbx-kicker">Good to Know</div>
       <h2 class="jbx-h2">Questions, answered honestly</h2>
     </div>
 

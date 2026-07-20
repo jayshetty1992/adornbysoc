@@ -8,15 +8,17 @@
    ============================================================ */
 
 :root {
-  --jb-bg: #F7F3EC;            /* ivory canvas */
+  /* aliases onto base.html's canonical --cream/--ink/--gold/--gold-deep/--line —
+     same tokens, kept under the --jb-* names the Ivory Atelier classes already use */
+  --jb-bg: var(--cream, #F7F3EC);
   --jb-surface: #FFFFFF;        /* lifted card */
   --jb-surface-2: #EFE9DE;      /* pressed / alt surface */
-  --jb-gold: #B7862B;           /* the single accent */
+  --jb-gold: var(--gold, #B7862B);
   --jb-gold-light: #D9B25F;
-  --jb-gold-deep: #8A6420;
-  --jb-ivory: #1B160F;          /* primary text (ink) */
+  --jb-gold-deep: var(--gold-deep, #8A6420);
+  --jb-ivory: var(--ink, #1B160F);
   --jb-muted: #6E6353;          /* secondary text */
-  --jb-hairline: rgba(27, 22, 15, .12);
+  --jb-hairline: var(--line, rgba(27, 22, 15, .12));
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Jost", Inter, system-ui, sans-serif;
   --radius-card: 12px;
@@ -384,9 +386,7 @@ body {
   font-weight: 530;
   font-size: clamp(54px, 8.4vw, 128px);
   line-height: .95;
-  background: linear-gradient(160deg, var(--jb-gold-light) 5%, var(--jb-gold) 45%, var(--jb-gold-deep) 90%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
+  color: var(--jb-gold-deep);
 }
 .spec-num span { display: block; margin-top: 10px; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--jb-muted); }
 @media (max-width: 767px) { .spec-numerals { grid-template-columns: 1fr; gap: 28px; } }
@@ -511,6 +511,7 @@ body {
 }
 .faq-dark .accordion-button:not(.collapsed) { color: var(--jb-gold-deep); }
 .faq-dark .accordion-button:focus { box-shadow: none; }
+.faq-dark .accordion-button:focus-visible { box-shadow: inset 0 0 0 2px var(--jb-gold-deep); outline: none; }
 .faq-dark .accordion-body { color: var(--jb-muted); font-size: 14.5px; line-height: 1.85; padding: 0 4px 24px; }
 
 /* ============================================================
@@ -600,17 +601,7 @@ body {
   font-weight: 530;
   font-size: clamp(26px, 2.4vw, 32px);
   line-height: 1.1;
-  background: linear-gradient(105deg, var(--jb-gold-deep) 0%, var(--jb-gold) 35%, var(--jb-gold-light) 50%, var(--jb-gold) 65%, var(--jb-gold-deep) 100%);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: var(--jb-gold-deep);
-  animation: goldSheen 2.8s linear infinite;
-}
-@keyframes goldSheen {
-  from { background-position: 0% 0; }
-  to { background-position: 220% 0; }
 }
 /* chhoti centered gold hairline — poori width wali line nahi */
 .pb-amount::after {
@@ -626,7 +617,6 @@ body {
   transition: color .3s ease;
 }
 .price-band:hover .pb-note { color: var(--jb-gold-deep); }
-@media (prefers-reduced-motion: reduce) { .pb-amount { animation: none; } .price-band::after { display: none; } }
 
 /* ============================================================
    TWO-LINE CAROUSEL — BlueStone-style double row (desktop)
@@ -648,7 +638,7 @@ body {
 /* wishlist heart on product cards */
 .wish-heart {
   position: absolute; top: 16px; right: 16px; z-index: 3;
-  width: 38px; height: 38px; border-radius: 999px;
+  width: 44px; height: 44px; border-radius: 999px;
   border: 1px solid var(--jb-hairline);
   background: rgba(255, 255, 255, .92);
   display: grid; place-items: center; cursor: pointer;

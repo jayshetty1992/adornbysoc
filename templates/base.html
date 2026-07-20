@@ -74,8 +74,8 @@
     }
 
     .topbar .arrow-btn {
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       border: 1px solid rgba(255, 255, 255, .18);
       background: transparent;
       color: rgba(255, 255, 255, .9);
@@ -126,8 +126,8 @@
     }
 
     .icon-btn {
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
       border-radius: 999px;
       border: 1px solid rgba(0, 0, 0, .12);
       background: transparent;
@@ -1277,6 +1277,7 @@
   <div class="search-overlay" id="searchOverlay" aria-hidden="true">
     <div class="search-panel">
       <form class="search-form" method="get" action="{% url 'catalog:product_list' %}" role="search">
+        <label for="searchInput" class="visually-hidden">Search products</label>
         <input type="search" name="q" id="searchInput" placeholder="Search rings, necklaces, bracelets…" autocomplete="off" required>
         <button type="submit">Search</button>
       </form>
@@ -1354,7 +1355,8 @@
 
           <form class="newsletter" action="#" method="post">
             {% csrf_token %}
-            <input type="email" name="email" placeholder="Your email" required>
+            <label for="newsletterEmail" class="visually-hidden">Email address</label>
+            <input type="email" name="email" id="newsletterEmail" placeholder="Your email" required>
             <button type="submit">SUBSCRIBE</button>
           </form>
 

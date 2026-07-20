@@ -686,12 +686,10 @@
         </table>
 
         <div class="pd-actions reveal-up">
-          <a class="btn-outline" href="{% url 'cart:add_to_cart' product.slug %}"
-             onclick="event.preventDefault(); if(window.LUSTER_CART){ LUSTER_CART.addAndOpen('{{ product.slug }}'); }">
+          <button type="button" class="btn-outline" data-cart-add="{{ product.slug }}">
             ADD TO BAG
-          </a>
-	<a class="btn-solid" href="{% url 'cart:add_to_cart' product.slug %}"
-             onclick="event.preventDefault(); if(window.LUSTER_CART){ LUSTER_CART.addAndOpen('{{ product.slug }}'); }">BUY IT NOW</a>
+          </button>
+          <button type="button" class="btn-solid" data-cart-add="{{ product.slug }}">BUY IT NOW</button>
         </div>
 
         {% if product.tryon_ready %}

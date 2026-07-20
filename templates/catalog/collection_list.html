@@ -6,16 +6,10 @@
 {% endblock %}
 
 {% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
 <style>
 
   :root {
-    --cream: #F7F3EC;
-    --ink: #1B160F;
-    --gold: #b7862b;
-    --gold-deep: #8A6420;
-    --line: rgba(27, 22, 15, .12);
     --muted: #6E6353;
   }
 
@@ -47,6 +41,7 @@
     line-height: 1.08;
     margin: 0 0 14px 0;
     letter-spacing: .005em;
+    text-wrap: balance;
   }
 
   .hero-sub {
@@ -171,6 +166,11 @@
     font-size: 14px;
     letter-spacing: .06em;
     color: var(--ink);
+  }
+
+  .sort-box select:focus-visible {
+    outline: 2px solid var(--gold-deep);
+    outline-offset: 2px;
   }
 
   /* UI-only filters row */
@@ -611,6 +611,11 @@
   .fw-opt:first-of-type { border-top: none; }
 
   .fw-opt input { width: 14px; height: 14px; }
+
+  .fw-panel input[type="number"]:focus-visible {
+    outline: 2px solid var(--gold-deep);
+    outline-offset: 2px;
+  }
 
   .fw-apply {
     margin-top: 10px;
@@ -1153,7 +1158,7 @@
             {# page numbers with ellipsis like screenshot #}
             {% for num in page_obj.paginator.page_range %}
             {% if num == page_obj.number %}
-            <span class="pg active">{{ num }}</span>
+            <span class="pg active" aria-current="page">{{ num }}</span>
 
             {% elif num <= 3 %} <a class="pg"
               href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ num }}">

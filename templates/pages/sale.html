@@ -6,11 +6,11 @@
 {% block extra_css %}
 <style>
   :root{
-    --cream:#f6f2ea;
-    --ink:#0c0c0d;
+    --cream:#F7F3EC;
+    --ink:#1B160F;
     --gold:#b7862b;
-    --line: rgba(0,0,0,.12);
-    --muted: rgba(0,0,0,.58);
+    --line: rgba(27, 22, 15, .12);
+    --muted: rgba(27, 22, 15, .58);
   }
 
   .sale-wrap{ background:#fff; }
@@ -153,7 +153,7 @@
     margin-top: 12px;
   }
   .filter-dd{
-    border: 1px solid rgba(0,0,0,.25);
+    border: 1px solid rgba(27,22,15,.25);
     background: transparent;
     padding: 10px 16px;
     font-size: 14px;
@@ -187,7 +187,7 @@
     margin-bottom: 10px;
   }
   .badge-mini{
-    border: 1px solid rgba(0,0,0,.55);
+    border: 1px solid rgba(27,22,15,.55);
     font-size: 10px;
     letter-spacing: .12em;
     padding: 2px 6px;
@@ -220,7 +220,7 @@
     bottom: 10px;
     height: 44px;
     background: rgba(255,255,255,.92);
-    border: 1px solid rgba(0,0,0,.22);
+    border: 1px solid rgba(27,22,15,.22);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -240,16 +240,16 @@
     font-size: 11px;
     letter-spacing: .18em;
     text-transform: uppercase;
-    color: rgba(0,0,0,.78);
+    color: rgba(27,22,15,.78);
     text-align:center;
   }
   .p-price{
     text-align:center;
     font-size: 14px;
     letter-spacing: .06em;
-    color: rgba(0,0,0,.9);
+    color: rgba(27,22,15,.9);
   }
-  .p-price del{ color: rgba(0,0,0,.45); margin-right: 8px; }
+  .p-price del{ color: rgba(27,22,15,.45); margin-right: 8px; }
   .p-price .sale{ color:#8A6420; font-weight: 600; }
   .p-price .off{ color:#8A6420; font-size: 12px; margin-left: 8px; }
 
@@ -273,16 +273,16 @@
     height: 44px;
     display:grid;
     place-items:center;
-    border: 1px solid rgba(0,0,0,.25);
+    border: 1px solid rgba(27,22,15,.25);
     text-decoration:none;
     color: var(--ink);
     font-size: 14px;
     background:#fff;
   }
-  .pg.active{ border-color: rgba(0,0,0,.8); font-weight: 600; }
-  .pg:hover{ background: rgba(0,0,0,.03); }
+  .pg.active{ border-color: rgba(27,22,15,.8); font-weight: 600; }
+  .pg:hover{ background: rgba(27,22,15,.03); }
   .pager-note{
-    color: rgba(0,0,0,.65);
+    color: rgba(27,22,15,.65);
     font-size: 13px;
     letter-spacing: .06em;
     text-align:center;
@@ -328,10 +328,10 @@
     top:46px;
     left:0;
     background:#fff;
-    border:1px solid rgba(0,0,0,.25);
+    border:1px solid rgba(27,22,15,.25);
     padding:12px;
     z-index:50;
-    box-shadow:0 18px 55px rgba(0,0,0,.12);
+    box-shadow:0 18px 55px rgba(27,22,15,.12);
   }
   .fw-dd.open .fw-panel{ display:block; }
 
@@ -341,8 +341,8 @@
     gap:10px;
     padding:8px 0;
     font-size:13px;
-    color:rgba(0,0,0,.78);
-    border-top:1px solid rgba(0,0,0,.07);
+    color:rgba(27,22,15,.78);
+    border-top:1px solid rgba(27,22,15,.07);
   }
   .fw-opt:first-of-type{ border-top:none; }
   .fw-opt input{ width:14px; height:14px; }
@@ -351,7 +351,7 @@
     margin-top:10px;
     width:100%;
     height:40px;
-    border:1px solid rgba(0,0,0,.25);
+    border:1px solid rgba(27,22,15,.25);
     background:#fff;
     font-weight:600;
     letter-spacing:.12em;
@@ -359,7 +359,7 @@
     font-size:11px;
     cursor:pointer;
   }
-  .fw-apply:hover{ background:rgba(0,0,0,.03); }
+  .fw-apply:hover{ background:rgba(27,22,15,.03); }
 
 </style>
 {% endblock %}
@@ -415,7 +415,7 @@
             <!-- ? selected count badge -->
             <span style="display:inline-flex;align-items:center;gap:6px;">
               <span id="filtersBadge"
-                style="min-width:18px;height:18px;padding:0 6px;border:1px solid rgba(0,0,0,.55);font-size:11px;line-height:18px;text-align:center;">
+                style="min-width:18px;height:18px;padding:0 6px;border:1px solid rgba(27,22,15,.55);font-size:11px;line-height:18px;text-align:center;">
                 {{ selected_total|default:0 }}
               </span>
               <span class="caret" id="filterCaret">^</span>
@@ -453,14 +453,14 @@
 
           {% for a in selected_av %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=availability:{{ a }}" class="chip"
-            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(27,22,15,.18);border-radius:999px;background:rgba(27,22,15,.03);text-decoration:none;color:rgba(27,22,15,.75);font-size:12px;">
             {% if a == "in" %}In stock{% else %}Out of stock{% endif %} <span style="opacity:.7;">&times;</span>
           </a>
           {% endfor %}
 
           {% if selected_min or selected_max %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=price" class="chip"
-            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(27,22,15,.18);border-radius:999px;background:rgba(27,22,15,.03);text-decoration:none;color:rgba(27,22,15,.75);font-size:12px;">
             ₹{{ selected_min|default:"0" }} - ₹{{ selected_max|default:max_price_bound }}
             <span style="opacity:.7;">&times;</span>
           </a>
@@ -468,21 +468,21 @@
 
           {% for s in selected_rs %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=ring_size:{{ s }}" class="chip"
-            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(27,22,15,.18);border-radius:999px;background:rgba(27,22,15,.03);text-decoration:none;color:rgba(27,22,15,.75);font-size:12px;">
             {{ s }} <span style="opacity:.7;">&times;</span>
           </a>
           {% endfor %}
 
           {% for s in selected_style %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=style:{{ s|urlencode }}" class="chip"
-            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(27,22,15,.18);border-radius:999px;background:rgba(27,22,15,.03);text-decoration:none;color:rgba(27,22,15,.75);font-size:12px;">
             {{ s }} <span style="opacity:.7;">&times;</span>
           </a>
           {% endfor %}
 
           {% for c in selected_color %}
           <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}remove=color:{{ c|urlencode }}" class="chip"
-            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(0,0,0,.03);text-decoration:none;color:rgba(0,0,0,.75);font-size:12px;">
+            style="display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(27,22,15,.18);border-radius:999px;background:rgba(27,22,15,.03);text-decoration:none;color:rgba(27,22,15,.75);font-size:12px;">
             {{ c }} <span style="opacity:.7;">&times;</span>
           </a>
           {% endfor %}
@@ -491,12 +491,12 @@
 
         {% if collection %}
   <a href="{% url 'catalog:collection_products' slug=collection.slug %}"
-     style="color:rgba(0,0,0,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
+     style="color:rgba(27,22,15,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
     Clear filters
   </a>
 {% else %}
   <a href="{% url 'catalog:all_products' %}"
-     style="color:rgba(0,0,0,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
+     style="color:rgba(27,22,15,.7);font-size:13px;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;">
     Clear filters
   </a>
 {% endif %}
@@ -516,7 +516,7 @@
             <button class="filter-dd" type="button" data-dd="avail">
               Availability
               <span
-                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                style="border:1px solid rgba(27,22,15,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
                 {{ selected_av|length }}
               </span>
               <span class="v"></span>
@@ -524,11 +524,11 @@
 
             <div class="fw-panel" id="dd-avail">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(27,22,15,.7);">
                   {{ selected_av|length }} selected
                 </div>
                 <a href="#" class="fw-clear" data-clear="availability"
-                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+                  style="font-size:12px;color:rgba(27,22,15,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
               </div>
 
               <label class="fw-opt">
@@ -549,7 +549,7 @@
             <button class="filter-dd" type="button" data-dd="price">
               Price
               <span
-                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                style="border:1px solid rgba(27,22,15,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
                 {% if selected_min or selected_max %}1{% else %}0{% endif %}
               </span>
               <span class="v"></span>
@@ -557,21 +557,21 @@
 
             <div class="fw-panel" id="dd-price" style="min-width:320px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <div style="font-size:12px;letter-spacing:.06em;color:rgba(0,0,0,.7);">
+                <div style="font-size:12px;letter-spacing:.06em;color:rgba(27,22,15,.7);">
                   The highest price is ₹{{ max_price_bound|floatformat:0 }}
                 </div>
                 <a href="#" class="fw-clear" data-clear="price"
-                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+                  style="font-size:12px;color:rgba(27,22,15,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
               </div>
 
               <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
-                <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
+                <div style="flex:1;border:1px solid rgba(27,22,15,.18);padding:10px 10px;">
                   <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="min_price" value="{{ selected_min }}" placeholder="0"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
                 </div>
                 <div style="opacity:.6;">—</div>
-                <div style="flex:1;border:1px solid rgba(0,0,0,.18);padding:10px 10px;">
+                <div style="flex:1;border:1px solid rgba(27,22,15,.18);padding:10px 10px;">
                   <div style="font-size:11px;opacity:.7;letter-spacing:.06em;">₹</div>
                   <input type="number" name="max_price" value="{{ selected_max }}" placeholder="{{ max_price_bound }}"
                     style="width:100%;border:none;outline:none;background:transparent;font-size:14px;">
@@ -588,7 +588,7 @@
             <button class="filter-dd" type="button" data-dd="rs">
               Ring size
               <span
-                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                style="border:1px solid rgba(27,22,15,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
                 {{ selected_rs|length }}
               </span>
               <span class="v"></span>
@@ -596,11 +596,11 @@
 
             <div class="fw-panel" id="dd-rs" style="min-width:260px;max-height:340px;overflow:auto;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(27,22,15,.7);">
                   {{ selected_rs|length }} selected
                 </div>
                 <a href="#" class="fw-clear" data-clear="ring_size"
-                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+                  style="font-size:12px;color:rgba(27,22,15,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
               </div>
 
               {% for row in ring_size_rows %}
@@ -621,7 +621,7 @@
             <button class="filter-dd" type="button" data-dd="color">
               Color
               <span
-                style="border:1px solid rgba(0,0,0,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
+                style="border:1px solid rgba(27,22,15,.55);font-size:11px;padding:1px 6px;line-height:16px;display:inline-flex;">
                 {{ selected_color|length }}
               </span>
               <span class="v"></span>
@@ -629,11 +629,11 @@
 
             <div class="fw-panel" id="dd-color" style="min-width:220px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <div style="font-size:12px;letter-spacing:.08em;color:rgba(0,0,0,.7);">
+                <div style="font-size:12px;letter-spacing:.08em;color:rgba(27,22,15,.7);">
                   {{ selected_color|length }} selected
                 </div>
                 <a href="#" class="fw-clear" data-clear="color"
-                  style="font-size:12px;color:rgba(0,0,0,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
+                  style="font-size:12px;color:rgba(27,22,15,.7);text-decoration:underline;text-underline-offset:3px;">Clear</a>
               </div>
 
               {% for row in color_rows %}
@@ -690,7 +690,7 @@
 
       </a>
       {% empty %}
-      <div style="grid-column: 1 / -1; padding: 60px 0; text-align:center; color: rgba(0,0,0,.6);">
+      <div style="grid-column: 1 / -1; padding: 60px 0; text-align:center; color: rgba(27,22,15,.6);">
         No sale products found.
       </div>
       {% endfor %}

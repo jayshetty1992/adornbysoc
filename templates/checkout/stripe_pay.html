@@ -4,17 +4,17 @@
 
 {% block extra_css %}
 <style>
-  :root{ --cream:#f6f2ea; --ink:#0c0c0d; --gold:#b7862b; --line: rgba(0,0,0,.14); }
+  :root{ --cream:#F7F3EC; --ink:#1B160F; --gold:#b7862b; --line: rgba(27, 22, 15, .12); }
   .pay-wrap{ background: var(--cream); padding: 28px 0 60px; }
   .pay-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items:start; }
-  .cardx{ background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px; box-shadow: 0 10px 30px rgba(0,0,0,.06); overflow:hidden; }
-  .cardx .hd{ padding:18px 18px 12px; border-bottom:1px solid rgba(0,0,0,.08); display:flex; align-items:center; justify-content:space-between; }
-  .kicker{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; color: rgba(0,0,0,.70); }
+  .cardx{ background:#fff; border:1px solid rgba(27,22,15,.08); border-radius:16px; box-shadow: 0 10px 30px rgba(27,22,15,.06); overflow:hidden; }
+  .cardx .hd{ padding:18px 18px 12px; border-bottom:1px solid rgba(27,22,15,.08); display:flex; align-items:center; justify-content:space-between; }
+  .kicker{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; font-weight:600; color: rgba(27,22,15,.70); }
   .big{ padding:18px; }
   .title{ font-size:38px; font-weight:600; letter-spacing:.02em; margin:0 0 6px; }
-  .sub{ color: rgba(0,0,0,.65); letter-spacing:.06em; font-size:13px; margin-bottom:14px; }
+  .sub{ color: rgba(27,22,15,.65); letter-spacing:.06em; font-size:13px; margin-bottom:14px; }
   #card-element{
-    border:1px solid rgba(0,0,0,.18);
+    border:1px solid rgba(27,22,15,.18);
     border-radius:12px;
     padding:14px 14px;
     background:#fff;
@@ -33,13 +33,13 @@
     text-transform:uppercase;
   }
   .btnpay:disabled{ opacity:.6; cursor:not-allowed; }
-  .note{ margin-top:12px; color: rgba(0,0,0,.60); font-size:12px; letter-spacing:.06em; }
+  .note{ margin-top:12px; color: rgba(27,22,15,.60); font-size:12px; letter-spacing:.06em; }
   .err{ margin-top:10px; color:#b00020; font-size:13px; }
   .bill{ padding:18px; }
-  .bill-row{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid rgba(0,0,0,.08); }
+  .bill-row{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid rgba(27,22,15,.08); }
   .bill-row:last-child{ border-bottom:none; }
-  .lbl{ color: rgba(0,0,0,.70); font-weight:700; }
-  .val{ color: rgba(0,0,0,.85); }
+  .lbl{ color: rgba(27,22,15,.70); font-weight:700; }
+  .val{ color: rgba(27,22,15,.85); }
   .total{ font-size:22px; font-weight:600; }
   @media(max-width: 992px){ .pay-grid{ grid-template-columns:1fr; } }
 </style>
@@ -123,8 +123,8 @@
       base: {
         fontFamily: "Inter, system-ui, sans-serif",
         fontSize: "14px",
-        color: "#0c0c0d",
-        "::placeholder": { color: "rgba(0,0,0,.45)" }
+        color: "#1B160F",
+        "::placeholder": { color: "rgba(27,22,15,.45)" }
       }
     }
   });

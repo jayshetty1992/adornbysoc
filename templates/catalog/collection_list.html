@@ -1433,6 +1433,16 @@
       return sections;
     }
 
+    // Anything already on screen at load is content the visitor came for.
+    // The product grid is taller than the viewport, so it can never cross a
+    // percentage-of-element threshold — it must not wait on the observer.
+    function inViewport(el) {
+      const vh = window.innerHeight;
+      if (!vh) return true; // no viewport to animate into
+      const r = el.getBoundingClientRect();
+      return r.top < vh && r.bottom > 0;
+    }
+
     function setupObserver() {
       const sections = prepareSections();
 
@@ -1451,15 +1461,28 @@
             observer.unobserve(entry.target);
           });
         },
-        { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
+        // threshold 0: any pixel entering counts, regardless of section height
+        { threshold: 0, rootMargin: "0px 0px -10% 0px" }
       );
 
       sections.forEach(function (sec) {
         if (!sec.classList) return;
         if (!sec.classList.contains("reveal")) return;
         if (sec.classList.contains("is-visible")) return;
+        if (inViewport(sec)) {
+          sec.classList.add("is-visible");
+          return;
+        }
         io.observe(sec);
       });
+
+      // Safety net: no product listing is ever left invisible because an
+      // observer misfired or the page rendered in a zero-height viewport.
+      setTimeout(function () {
+        document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (sec) {
+          sec.classList.add("is-visible");
+        });
+      }, 3000);
     }
 
     if (document.readyState === "loading") {

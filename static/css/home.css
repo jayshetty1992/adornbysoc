@@ -26,7 +26,8 @@
 }
 
 body {
-  background: var(--jb-bg);
+  /* transparent so atelier.css's living canvas shows through */
+  background: transparent;
   color: var(--jb-ivory);
   font-family: var(--font-body);
 }

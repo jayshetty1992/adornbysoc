@@ -20,14 +20,6 @@
 
 {% block content %}
 
-<script>
-  /* progressive enhancement flag: animations only when JS is live and
-     motion is welcome. Without it, everything renders fully visible. */
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.documentElement.classList.add("jsx");
-  }
-</script>
-
 <!-- ============================================================
      1. RING HERO — the piece approaches as you scroll
      ============================================================ -->
@@ -629,35 +621,7 @@
     render(0);
   })();
 
-  /* ============ Reveal on scroll ============ */
-  (function () {
-    var items = document.querySelectorAll(".rv");
-    if (!("IntersectionObserver" in window)) {
-      items.forEach(function (el) { el.classList.add("in"); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    items.forEach(function (el) { io.observe(el); });
-  })();
-
-  /* ============ Magnetic primary buttons (desktop, subtle) ============ */
-  (function () {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.querySelectorAll(".btn-metal").forEach(function (btn) {
-      btn.addEventListener("mousemove", function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = (e.clientX - r.left - r.width / 2) / r.width;
-        var y = (e.clientY - r.top - r.height / 2) / r.height;
-        btn.style.transform = "translate(" + x * 6 + "px," + y * 4 + "px)";
-      });
-      btn.addEventListener("mouseleave", function () { btn.style.transform = ""; });
-    });
-  })();
+  /* reveal-on-scroll + magnetic CTAs now live site-wide in js/atelier.js */
 </script>
 
 {% endblock %}

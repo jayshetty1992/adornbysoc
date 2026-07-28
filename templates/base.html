@@ -960,10 +960,25 @@
     .search-hint a { color: #8A6420; text-decoration: none; margin-right: 14px; }
     .search-hint a:hover { text-decoration: underline; }
   </style>
+
+  <!-- Atelier layer: living canvas + one interaction grammar for every page -->
+  <link rel="stylesheet" href="{% static 'css/atelier.css' %}">
+  <script>
+    /* Set before first paint: motion styles only apply when JS is live and
+       motion is welcome. Without it, every page renders fully visible. */
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.className += " jsx";
+    }
+  </script>
   {% block extra_css %}{% endblock %}
 </head>
 
 <body>
+
+  <!-- Living ivory canvas — drifting gold light behind the whole site -->
+  <div class="atelier-bg" aria-hidden="true"><i></i></div>
+  <div class="atelier-cursor-glow" aria-hidden="true"></div>
+  <div class="atelier-veil" aria-hidden="true"></div>
 
   <!-- TOP ANNOUNCEMENT -->
   <div class="topbar">
@@ -1453,6 +1468,9 @@
       }
     })();
   </script>
+
+  <!-- Atelier motion: reveals, headline splits, magnetics, cart flight, veil -->
+  <script src="{% static 'js/atelier.js' %}" defer></script>
 
   <script>
 (function(){

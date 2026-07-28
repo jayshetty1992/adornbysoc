@@ -1,0 +1,348 @@
+/* ============================================================
+   ADORN BY SOC — ATELIER LAYER (site-wide)
+   Loaded once in base.html, so every page gets it: home, product,
+   collection, checkout, lookbook, journal, policies.
+
+   Owns three things and nothing else:
+     1. the living ivory canvas (ambient gold light, pure CSS)
+     2. one luxury interaction grammar for every button/link/field
+     3. the scroll-reveal primitives (.rv / .rv-line / .rv-word)
+
+   Page CSS keeps its own layout. This only adds surface + motion.
+   ============================================================ */
+
+:root {
+  --gold-light: #D9B25F;
+  --muted: #6E6353;
+
+  /* one easing vocabulary — every transition on the site uses these */
+  --ease-silk: cubic-bezier(.22, 1, .36, 1);
+  --ease-press: cubic-bezier(.34, 1.56, .64, 1);
+
+  --t-fast: .18s;
+  --t-base: .35s;
+  --t-slow: .9s;
+
+  --sheen: linear-gradient(105deg, transparent 38%, rgba(217, 178, 95, .32) 50%, transparent 62%);
+  --focus-ring: 0 0 0 2px var(--cream), 0 0 0 4px var(--gold-deep);
+}
+
+/* ============================================================
+   1. LIVING CANVAS
+   The ivory never sits still — three gold light sources drift
+   across it on long, non-repeating-feeling cycles. Zero JS, zero
+   network cost. The cursor adds a warm pool on top (--mx/--my are
+   set by atelier.js; they default to centre without it).
+   ============================================================ */
+html { background: var(--cream); }
+
+/* body must be see-through or the fixed canvas below it never shows.
+   base.html and home.css both paint it — this is the single override. */
+body { background: transparent; }
+
+.atelier-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.atelier-bg::before,
+.atelier-bg::after,
+.atelier-bg i {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+/* warm highlight, top-left drift */
+.atelier-bg::before {
+  width: 62vmax; height: 62vmax;
+  top: -22vmax; left: -14vmax;
+  background: radial-gradient(circle, rgba(217, 178, 95, .20) 0%, rgba(217, 178, 95, .06) 42%, transparent 68%);
+  animation: driftA 34s ease-in-out infinite alternate;
+}
+
+/* deeper gold, bottom-right, slower and counter-directional */
+.atelier-bg::after {
+  width: 54vmax; height: 54vmax;
+  bottom: -20vmax; right: -12vmax;
+  background: radial-gradient(circle, rgba(183, 134, 43, .16) 0%, rgba(183, 134, 43, .05) 45%, transparent 70%);
+  animation: driftB 46s ease-in-out infinite alternate;
+}
+
+/* cool ivory counterweight so the gold never reads as a yellow cast */
+.atelier-bg i {
+  width: 46vmax; height: 46vmax;
+  top: 34%; left: 46%;
+  background: radial-gradient(circle, rgba(255, 253, 248, .85) 0%, rgba(255, 253, 248, .3) 50%, transparent 72%);
+  animation: driftC 28s ease-in-out infinite alternate;
+}
+
+@keyframes driftA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(14vmax, 9vmax, 0) scale(1.18); }
+}
+@keyframes driftB {
+  from { transform: translate3d(0, 0, 0) scale(1.1); }
+  to   { transform: translate3d(-12vmax, -10vmax, 0) scale(.92); }
+}
+@keyframes driftC {
+  from { transform: translate3d(-50%, -50%, 0) scale(.9); }
+  to   { transform: translate3d(-34%, -62%, 0) scale(1.25); }
+}
+
+/* cursor pool — a soft warm light that follows the pointer */
+.atelier-cursor-glow {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  width: 40vmax; height: 40vmax;
+  left: var(--mx, 50vw);
+  top: var(--my, 50vh);
+  margin: -20vmax 0 0 -20vmax;
+  background: radial-gradient(circle, rgba(217, 178, 95, .13) 0%, transparent 62%);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.atelier-has-pointer .atelier-cursor-glow { opacity: 1; }
+
+/* ============================================================
+   2. INTERACTION GRAMMAR
+   One set of rules for every control on the site. The selector
+   list is long on purpose: these are the classes the templates
+   already use, so nothing has to be re-tagged.
+   ============================================================ */
+
+/* --- the gold sheen: a single pass of light across the control --- */
+.btn-ghost,
+.btn-gold, .btn-outline, .btn-solid,
+.cs-checkout, .quick-add, .tryon-pill,
+.newsletter button, .search-form button,
+.mega-cta, .policy-cta, .faq-cta, .lb-btn, .acc-btn,
+.submit-btn, .btnpay,
+.pd-actions .btn, .pd-actions button, .pd-actions a,
+.btn-primary, .btn-dark {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-ghost::after,
+.btn-gold::after, .btn-outline::after, .btn-solid::after,
+.cs-checkout::after, .quick-add::after, .tryon-pill::after,
+.newsletter button::after, .search-form button::after,
+.mega-cta::after, .policy-cta::after, .faq-cta::after, .lb-btn::after, .acc-btn::after,
+.submit-btn::after, .btnpay::after,
+.btn-primary::after, .btn-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--sheen);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+.btn-ghost:hover::after,
+.btn-gold:hover::after, .btn-outline:hover::after, .btn-solid:hover::after,
+.cs-checkout:hover::after, .quick-add:hover::after, .tryon-pill:hover::after,
+.newsletter button:hover::after, .search-form button:hover::after,
+.mega-cta:hover::after, .policy-cta:hover::after, .faq-cta:hover::after,
+.lb-btn:hover::after, .acc-btn:hover::after,
+.submit-btn:hover::after, .btnpay:hover::after,
+.btn-primary:hover::after, .btn-dark:hover::after {
+  transition: transform .85s var(--ease-silk);
+  transform: translateX(130%);
+}
+
+/* --- press: everything acknowledges the tap, nothing bounces --- */
+.btn-metal, .btn-ghost, .btn-gold, .btn-outline, .btn-solid,
+.icon-btn, .arrow-btn, .car-btn, .wish-heart, .soc,
+.cs-checkout, .quick-add, .tryon-pill, .cs-qbtn,
+.newsletter button, .search-form button,
+.mega-cta, .policy-cta, .faq-cta, .lb-btn, .acc-btn,
+.submit-btn, .btnpay, .price-band, .btn {
+  transition: transform var(--t-fast) var(--ease-press),
+              background-color var(--t-base) ease,
+              border-color var(--t-base) ease,
+              color var(--t-base) ease,
+              box-shadow var(--t-base) ease;
+}
+
+.btn-metal:active, .btn-ghost:active, .btn-gold:active, .btn-outline:active,
+.btn-solid:active, .cs-checkout:active, .quick-add:active, .tryon-pill:active,
+.newsletter button:active, .search-form button:active, .mega-cta:active,
+.policy-cta:active, .faq-cta:active, .lb-btn:active, .acc-btn:active,
+.submit-btn:active, .btnpay:active, .btn:active {
+  transform: scale(.972);
+}
+
+.icon-btn:active, .arrow-btn:active, .car-btn:active,
+.wish-heart:active, .soc:active, .cs-qbtn:active {
+  transform: scale(.9);
+}
+
+/* --- round controls get a gold halo instead of a sheen --- */
+.icon-btn, .arrow-btn, .car-btn, .wish-heart, .soc, .cs-close {
+  position: relative;
+}
+.icon-btn::before, .car-btn::before, .wish-heart::before, .soc::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(183, 134, 43, .34);
+  transition: box-shadow .5s var(--ease-silk);
+  pointer-events: none;
+}
+.icon-btn:hover::before, .car-btn:hover::before,
+.wish-heart:hover::before, .soc:hover::before {
+  box-shadow: 0 0 0 7px rgba(183, 134, 43, 0);
+}
+
+/* --- links: the hairline draws in from the left --- */
+.footer-link, .mega-link, .search-hint a, .nav-link-custom {
+  position: relative;
+}
+.footer-link::after, .mega-link::after, .search-hint a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: .5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-base) var(--ease-silk);
+}
+.footer-link:hover::after, .mega-link:hover::after, .search-hint a:hover::after {
+  transform: scaleX(1);
+}
+/* mega-link already borrows a border on hover — drop the double line */
+.mega-link:hover { border-bottom-color: transparent !important; }
+
+/* --- fields: gold focus, never a browser-blue box --- */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea, select {
+  transition: border-color var(--t-base) ease, box-shadow var(--t-base) ease, background-color var(--t-base) ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(183, 134, 43, .14);
+}
+
+/* --- keyboard focus is visible everywhere. Non-negotiable. --- */
+a:focus-visible, button:focus-visible, summary:focus-visible,
+[tabindex]:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 4px;
+}
+.icon-btn:focus-visible, .arrow-btn:focus-visible, .car-btn:focus-visible,
+.wish-heart:focus-visible, .soc:focus-visible,
+.btn-metal:focus-visible, .btn-ghost:focus-visible, .cs-checkout:focus-visible {
+  border-radius: 999px;
+}
+
+/* --- header: settles into a denser, frosted bar once you scroll --- */
+.site-header {
+  transition: box-shadow var(--t-slow) var(--ease-silk),
+              background-color var(--t-slow) ease,
+              backdrop-filter var(--t-slow) ease;
+}
+.is-scrolled .site-header {
+  box-shadow: 0 1px 0 var(--line), 0 12px 34px rgba(27, 22, 15, .07);
+  background: rgba(247, 243, 236, .93);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+}
+.site-header .brand {
+  display: inline-block;
+  transition: transform var(--t-slow) var(--ease-silk), letter-spacing var(--t-slow) var(--ease-silk);
+  transform-origin: left center;
+}
+.is-scrolled .site-header .brand {
+  transform: scale(.9);
+  letter-spacing: .22em;
+}
+
+/* --- cart badge acknowledges every add --- */
+.cart-badge { transition: transform var(--t-base) var(--ease-press); }
+.cart-badge.pop { animation: badgePop .5s var(--ease-press); }
+@keyframes badgePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.55); }
+  100% { transform: scale(1); }
+}
+
+/* --- the piece that flies to the bag on add-to-cart --- */
+.fly-piece {
+  position: fixed;
+  z-index: 4000;
+  pointer-events: none;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 18px 40px rgba(27, 22, 15, .28);
+}
+
+/* --- page veil: covers the gap between Django page loads.
+       Exit only — it fades up as you leave. There is deliberately no
+       entry fade: a veil that depends on JS to get out of the way can
+       cover the whole page if that JS never runs. --- */
+.atelier-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--cream) 0%, #FFFDF8 100%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ============================================================
+   3. REVEAL PRIMITIVES
+   home.css already defines .rv for the pages that load it. These
+   are the same rules, hoisted global so product / collection /
+   checkout / lookbook get reveals too. Without JS or with
+   reduced-motion, everything renders fully visible.
+   ============================================================ */
+.jsx .rv {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity var(--t-slow) var(--ease-silk), transform var(--t-slow) var(--ease-silk);
+  transition-delay: var(--rd, 0ms);
+}
+.jsx .rv.in { opacity: 1; transform: none; }
+
+/* Headline words, focusing in one after another.
+   Deliberately NOT display:inline-block — that changes the line box and
+   shifts the heading's spacing against the copy under it. Opacity and
+   filter animate fine on plain inline text and cost zero layout. */
+.rv-word { will-change: opacity, filter; }
+.jsx .rv-split .rv-word { opacity: 0; }
+
+/* ============================================================
+   4. REDUCED MOTION — every moving part above stops here.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .atelier-bg::before,
+  .atelier-bg::after,
+  .atelier-bg i { animation: none; }
+
+  .atelier-cursor-glow { display: none; }
+
+  .cart-badge.pop { animation: none; }
+
+  .jsx .rv,
+  .jsx .rv-split .rv-word {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

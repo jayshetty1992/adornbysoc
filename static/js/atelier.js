@@ -162,8 +162,12 @@
      3. MAGNETIC PRIMARY CTAs
      Was homepage-only and .btn-metal-only. Now every primary
      action on the site leans toward the cursor.
+
+     Not .btn-solid: that is Buy It Now. A button that slides away
+     from the cursor is a target you have to chase, and the one
+     control that closes a sale is never allowed to move.
      ---------------------------------------------------------- */
-  var MAGNETIC = ".btn-metal, .btn-gold, .btn-solid, .cs-checkout, .submit-btn, .btnpay, .policy-cta";
+  var MAGNETIC = ".btn-metal, .btn-gold, .cs-checkout, .submit-btn, .btnpay, .policy-cta";
 
   function initMagnetic() {
     if (!FINE || !gsap) return;

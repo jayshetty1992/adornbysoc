@@ -118,9 +118,10 @@ body { background: transparent; }
    ============================================================ */
 
 /* --- the gold sheen: a single pass of light across the control --- */
-.btn-ghost,
+.btn-ghost, .btn-metal,
 .btn-gold, .btn-outline, .btn-solid,
 .cs-checkout, .quick-add, .tryon-pill,
+.card-quick-add, .card-tryon,
 .newsletter button, .search-form button,
 .mega-cta, .policy-cta, .faq-cta, .lb-btn, .acc-btn,
 .submit-btn, .btnpay,
@@ -131,9 +132,10 @@ body { background: transparent; }
   isolation: isolate;
 }
 
-.btn-ghost::after,
+.btn-ghost::after, .btn-metal::after,
 .btn-gold::after, .btn-outline::after, .btn-solid::after,
 .cs-checkout::after, .quick-add::after, .tryon-pill::after,
+.card-quick-add::after, .card-tryon::after,
 .newsletter button::after, .search-form button::after,
 .mega-cta::after, .policy-cta::after, .faq-cta::after, .lb-btn::after, .acc-btn::after,
 .submit-btn::after, .btnpay::after,
@@ -147,9 +149,10 @@ body { background: transparent; }
   pointer-events: none;
 }
 
-.btn-ghost:hover::after,
+.btn-ghost:hover::after, .btn-metal:hover::after,
 .btn-gold:hover::after, .btn-outline:hover::after, .btn-solid:hover::after,
 .cs-checkout:hover::after, .quick-add:hover::after, .tryon-pill:hover::after,
+.card-quick-add:hover::after, .card-tryon:hover::after,
 .newsletter button:hover::after, .search-form button:hover::after,
 .mega-cta:hover::after, .policy-cta:hover::after, .faq-cta:hover::after,
 .lb-btn:hover::after, .acc-btn:hover::after,
@@ -163,6 +166,7 @@ body { background: transparent; }
 .btn-metal, .btn-ghost, .btn-gold, .btn-outline, .btn-solid,
 .icon-btn, .arrow-btn, .car-btn, .wish-heart, .soc,
 .cs-checkout, .quick-add, .tryon-pill, .cs-qbtn,
+.card-quick-add, .card-tryon,
 .newsletter button, .search-form button,
 .mega-cta, .policy-cta, .faq-cta, .lb-btn, .acc-btn,
 .submit-btn, .btnpay, .price-band, .btn {
@@ -175,6 +179,7 @@ body { background: transparent; }
 
 .btn-metal:active, .btn-ghost:active, .btn-gold:active, .btn-outline:active,
 .btn-solid:active, .cs-checkout:active, .quick-add:active, .tryon-pill:active,
+.card-quick-add:active, .card-tryon:active,
 .newsletter button:active, .search-form button:active, .mega-cta:active,
 .policy-cta:active, .faq-cta:active, .lb-btn:active, .acc-btn:active,
 .submit-btn:active, .btnpay:active, .btn:active {

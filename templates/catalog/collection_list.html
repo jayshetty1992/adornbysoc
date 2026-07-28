@@ -482,10 +482,12 @@
   z-index: 9999;
 }
 
-/* Product area lower so it never covers dropdown */
+/* Product area lower so it never covers dropdown.
+   .p-media deliberately has no z-index: giving it one made it a stacking
+   context, which trapped the Add to Bag button (z-3) inside it and let the
+   card's stretched link (z-1, later in the DOM) swallow every click. */
 .pl-grid,
-.p-card,
-.p-media {
+.p-card {
   position: relative;
   z-index: 1;
 }
@@ -754,23 +756,36 @@
   /* quick add + wishlist on cards (Ivory Atelier) */
   .p-card { position: relative; }
   .p-media { position: relative; }
+  /* smoked glass over the photograph, gold hairline, fills gold on hover —
+     same pill as the home rows so the shop reads as one shop */
   .card-quick-add {
     position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 3;
-    padding: 12px; border: 0; border-radius: 24px;
-    background: rgba(27, 22, 15, .92); color: #F7F3EC;
-    font-size: 11px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600;
-    opacity: 0; transform: translateY(8px);
-    transition: opacity .35s ease, transform .35s ease, background .3s ease;
+    padding: 13px; border-radius: 26px;
+    border: 1px solid rgba(217, 178, 95, .3);
+    background: rgba(27, 22, 15, .84); color: #F7F3EC;
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+    box-shadow: 0 10px 24px -16px rgba(27, 22, 15, .9);
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity .35s ease, transform .45s var(--ease-silk),
+                background-color .3s ease, border-color .3s ease,
+                box-shadow .35s ease, color .3s ease;
     cursor: pointer;
   }
   .p-card:hover .card-quick-add { opacity: 1; transform: none; }
-  .card-quick-add:hover { background: #8A6420; }
-  .p-card:hover .card-quick-add:active { transform: scale(0.97); }
+  .card-quick-add:hover {
+    background: rgba(138, 100, 32, .94);
+    border-color: rgba(217, 178, 95, .8);
+    box-shadow: 0 14px 28px -14px rgba(138, 100, 32, .8);
+    color: #FFFDF8;
+  }
+  .p-card:hover .card-quick-add:active { transform: scale(0.972); }
   @media (hover: none) { .card-quick-add { opacity: 1; transform: none; } }
 
   /* virtual try-on pill above quick-add */
   .card-tryon {
-    position: absolute; left: 10px; right: 10px; bottom: 56px; z-index: 3;
+    position: absolute; left: 10px; right: 10px; bottom: 60px; z-index: 3;
     display: block; text-align: center; text-decoration: none;
     padding: 10px; border: 1px solid rgba(183, 134, 43, .6); border-radius: 24px;
     background: rgba(255, 255, 255, .92); color: #8A6420;

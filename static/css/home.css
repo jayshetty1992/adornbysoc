@@ -317,23 +317,37 @@ body {
 }
 .bs-empty { color: var(--jb-muted); padding: 24px 6px; }
 
-/* quick add-to-bag — appears on hover (always visible on touch) */
+/* quick add-to-bag — smoked glass over the photograph, gold hairline,
+   fills gold on hover. Appears on hover (always visible on touch). */
 .quick-add {
   position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 3;
-  padding: 12px; border: 0; border-radius: 24px;
-  background: rgba(27, 22, 15, .92); color: #F7F3EC;
-  font-family: var(--font-body); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .35s ease, transform .35s ease, background .3s ease;
+  padding: 13px; border-radius: 26px;
+  border: 1px solid rgba(217, 178, 95, .3);
+  background: rgba(27, 22, 15, .84); color: #F7F3EC;
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+  backdrop-filter: blur(10px) saturate(130%);
+  box-shadow: 0 10px 24px -16px rgba(27, 22, 15, .9);
+  font-family: var(--font-body); font-size: 11px; letter-spacing: .18em;
+  font-weight: 600; text-transform: uppercase;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .35s ease, transform .45s var(--ease-silk),
+              background-color .3s ease, border-color .3s ease,
+              box-shadow .35s ease, color .3s ease;
   cursor: pointer;
 }
 .bs-card:hover .quick-add { opacity: 1; transform: none; }
-.quick-add:hover { background: var(--jb-gold-deep); }
+.quick-add:hover {
+  background: rgba(138, 100, 32, .94);
+  border-color: rgba(217, 178, 95, .8);
+  box-shadow: 0 14px 28px -14px rgba(138, 100, 32, .8);
+  color: #FFFDF8;
+}
+.bs-card:hover .quick-add:active { transform: scale(.972); }
 @media (hover: none) { .quick-add { opacity: 1; transform: none; } }
 
 /* virtual try-on pill — appears on hover above quick-add */
 .tryon-pill {
-  position: absolute; left: 10px; right: 10px; bottom: 56px; z-index: 3;
+  position: absolute; left: 10px; right: 10px; bottom: 60px; z-index: 3;
   display: block; text-align: center;
   padding: 10px; border: 1px solid rgba(212, 166, 74, .6); border-radius: 24px;
   background: rgba(255, 255, 255, .92); color: var(--jb-gold-deep);

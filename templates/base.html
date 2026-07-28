@@ -1278,7 +1278,7 @@
   </header>
 
   <!-- SEARCH OVERLAY -->
-  <div class="search-overlay" id="searchOverlay" aria-hidden="true">
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true" data-lenis-prevent>
     <div class="search-panel">
       <form class="search-form" method="get" action="{% url 'catalog:product_list' %}" role="search">
         <label for="searchInput" class="visually-hidden">Search products</label>
@@ -1301,7 +1301,7 @@
   <!-- ? CART OVERLAY + SIDEBAR -->
   <div class="cart-overlay" id="cartOverlay" aria-hidden="true"></div>
 
-  <aside class="cart-sidebar" id="cartSidebar" aria-hidden="true">
+  <aside class="cart-sidebar" id="cartSidebar" aria-hidden="true" data-lenis-prevent>
     <div class="cart-sidebar-inner" id="cartSidebarInner">
       <!-- content comes via AJAX -->
     </div>
@@ -1411,6 +1411,49 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- GSAP 3 (core + ScrollTrigger). Free for all uses since v3.13. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <!-- Lenis smooth scroll -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js"></script>
+  <script>
+    /* Register plugins once, and honour reduced-motion globally so every
+       later gsap.to()/from() is instant for users who ask for less motion. */
+    (function () {
+      var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (window.gsap) {
+        gsap.registerPlugin(ScrollTrigger);
+        if (reduced) gsap.globalTimeline.timeScale(200);
+      }
+
+      /* Lenis drives the page scroll; reduced-motion users keep native scroll. */
+      if (window.Lenis && !reduced) {
+        var lenis = new Lenis({ duration: 1.1, touchMultiplier: 1.6 });
+        window.lenis = lenis;
+
+        if (window.gsap) {
+          lenis.on("scroll", ScrollTrigger.update);
+          gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+          gsap.ticker.lagSmoothing(0);
+        } else {
+          requestAnimationFrame(function raf(t) { lenis.raf(t); requestAnimationFrame(raf); });
+        }
+
+        /* Anchor links must go through Lenis, or they jump past the smoothing. */
+        document.addEventListener("click", function (e) {
+          var a = e.target.closest('a[href^="#"]:not([href="#"])');
+          if (!a) return;
+          var target = document.querySelector(a.getAttribute("href"));
+          if (!target) return;
+          e.preventDefault();
+          lenis.scrollTo(target, { offset: -90 });
+        });
+      }
+    })();
+  </script>
+
   <script>
 (function(){
   const cartBtn = document.getElementById("cartBtn");
@@ -1450,6 +1493,7 @@
     document.documentElement.classList.add("cart-open");
     overlay.setAttribute("aria-hidden","false");
     sidebar.setAttribute("aria-hidden","false");
+    if (window.lenis) window.lenis.stop();
     loadSidebar();
   }
 
@@ -1457,6 +1501,7 @@
     document.documentElement.classList.remove("cart-open");
     overlay.setAttribute("aria-hidden","true");
     sidebar.setAttribute("aria-hidden","true");
+    if (window.lenis) window.lenis.start();
   }
 
   async function loadSidebar(){

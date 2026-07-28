@@ -1,0 +1,48 @@
+{% comment %}
+Vanta.js animated background — OPT-IN, not loaded site-wide.
+
+three.js is ~600KB, so this is deliberately NOT in base.html. Include it only
+on a page that actually shows an effect, inside {% block extra_js %}:
+
+    {% include "_vanta.html" with effect="fog" target="#hero" %}
+
+`effect`  one of: fog, waves, birds, net, clouds, globe, halo, rings, topology,
+          dots, cells, trunk, ripple, cell (default: fog)
+`target`  CSS selector of the element to paint (default: #hero)
+
+Colours below are the Ivory Atelier palette. Skipped automatically for
+reduced-motion users and on small screens, where it costs battery for nothing.
+{% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.{{ effect|default:'fog' }}.min.js"></script>
+<script>
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.innerWidth < 768) return;
+
+    var el = document.querySelector("{{ target|default:'#hero' }}");
+    var fx = window["VANTA"] && VANTA["{{ effect|default:'FOG'|upper }}"];
+    if (!el || !fx) return;
+
+    window.vantaEffect = fx({
+      el: el,
+      mouseControls: true,
+      touchControls: false,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      /* Ivory Atelier palette */
+      highlightColor: 0xd9b25f,
+      midtoneColor: 0xb7862b,
+      lowlightColor: 0x8a6420,
+      baseColor: 0xf7f3ec,
+      backgroundColor: 0xf7f3ec,
+      color: 0xb7862b,
+      color1: 0xd9b25f,
+      color2: 0x8a6420,
+      blurFactor: 0.55,
+      speed: 0.80,
+      zoom: 0.85
+    });
+  })();
+</script>

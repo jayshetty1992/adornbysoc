@@ -162,6 +162,42 @@ body { background: transparent; }
   transform: translateX(130%);
 }
 
+/* --- gold leaf: what the ink controls do on hover -------------------
+   A black button going slightly-less-black is not an event. These stay
+   ink at rest and gild on hover: polished gold rises through the face
+   and the label turns to ink, so the control reads like gold foil.
+   The gradient lives on ::before because gradients cannot be animated
+   directly — opacity can, and that is what fades. -------------------- */
+.btn-solid, .btn-metal, .quick-add, .card-quick-add, .search-form button {
+  --gold-leaf: linear-gradient(135deg, #B7862B 0%, #E3C87E 46%, #C08F33 100%);
+}
+
+.btn-solid::before, .btn-metal::before,
+.quick-add::before, .card-quick-add::before,
+.search-form button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gold-leaf);
+  opacity: 0;
+  transition: opacity .4s var(--ease-silk);
+  pointer-events: none;
+}
+
+.btn-solid:hover::before, .btn-metal:hover::before,
+.quick-add:hover::before, .card-quick-add:hover::before,
+.search-form button:hover::before {
+  opacity: 1;
+}
+
+/* ink label on gold — the only readable choice, and the richer one */
+.btn-solid:hover, .btn-metal:hover,
+.quick-add:hover, .card-quick-add:hover,
+.search-form button:hover {
+  color: #1B160F;
+}
+
 /* --- press: everything acknowledges the tap, nothing bounces --- */
 .btn-metal, .btn-ghost, .btn-gold, .btn-outline, .btn-solid,
 .icon-btn, .arrow-btn, .car-btn, .wish-heart, .soc,

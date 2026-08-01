@@ -159,31 +159,13 @@
   }
 
   /* ----------------------------------------------------------
-     3. MAGNETIC PRIMARY CTAs
-     Was homepage-only and .btn-metal-only. Now every primary
-     action on the site leans toward the cursor.
-
-     Not .btn-solid: that is Buy It Now. A button that slides away
-     from the cursor is a target you have to chase, and the one
-     control that closes a sale is never allowed to move.
+     3. (removed) MAGNETIC CTAs
+     Buttons used to lean toward the cursor, which meant GSAP wrote
+     a live transform onto every one of them. A control that drifts
+     under the pointer is a target you chase; hover belongs to light
+     and colour, not to geometry. Nothing writes to button transforms
+     now — the only movement left is the press, and that is CSS.
      ---------------------------------------------------------- */
-  var MAGNETIC = ".btn-metal, .btn-gold, .cs-checkout, .submit-btn, .btnpay, .policy-cta";
-
-  function initMagnetic() {
-    if (!FINE || !gsap) return;
-
-    document.querySelectorAll(MAGNETIC).forEach(function (btn) {
-      var toX = gsap.quickTo(btn, "x", { duration: 0.5, ease: "power3.out" });
-      var toY = gsap.quickTo(btn, "y", { duration: 0.5, ease: "power3.out" });
-
-      btn.addEventListener("mousemove", function (e) {
-        var r = btn.getBoundingClientRect();
-        toX((e.clientX - r.left - r.width / 2) * 0.22);
-        toY((e.clientY - r.top - r.height / 2) * 0.32);
-      });
-      btn.addEventListener("mouseleave", function () { toX(0); toY(0); });
-    });
-  }
 
   /* ----------------------------------------------------------
      4. HEADER STATE + CURSOR LIGHT
@@ -317,7 +299,6 @@
     initCartFeedback();
     if (REDUCED) return;
     initHeadlines();
-    initMagnetic();
     initVeil();
   }
 

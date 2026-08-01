@@ -333,9 +333,32 @@ def sale_page(request):
     })
 
 
+LOOKBOOK_PRODUCT_FIELDS = (
+    "split_left_product", "split_right_product",
+    "product_1", "product_2", "product_3", "product_4",
+)
+
+
 def lookbook_page(request):
     hero = Lookbook.objects.filter(is_active=True).order_by("position", "-created_at").first()
-    sections = LookbookSection.objects.filter(is_active=True).prefetch_related("grid_items").order_by("position", "-created_at")
+    sections = list(
+        LookbookSection.objects.filter(is_active=True)
+        .prefetch_related("grid_items__product")
+        .order_by("position", "-created_at")
+    )
+
+    # A deactivated product still 404s on its detail page, so a lookbook tile
+    # pointing at one is a dead end. Drop the reference and the template falls
+    # back to the plain image — every link site is already guarded by {% if %}.
+    for sec in sections:
+        for field in LOOKBOOK_PRODUCT_FIELDS:
+            product = getattr(sec, field, None)
+            if product and not product.is_active:
+                setattr(sec, field, None)
+        for item in sec.grid_items.all():
+            if item.product and not item.product.is_active:
+                item.product = None
+
     return render(request, "catalog/lookbook.html", {"lookbook": hero, "sections": sections})
 
 

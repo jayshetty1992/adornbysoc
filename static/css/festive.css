@@ -1,0 +1,142 @@
+/* ============================================================
+   ADORN BY SOC — FESTIVE DRESSING
+   Loaded on every page; does nothing at all unless core/festive.py
+   has put a data-festival on <html>.
+
+   The rule of this file: it may retune the accent, the ambient light
+   and the announcement bar. It may not touch layout, type or the
+   ivory ground. A festival should read like the shop lit a different
+   lamp — not like a different shop.
+   ============================================================ */
+
+/* --- the shared festive announcement line ------------------------- */
+[data-festival] .topbar {
+  background: var(--fest-bar, #2a1a16);
+}
+
+[data-festival] .topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, var(--fest-accent, #b7862b), var(--fest-accent-2, #d9b25f), transparent);
+  opacity: .9;
+}
+
+/* the ambient canvas picks up the festival's light */
+[data-festival] .atelier-bg::before {
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--fest-accent) 22%, transparent) 0%,
+    color-mix(in srgb, var(--fest-accent) 7%, transparent) 42%,
+    transparent 68%);
+}
+
+[data-festival] .atelier-bg::after {
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--fest-accent-2) 18%, transparent) 0%,
+    color-mix(in srgb, var(--fest-accent-2) 5%, transparent) 45%,
+    transparent 70%);
+}
+
+/* ============================================================
+   THE FESTIVALS
+   Each sets three things: the two accent lights and the bar.
+   --gold / --gold-deep are the site's own tokens, so retuning them
+   carries the festival into every price, hairline and gilded button.
+   ============================================================ */
+
+/* Diwali — deep lamp gold and marigold */
+[data-festival="diwali"] {
+  --fest-accent: #E0A83C;
+  --fest-accent-2: #C2571E;
+  --fest-bar: #2B1206;
+  --gold: #C08A24;
+  --gold-deep: #8A5313;
+  --gold-light: #F0CE7A;
+}
+
+/* Holi — the restrained version: rose and pistachio over ivory */
+[data-festival="holi"] {
+  --fest-accent: #E45C8A;
+  --fest-accent-2: #56B6A4;
+  --fest-bar: #23131E;
+  --gold: #C2456F;
+  --gold-deep: #8E2F4E;
+  --gold-light: #F2A6BF;
+}
+
+/* Eid — emerald against gold */
+[data-festival="eid"] {
+  --fest-accent: #2E8B6F;
+  --fest-accent-2: #D9B25F;
+  --fest-bar: #0E241D;
+  --gold: #1F7A5E;
+  --gold-deep: #14543F;
+  --gold-light: #7FC9AE;
+}
+
+/* Christmas — evergreen and a warm red */
+[data-festival="christmas"] {
+  --fest-accent: #1F6B45;
+  --fest-accent-2: #B03A32;
+  --fest-bar: #12221A;
+  --gold: #9E2F2A;
+  --gold-deep: #6E1F1C;
+  --gold-light: #E0A199;
+}
+
+/* New Year — champagne */
+[data-festival="newyear"] {
+  --fest-accent: #D9C48A;
+  --fest-accent-2: #8FA0B8;
+  --fest-bar: #14161C;
+  --gold: #A8913F;
+  --gold-deep: #7A6828;
+  --gold-light: #EBDDAE;
+}
+
+/* Valentine's — rose gold */
+[data-festival="valentine"] {
+  --fest-accent: #D98394;
+  --fest-accent-2: #E8B6A0;
+  --fest-bar: #2A1319;
+  --gold: #B26B76;
+  --gold-deep: #8A4B55;
+  --gold-light: #EFC3CB;
+}
+
+/* Akshaya Tritiya — the gold day; the house gold, turned up */
+[data-festival="akshaya"] {
+  --fest-accent: #E3B34A;
+  --fest-accent-2: #C99A2E;
+  --fest-bar: #2A1F08;
+  --gold: #C69526;
+  --gold-deep: #916A15;
+  --gold-light: #F4DA96;
+}
+
+/* Raksha Bandhan — saffron thread */
+[data-festival="rakhi"] {
+  --fest-accent: #E08A2E;
+  --fest-accent-2: #C7443F;
+  --fest-bar: #2B1810;
+  --gold: #C1731F;
+  --gold-deep: #8E5314;
+  --gold-light: #F0BE84;
+}
+
+/* Old browsers without color-mix keep the plain ivory canvas —
+   the accents above still apply, so nothing looks broken. */
+@supports not (background: color-mix(in srgb, red 10%, transparent)) {
+  [data-festival] .atelier-bg::before,
+  [data-festival] .atelier-bg::after {
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-festival] .topbar::after { opacity: .6; }
+}

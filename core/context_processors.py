@@ -11,3 +11,9 @@ def global_brand(request):
         "BRAND_NAME": "Adorn By Soc"
     }
 
+
+def festive_theme(request):
+    """`festive` on every page: the festival the calendar says we are in."""
+    from .festive import resolve
+    return {"festive": resolve(request)}
+

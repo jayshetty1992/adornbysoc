@@ -227,6 +227,24 @@ body { background: transparent; }
   transform: scale(.9);
 }
 
+/* --- phones are operated with thumbs -------------------------------
+   Two controls sat under the 44px anyone can reliably hit: the card
+   wishlist heart and the search panel's suggestion links. Sized up on
+   small screens only, so the desktop composition is untouched. -------- */
+@media (max-width: 768px) {
+  /* `html` only for weight: page CSS loads after this layer, so a bare
+     .wish-heart here would lose to the shop page's own 38px rule. */
+  html .wish-heart {
+    width: 44px;
+    height: 44px;
+  }
+
+  .search-hint a {
+    display: inline-block;
+    padding: 13px 0;
+  }
+}
+
 /* --- round controls get a gold halo instead of a sheen --- */
 .icon-btn, .arrow-btn, .car-btn, .wish-heart, .soc, .cs-close {
   position: relative;

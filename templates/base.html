@@ -1,6 +1,7 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+{# data-festival is set by core/festive.py from today's date — see festive.css #}
+<html lang="en"{% if festive %} data-festival="{{ festive.slug }}"{% endif %}>
 
 <head>
   <meta charset="utf-8" />
@@ -435,9 +436,12 @@
     margin-bottom: 10px;
   }
 
+  /* Thumbs are not cursors: give every footer link a 44px-tall target
+     without changing how far apart the lines look. */
   .footer-link {
     font-size: 12px;
-    padding: 6px 0;
+    padding: 13px 0;
+    line-height: 1.5;
   }
 
   .newsletter {
@@ -963,6 +967,8 @@
 
   <!-- Atelier layer: living canvas + one interaction grammar for every page -->
   <link rel="stylesheet" href="{% static 'css/atelier.css' %}">
+  <!-- Festive dressing: inert unless <html data-festival> is set -->
+  <link rel="stylesheet" href="{% static 'css/festive.css' %}">
   <script>
     /* Set before first paint: motion styles only apply when JS is live and
        motion is welcome. Without it, every page renders fully visible. */
@@ -987,7 +993,7 @@
         <button class="arrow-btn" type="button" aria-label="Previous message" id="topbarPrev">&lt;</button>
 
         <div class="flex-grow-1 text-center" id="topbarText">
-          Free shipping across India &middot; COD available &middot; 6-month anti-tarnish warranty
+          {% if festive %}{{ festive.note }}{% else %}Free shipping across India &middot; COD available &middot; 6-month anti-tarnish warranty{% endif %}
         </div>
 
         <button class="arrow-btn" type="button" aria-label="Next message" id="topbarNext">&gt;</button>
@@ -1335,7 +1341,9 @@
           <div class="footer-head">SHOP</div>
           <a class="footer-link" href="{% url 'catalog:collection_list' %}">New Collections</a>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='gold' %}">Gold</a>
-          <a class="footer-link" href="{% url 'catalog:collection_products' slug='silver' %}">Silver</a>
+          {# no silver range exists — the link 404'd on every page. Restore it
+             when a collection with slug 'silver' is created. #}
+          <a class="footer-link" href="{% url 'catalog:sale_page' %}">Sale</a>
         </div>
 
         <!-- COLLECTIONS -->
@@ -1634,6 +1642,7 @@
     // ===== Topbar rotating text (optional, matches the arrows on your screenshot) =====
     (function () {
       const messages = [
+        {% if festive %}"{{ festive.note|escapejs }}",{% endif %}
         "Free shipping across India",
         "COD available",
         "6-month anti-tarnish warranty"

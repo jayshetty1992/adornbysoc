@@ -508,10 +508,9 @@
               {% if loc.country %}{{ loc.country }}{% endif %}
             </div>
 
+            {# no link at all beats a link that goes nowhere #}
             {% if loc.directions_url %}
             <a class="loc-dir" href="{{ loc.directions_url }}" target="_blank" rel="noopener">Get Directions</a>
-            {% else %}
-            <a class="loc-dir" href="#" onclick="return false;">Get Directions</a>
             {% endif %}
           </div>
         </div>
@@ -583,9 +582,12 @@
 
       <button class="submit-btn" type="submit">SUBMIT</button>
 
+      {# was a reCAPTCHA notice with two dead links — nothing on this form uses
+         reCAPTCHA, so it claimed a protection that does not exist. #}
       <div class="small-note">
-        This site is protected by reCAPTCHA and the Google <a href="#" onclick="return false;">Privacy Policy</a> and
-        <a href="#" onclick="return false;">Terms of Service</a> apply.
+        We use your details only to answer this message. See our
+        <a href="{% url 'page' 'privacy' %}">privacy notice</a> and
+        <a href="{% url 'page' 'terms' %}">terms</a>.
       </div>
     </form>
   </section>

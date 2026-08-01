@@ -9,6 +9,17 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = ["adornbysoc.com", "www.adornbysoc.com", "100.27.228.142", "localhost", "127.0.0.1"]
 
+if DEBUG:
+    # Dev only: so a phone on the same Wi-Fi can reach `runserver 0.0.0.0:8000`
+    # without this list being hand-edited every time DHCP hands out a new
+    # address. Adds this machine's own addresses — never a wildcard.
+    import socket
+
+    try:
+        ALLOWED_HOSTS += socket.gethostbyname_ex(socket.gethostname())[2]
+    except OSError:
+        pass
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

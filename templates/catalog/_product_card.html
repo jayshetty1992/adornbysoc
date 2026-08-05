@@ -1,7 +1,6 @@
 {% load static %}
 {# Reusable shop card: expects `p` (Product). Used by homepage rows + wishlist. #}
 <div class="bs-card rv" style="--rd:{{ forloop.counter0 }}00ms">
-  {% include "catalog/_spot_slot.html" with sel=".bs-card" %}
   <div class="bs-badges">
     {% if p.is_on_sale %}<span class="bs-tag sale">Sale</span>{% else %}<span class="bs-tag">New</span>{% endif %}
   </div>

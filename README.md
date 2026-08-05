@@ -53,14 +53,8 @@ Use it in any template — Django renders the div, React renders what goes insid
 
 Working reference: `/dev/motion/` (DEBUG only) — `templates/dev/motion.html`.
 
-In use now: the product-card spotlight. `templates/catalog/_spot_slot.html` drops
-the island into a card; the box it lights up is styled in
-`static/css/spotlight-card.css`.
-
 Notes:
 - Tailwind ships **without preflight** (`frontend/tailwind.css`). Preflight would
   reset the site's own CSS. Only theme + utilities are imported.
 - `static/dist/` is committed so deploys don't need Node. Rebuild and commit it
   whenever an island changes.
-- `components/motion-primitives/spotlight.tsx` carries a local change (a `track`
-  prop). Re-running the CLI for that component would overwrite it.

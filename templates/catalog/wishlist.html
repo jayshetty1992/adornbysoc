@@ -4,8 +4,6 @@
 {% block title %}Your Wishlist | Adorn by SOC{% endblock %}
 
 {% block extra_css %}
-{# React islands: the product-card spotlight #}
-<link rel="stylesheet" href="{% static 'dist/adorn.css' %}">
 <link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
@@ -26,7 +24,6 @@
     <div class="wish-grid">
       {% for it in items %}
       <div class="bs-card">
-        {% include "catalog/_spot_slot.html" with sel=".bs-card" %}
         <div class="bs-media">
           {% with img=it.product.images.all.0 %}
           <img class="primary" src="{% if img %}{{ img.image.url }}{% else %}{% static 'img/hero.jpg' %}{% endif %}" alt="{{ it.product.title }}">
@@ -54,8 +51,4 @@
   </div>
 </section>
 
-{% endblock %}
-
-{% block extra_js %}
-<script type="module" src="{% static 'dist/adorn.js' %}"></script>
 {% endblock %}

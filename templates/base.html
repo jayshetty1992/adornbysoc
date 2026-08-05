@@ -1359,8 +1359,8 @@
           <div class="footer-head">SHOP</div>
           <a class="footer-link" href="{% url 'catalog:collection_list' %}">New Collections</a>
           <a class="footer-link" href="{% url 'catalog:collection_products' slug='gold' %}">Gold</a>
-          {# no silver range exists — the link 404'd on every page. Restore it
-             when a collection with slug 'silver' is created. #}
+          {% comment %} no silver range exists — the link 404'd on every page. Restore it
+             when a collection with slug 'silver' is created. {% endcomment %}
           <a class="footer-link" href="{% url 'catalog:sale_page' %}">Sale</a>
         </div>
 

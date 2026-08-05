@@ -582,8 +582,8 @@
 
       <button class="submit-btn" type="submit">SUBMIT</button>
 
-      {# was a reCAPTCHA notice with two dead links — nothing on this form uses
-         reCAPTCHA, so it claimed a protection that does not exist. #}
+      {% comment %} was a reCAPTCHA notice with two dead links — nothing on this form uses
+         reCAPTCHA, so it claimed a protection that does not exist. {% endcomment %}
       <div class="small-note">
         We use your details only to answer this message. See our
         <a href="{% url 'page' 'privacy' %}">privacy notice</a> and

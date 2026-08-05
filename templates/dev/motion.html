@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# Reference page for the React island setup. DEBUG-only — see core/urls.py.
+   Copy the two asset tags and the data-react div into any template that
+   needs a motion-primitives component. #}
+
+{% block title %}React islands | ADORN{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'dist/adorn.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="container" style="padding:120px 0 160px; max-width:900px;">
+
+  <p style="font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:#8A6420; margin-bottom:22px;">
+    React islands
+  </p>
+
+  {# The island: Django renders the div, React renders what goes inside it. #}
+  <div data-react="TextEffect"
+       data-props='{"children": "Every piece, made to be worn every day.", "per": "char", "preset": "fade-in-blur", "className": "text-4xl"}'
+       style="font-family:var(--font-display); color:#1B160F; line-height:1.25;"></div>
+
+  <p style="margin-top:48px; font-size:14px; line-height:1.9; color:rgba(27,22,15,.7);">
+    The heading above is a motion-primitives <code>TextEffect</code>, mounted by
+    <code>frontend/main.tsx</code>. Everything else on this page is the ordinary
+    Django template and the site's own CSS.
+  </p>
+
+  <pre style="margin-top:24px; padding:18px; background:#F7F3EC; border:1px solid rgba(27,22,15,.12); border-radius:10px; font-size:12px; overflow-x:auto;">npx motion-primitives@latest add &lt;component&gt;   # fetches the source
+npm run build                                  # rebuilds static/dist/</pre>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{% static 'dist/adorn.js' %}"></script>
+{% endblock %}

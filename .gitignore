@@ -32,3 +32,6 @@ staticfiles/
 # Credentials
 credentials.json
 service-account*.json
+
+# Node / frontend build
+node_modules/

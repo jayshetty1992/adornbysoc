@@ -1,4 +1,7 @@
+from django.conf import settings
 from django.urls import path
+from django.views.generic import TemplateView
+
 from . import views
 
 urlpatterns = [
@@ -8,3 +11,9 @@ urlpatterns = [
     path("journal/", views.journal_list, name="journal_list"),
     path("journal/<slug:slug>/", views.journal_detail, name="journal_detail"),
 ]
+
+# Reference page for the React island setup. Never routed in production.
+if settings.DEBUG:
+    urlpatterns += [
+        path("dev/motion/", TemplateView.as_view(template_name="dev/motion.html"), name="dev_motion"),
+    ]

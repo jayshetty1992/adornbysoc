@@ -1,0 +1,16 @@
+/* Tailwind for the React islands only.
+
+   Preflight is deliberately left out. Adorn's look lives in hand-written CSS
+   (theme, home, atelier, festive) and Tailwind's reset would flatten all of
+   it — every heading, list and button on the site. Importing theme +
+   utilities gives the components their classes and touches nothing else. */
+
+@layer theme, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Only island source files are scanned; the Django templates keep their own
+   stylesheets and have no Tailwind classes to find. */
+@source "../components";
+@source "../frontend";

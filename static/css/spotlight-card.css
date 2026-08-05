@@ -1,0 +1,55 @@
+/* ============================================================
+   ADORN BY SOC — SPOTLIGHT PRODUCT CARDS (site-wide)
+   A gold light follows the cursor across every product card:
+   .bs-card (home rows, wishlist) and .p-card (collection, sale).
+
+   One pointermove listener in atelier.js publishes the cursor in
+   viewport px as --sx/--sy on <html>; background-attachment:fixed
+   lets every card read that same pair without per-card math.
+
+   Inert without JS (the light sits off-screen at -999) and on
+   touch, where there is no cursor to follow.
+   ============================================================ */
+
+@media (hover: hover) and (pointer: fine) {
+
+  .bs-media,
+  .p-media { position: relative; }
+
+  .bs-media::before, .bs-media::after,
+  .p-media::before, .p-media::after {
+    content: ""; position: absolute; inset: 0; z-index: 2;
+    pointer-events: none; border-radius: inherit;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0; transition: opacity .4s ease;
+  }
+
+  /* Warm wash over the photograph. */
+  .bs-media::before,
+  .p-media::before {
+    background-image: radial-gradient(
+      260px 260px at calc(var(--sx, -999) * 1px) calc(var(--sy, -999) * 1px),
+      rgba(217, 178, 95, .20), rgba(217, 178, 95, 0) 70%);
+  }
+
+  /* Gold hairline that lights only where the cursor is — the border ring is
+     all that survives the mask (padding-box XOR border-box). */
+  .bs-media::after,
+  .p-media::after {
+    border: 1px solid transparent;
+    background-origin: border-box;
+    background-image: radial-gradient(
+      190px 190px at calc(var(--sx, -999) * 1px) calc(var(--sy, -999) * 1px),
+      rgba(217, 178, 95, .95), rgba(183, 134, 43, 0) 70%);
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+  }
+
+  .bs-card:hover .bs-media::before,
+  .bs-card:hover .bs-media::after,
+  .p-card:hover .p-media::before,
+  .p-card:hover .p-media::after { opacity: 1; }
+}

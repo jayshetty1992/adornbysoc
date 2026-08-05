@@ -292,6 +292,19 @@
     });
   }
 
+  /* ----------------------------------------------------------
+     SPOTLIGHT CARDS
+     One listener publishes the cursor for every product card on
+     the page; spotlight-card.css does all the drawing.
+     ---------------------------------------------------------- */
+  function initSpotlight() {
+    var root = document.documentElement;
+    document.addEventListener("pointermove", function (ev) {
+      root.style.setProperty("--sx", ev.clientX);
+      root.style.setProperty("--sy", ev.clientY);
+    }, { passive: true });
+  }
+
   /* ---------------------------------------------------------- */
   function boot() {
     initReveal();
@@ -300,6 +313,7 @@
     if (REDUCED) return;
     initHeadlines();
     initVeil();
+    if (FINE) initSpotlight();
   }
 
   if (document.readyState === "loading") {

@@ -1,55 +1,51 @@
 /* ============================================================
    ADORN BY SOC — SPOTLIGHT PRODUCT CARDS (site-wide)
-   A gold light follows the cursor across every product card:
-   .bs-card (home rows, wishlist) and .p-card (collection, sale).
+   On hover a blurred gold bloom spills out past the card edge and
+   follows the cursor. Nothing is laid over the photograph — the
+   product stays clear.
 
-   One pointermove listener in atelier.js publishes the cursor in
-   viewport px as --sx/--sy on <html>; background-attachment:fixed
-   lets every card read that same pair without per-card math.
+   Applies to .bs-card (home rows, wishlist) and .p-card
+   (collection, sale).
 
-   Inert without JS (the light sits off-screen at -999) and on
+   atelier.js writes the cursor onto the hovered card as --sx/--sy,
+   in px from the card's top-left corner. Card-local rather than
+   viewport-fixed because the reveal animations put transforms on
+   ancestors, and a transformed ancestor breaks a fixed background.
+
+   Inert without JS (the light sits off-screen at -9999) and on
    touch, where there is no cursor to follow.
    ============================================================ */
 
 @media (hover: hover) and (pointer: fine) {
 
-  .bs-media,
-  .p-media { position: relative; }
+  /* position: the sale page's card is static, and the bloom is absolute. */
+  .bs-card,
+  .p-card { position: relative; isolation: isolate; }
 
-  .bs-media::before, .bs-media::after,
-  .p-media::before, .p-media::after {
-    content: ""; position: absolute; inset: 0; z-index: 2;
-    pointer-events: none; border-radius: inherit;
+  /* The home rows clip their overflow so a vertical swipe scrolls the page,
+     not the row — which would shave the bloom off. Trade the clipped space
+     for padding and take it straight back as margin: room for the light,
+     no shift in where anything sits. */
+  /* html prefix: home.css loads after this file and owns .bs-row. */
+  html .bs-row {
+    padding: 28px 24px 32px;
+    margin: -28px -24px -22px;
+  }
+
+  .bs-card::before,
+  .p-card::before {
+    content: ""; position: absolute; inset: -22px; z-index: -1;
+    pointer-events: none; border-radius: 30px;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* +22px puts the light back under the cursor: this box starts
+       22px outside the card it is measured from. */
+    background-image: radial-gradient(
+      260px 260px at calc(var(--sx, -9999) * 1px + 22px) calc(var(--sy, -9999) * 1px + 22px),
+      rgba(201, 150, 45, .95), rgba(183, 134, 43, 0) 70%);
+    filter: blur(18px);
     opacity: 0; transition: opacity .4s ease;
   }
 
-  /* Warm wash over the photograph. */
-  .bs-media::before,
-  .p-media::before {
-    background-image: radial-gradient(
-      260px 260px at calc(var(--sx, -999) * 1px) calc(var(--sy, -999) * 1px),
-      rgba(217, 178, 95, .20), rgba(217, 178, 95, 0) 70%);
-  }
-
-  /* Gold hairline that lights only where the cursor is — the border ring is
-     all that survives the mask (padding-box XOR border-box). */
-  .bs-media::after,
-  .p-media::after {
-    border: 1px solid transparent;
-    background-origin: border-box;
-    background-image: radial-gradient(
-      190px 190px at calc(var(--sx, -999) * 1px) calc(var(--sy, -999) * 1px),
-      rgba(217, 178, 95, .95), rgba(183, 134, 43, 0) 70%);
-    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-            mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-  }
-
-  .bs-card:hover .bs-media::before,
-  .bs-card:hover .bs-media::after,
-  .p-card:hover .p-media::before,
-  .p-card:hover .p-media::after { opacity: 1; }
+  .bs-card:hover::before,
+  .p-card:hover::before { opacity: 1; }
 }

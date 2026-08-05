@@ -294,14 +294,16 @@
 
   /* ----------------------------------------------------------
      SPOTLIGHT CARDS
-     One listener publishes the cursor for every product card on
-     the page; spotlight-card.css does all the drawing.
+     One listener writes the cursor onto whichever product card is
+     under it; spotlight-card.css does all the drawing.
      ---------------------------------------------------------- */
   function initSpotlight() {
-    var root = document.documentElement;
     document.addEventListener("pointermove", function (ev) {
-      root.style.setProperty("--sx", ev.clientX);
-      root.style.setProperty("--sy", ev.clientY);
+      var card = ev.target.closest && ev.target.closest(".bs-card, .p-card");
+      if (!card) return;
+      var box = card.getBoundingClientRect();
+      card.style.setProperty("--sx", ev.clientX - box.left);
+      card.style.setProperty("--sy", ev.clientY - box.top);
     }, { passive: true });
   }
 

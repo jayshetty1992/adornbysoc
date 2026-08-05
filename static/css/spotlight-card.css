@@ -30,14 +30,19 @@
     margin: -28px -24px -22px;
   }
 
+  /* The blur belongs here, on the box, not on the light inside it. Clipping an
+     already-blurred circle leaves the box's own straight edges behind, and the
+     whole thing reads as a second, gold card sitting under the first. Blurring
+     after the clip softens that edge away.
+
+     The box stops at the card's own edge. Everything that reaches past it is
+     the blur's fringe, which has no edge of its own left to cut — the home rows
+     clip their overflow, and a box that reached further would only hand them a
+     hard line to slice through. */
   .spot-slot {
-    position: absolute; inset: -26px; z-index: -1;
-    overflow: hidden; border-radius: 34px;
+    position: absolute; inset: 0; z-index: -1;
+    overflow: hidden; border-radius: 12px;
+    filter: blur(26px);
     pointer-events: none;
   }
-}
-
-/* The light is motion, and it is decoration. */
-@media (prefers-reduced-motion: reduce) {
-  .spot-slot { display: none; }
 }

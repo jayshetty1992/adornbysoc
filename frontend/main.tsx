@@ -16,11 +16,38 @@
    ============================================================ */
 import type { ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
+import { cn } from '@/lib/utils';
 import './tailwind.css';
 
+import { Spotlight, type SpotlightProps } from '@/components/motion-primitives/spotlight';
 import { TextEffect } from '@/components/motion-primitives/text-effect';
 
+/* The product-card light, in Adorn's gold.
+
+   The gradient is written out here rather than with from-/via-/to- classes:
+   those resolve through --tw-gradient-stops, which needs the position variable
+   that only the bg-linear and bg-radial utilities set. A plain arbitrary value
+   needs none of that plumbing.
+
+   It also has to live in a file Tailwind scans. The Django templates are
+   deliberately out of scope — scanning them would mint utilities out of class
+   names the site already styles itself (.container, .hidden), and those would
+   land on top of the real ones. */
+function CardSpotlight({ className, ...props }: SpotlightProps) {
+  return (
+    <Spotlight
+      {...props}
+      className={cn(
+        'bg-[radial-gradient(circle_at_center,#D9B25F_0%,#C9962D_38%,transparent_72%)] blur-2xl',
+        className
+      )}
+    />
+  );
+}
+
 const registry: Record<string, ComponentType<any>> = {
+  CardSpotlight,
+  Spotlight,
   TextEffect,
 };
 

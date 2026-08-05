@@ -1,29 +1,27 @@
 /* ============================================================
    ADORN BY SOC — SPOTLIGHT PRODUCT CARDS (site-wide)
-   On hover a blurred gold bloom spills out past the card edge and
-   follows the cursor. Nothing is laid over the photograph — the
-   product stays clear.
+   The gold light that follows the cursor around a product card is
+   motion-primitives' Spotlight, mounted as a React island. This
+   file only gives it a box to live in.
+
+   The box sits outside the card and behind it, so the light spills
+   past the card edge and the photograph stays clear. The component
+   is told to follow the card (its `track` prop) rather than this
+   box, so the light moves while the cursor is anywhere on the card.
 
    Applies to .bs-card (home rows, wishlist) and .p-card
-   (collection, sale).
-
-   atelier.js writes the cursor onto the hovered card as --sx/--sy,
-   in px from the card's top-left corner. Card-local rather than
-   viewport-fixed because the reveal animations put transforms on
-   ancestors, and a transformed ancestor breaks a fixed background.
-
-   Inert without JS (the light sits off-screen at -9999) and on
-   touch, where there is no cursor to follow.
+   (collection, sale). Without the bundle the slot renders nothing.
    ============================================================ */
 
 @media (hover: hover) and (pointer: fine) {
 
-  /* position: the sale page's card is static, and the bloom is absolute. */
+  /* position: the sale page's card is static, and the slot is absolute.
+     isolation: keeps the z-index:-1 slot above the page background. */
   .bs-card,
   .p-card { position: relative; isolation: isolate; }
 
   /* The home rows clip their overflow so a vertical swipe scrolls the page,
-     not the row — which would shave the bloom off. Trade the clipped space
+     not the row — which would shave the light off. Trade the clipped space
      for padding and take it straight back as margin: room for the light,
      no shift in where anything sits. */
   /* html prefix: home.css loads after this file and owns .bs-row. */
@@ -32,20 +30,14 @@
     margin: -28px -24px -22px;
   }
 
-  .bs-card::before,
-  .p-card::before {
-    content: ""; position: absolute; inset: -22px; z-index: -1;
-    pointer-events: none; border-radius: 30px;
-    background-repeat: no-repeat;
-    /* +22px puts the light back under the cursor: this box starts
-       22px outside the card it is measured from. */
-    background-image: radial-gradient(
-      260px 260px at calc(var(--sx, -9999) * 1px + 22px) calc(var(--sy, -9999) * 1px + 22px),
-      rgba(201, 150, 45, .95), rgba(183, 134, 43, 0) 70%);
-    filter: blur(18px);
-    opacity: 0; transition: opacity .4s ease;
+  .spot-slot {
+    position: absolute; inset: -26px; z-index: -1;
+    overflow: hidden; border-radius: 34px;
+    pointer-events: none;
   }
+}
 
-  .bs-card:hover::before,
-  .p-card:hover::before { opacity: 1; }
+/* The light is motion, and it is decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .spot-slot { display: none; }
 }

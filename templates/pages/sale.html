@@ -4,6 +4,8 @@
 {% block title %}Sale | ADORN{% endblock %}
 
 {% block extra_css %}
+{# React islands: the product-card spotlight #}
+<link rel="stylesheet" href="{% static 'dist/adorn.css' %}">
 <style>
   :root{
     --cream:#F7F3EC;
@@ -664,6 +666,7 @@
 
       {% for p in products %}
       <a class="p-card" href="{% url 'catalog:product_detail' slug=p.slug %}">
+        {% include "catalog/_spot_slot.html" with sel=".p-card" %}
 
         <div class="p-badges">
           <span class="badge-mini badge-sale">SALE</span>
@@ -738,6 +741,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script type="module" src="{% static 'dist/adorn.js' %}"></script>
 <script>
   // Hide/Show filters row
   (function () {

@@ -1,0 +1,15 @@
+{% comment %}
+Gold spotlight for a product card — motion-primitives' Spotlight, mounted by
+frontend/main.tsx. Drop it inside a card and pass the card's own selector as
+`sel`, which is the element the light follows:
+
+    {% include "catalog/_spot_slot.html" with sel=".p-card" %}
+
+The page must also load static/dist/adorn.css and adorn.js. Sizing and
+placement live in static/css/spotlight-card.css.
+
+{% comment %}, not {# #}: the hash form is single-line only, and a multi-line
+one leaves the include above live — this template rendering itself, forever.
+{% endcomment %}
+<div class="spot-slot" data-react="CardSpotlight"
+     data-props='{"size": 320, "track": "{{ sel }}"}'></div>

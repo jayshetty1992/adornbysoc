@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block extra_css %}
+{# React islands: the product-card spotlight #}
+<link rel="stylesheet" href="{% static 'dist/adorn.css' %}">
 <link rel="stylesheet" href="{% static 'css/chrome-dark.css' %}">
 <style>
 
@@ -1107,6 +1109,7 @@
 
           {% for p in products %}
           <div class="p-card">
+            {% include "catalog/_spot_slot.html" with sel=".p-card" %}
 
             <div class="p-badges">
               {% if p.is_on_sale %}
@@ -1263,6 +1266,7 @@
 
 
 {% block extra_js %}
+<script type="module" src="{% static 'dist/adorn.js' %}"></script>
 <script>
   /* Smooth hide/show filters row (no display:none jump) */
   (function () {

@@ -20,16 +20,6 @@
   .bs-card,
   .p-card { position: relative; isolation: isolate; }
 
-  /* The home rows clip their overflow so a vertical swipe scrolls the page,
-     not the row — which would shave the light off. Trade the clipped space
-     for padding and take it straight back as margin: room for the light,
-     no shift in where anything sits. */
-  /* html prefix: home.css loads after this file and owns .bs-row. */
-  html .bs-row {
-    padding: 28px 24px 32px;
-    margin: -28px -24px -22px;
-  }
-
   /* The blur belongs here, on the box, not on the light inside it. Clipping an
      already-blurred circle leaves the box's own straight edges behind, and the
      whole thing reads as a second, gold card sitting under the first. Blurring
